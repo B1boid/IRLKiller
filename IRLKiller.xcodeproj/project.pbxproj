@@ -1,0 +1,607 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 51;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2FA027804731ECCE97E342FC /* Pods_IRLKillerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE081DB13F73E49A16327B3F /* Pods_IRLKillerTests.framework */; };
+		46E1E67623354B0400EBA2FC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E1E67523354B0400EBA2FC /* AppDelegate.swift */; };
+		46E1E67D23354B0500EBA2FC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 46E1E67C23354B0500EBA2FC /* Assets.xcassets */; };
+		46E1E68023354B0500EBA2FC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 46E1E67E23354B0500EBA2FC /* LaunchScreen.storyboard */; };
+		46E1E68B23354B0500EBA2FC /* IRLKillerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E1E68A23354B0500EBA2FC /* IRLKillerTests.swift */; };
+		46E1E6A423354BB800EBA2FC /* TextFieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E1E6A323354BB800EBA2FC /* TextFieldExtension.swift */; };
+		46E1E6A623354CA900EBA2FC /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E1E6A523354CA900EBA2FC /* LoginViewController.swift */; };
+		46E1E6AA23355A4A00EBA2FC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 46E1E6A923355A4A00EBA2FC /* GoogleService-Info.plist */; };
+		46E1E6AC23355EC100EBA2FC /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E1E6AB23355EC100EBA2FC /* MainViewController.swift */; };
+		85298B718FA6D115B852C1B9 /* Pods_IRLKiller.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 239D32A7EF405E587B26F857 /* Pods_IRLKiller.framework */; };
+		F899ECCB23366475005A1A95 /* RegexExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F899ECCA23366475005A1A95 /* RegexExtension.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		46E1E68723354B0500EBA2FC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 46E1E66A23354B0400EBA2FC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 46E1E67123354B0400EBA2FC;
+			remoteInfo = IRLKiller;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		239D32A7EF405E587B26F857 /* Pods_IRLKiller.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IRLKiller.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		46E1E67223354B0400EBA2FC /* IRLKiller.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IRLKiller.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		46E1E67523354B0400EBA2FC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		46E1E67C23354B0500EBA2FC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		46E1E67F23354B0500EBA2FC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		46E1E68123354B0500EBA2FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		46E1E68623354B0500EBA2FC /* IRLKillerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IRLKillerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		46E1E68A23354B0500EBA2FC /* IRLKillerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRLKillerTests.swift; sourceTree = "<group>"; };
+		46E1E68C23354B0500EBA2FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		46E1E6A323354BB800EBA2FC /* TextFieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldExtension.swift; sourceTree = "<group>"; };
+		46E1E6A523354CA900EBA2FC /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		46E1E6A923355A4A00EBA2FC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		46E1E6AB23355EC100EBA2FC /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		67B54BEC521C8415A594831A /* Pods-IRLKillerUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IRLKillerUITests.debug.xcconfig"; path = "Target Support Files/Pods-IRLKillerUITests/Pods-IRLKillerUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		855C3A0AE27884FA01BA609F /* Pods-IRLKillerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IRLKillerTests.debug.xcconfig"; path = "Target Support Files/Pods-IRLKillerTests/Pods-IRLKillerTests.debug.xcconfig"; sourceTree = "<group>"; };
+		BD49BAB0E9AF2D8A4075C710 /* Pods-IRLKillerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IRLKillerUITests.release.xcconfig"; path = "Target Support Files/Pods-IRLKillerUITests/Pods-IRLKillerUITests.release.xcconfig"; sourceTree = "<group>"; };
+		DB279AA8633EC8855BA70875 /* Pods-IRLKiller.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IRLKiller.debug.xcconfig"; path = "Target Support Files/Pods-IRLKiller/Pods-IRLKiller.debug.xcconfig"; sourceTree = "<group>"; };
+		DE081DB13F73E49A16327B3F /* Pods_IRLKillerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IRLKillerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F899ECCA23366475005A1A95 /* RegexExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegexExtension.swift; sourceTree = "<group>"; };
+		FCCBBAB4FE8A6F07C8CA77A3 /* Pods-IRLKiller.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IRLKiller.release.xcconfig"; path = "Target Support Files/Pods-IRLKiller/Pods-IRLKiller.release.xcconfig"; sourceTree = "<group>"; };
+		FEAF83958D61A1AFC56BAD55 /* Pods-IRLKillerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IRLKillerTests.release.xcconfig"; path = "Target Support Files/Pods-IRLKillerTests/Pods-IRLKillerTests.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		46E1E66F23354B0400EBA2FC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				85298B718FA6D115B852C1B9 /* Pods_IRLKiller.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		46E1E68323354B0500EBA2FC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2FA027804731ECCE97E342FC /* Pods_IRLKillerTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		46E1E66923354B0400EBA2FC = {
+			isa = PBXGroup;
+			children = (
+				46E1E67423354B0400EBA2FC /* IRLKiller */,
+				46E1E68923354B0500EBA2FC /* IRLKillerTests */,
+				46E1E67323354B0400EBA2FC /* Products */,
+				B26F35355250670F0FE73EB9 /* Pods */,
+				D289426CE6FEBB4DF3B0EC6B /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		46E1E67323354B0400EBA2FC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				46E1E67223354B0400EBA2FC /* IRLKiller.app */,
+				46E1E68623354B0500EBA2FC /* IRLKillerTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		46E1E67423354B0400EBA2FC /* IRLKiller */ = {
+			isa = PBXGroup;
+			children = (
+				F899ECC923366443005A1A95 /* Extensions */,
+				46E1E67523354B0400EBA2FC /* AppDelegate.swift */,
+				46E1E6AB23355EC100EBA2FC /* MainViewController.swift */,
+				46E1E6A523354CA900EBA2FC /* LoginViewController.swift */,
+				46E1E67C23354B0500EBA2FC /* Assets.xcassets */,
+				46E1E67E23354B0500EBA2FC /* LaunchScreen.storyboard */,
+				46E1E6A923355A4A00EBA2FC /* GoogleService-Info.plist */,
+				46E1E68123354B0500EBA2FC /* Info.plist */,
+			);
+			path = IRLKiller;
+			sourceTree = "<group>";
+		};
+		46E1E68923354B0500EBA2FC /* IRLKillerTests */ = {
+			isa = PBXGroup;
+			children = (
+				46E1E68A23354B0500EBA2FC /* IRLKillerTests.swift */,
+				46E1E68C23354B0500EBA2FC /* Info.plist */,
+			);
+			path = IRLKillerTests;
+			sourceTree = "<group>";
+		};
+		B26F35355250670F0FE73EB9 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				DB279AA8633EC8855BA70875 /* Pods-IRLKiller.debug.xcconfig */,
+				FCCBBAB4FE8A6F07C8CA77A3 /* Pods-IRLKiller.release.xcconfig */,
+				855C3A0AE27884FA01BA609F /* Pods-IRLKillerTests.debug.xcconfig */,
+				FEAF83958D61A1AFC56BAD55 /* Pods-IRLKillerTests.release.xcconfig */,
+				67B54BEC521C8415A594831A /* Pods-IRLKillerUITests.debug.xcconfig */,
+				BD49BAB0E9AF2D8A4075C710 /* Pods-IRLKillerUITests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		D289426CE6FEBB4DF3B0EC6B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				239D32A7EF405E587B26F857 /* Pods_IRLKiller.framework */,
+				DE081DB13F73E49A16327B3F /* Pods_IRLKillerTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F899ECC923366443005A1A95 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				46E1E6A323354BB800EBA2FC /* TextFieldExtension.swift */,
+				F899ECCA23366475005A1A95 /* RegexExtension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		46E1E67123354B0400EBA2FC /* IRLKiller */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 46E1E69A23354B0500EBA2FC /* Build configuration list for PBXNativeTarget "IRLKiller" */;
+			buildPhases = (
+				9F41DB0C1C5A8D9FA32A50D1 /* [CP] Check Pods Manifest.lock */,
+				46E1E66E23354B0400EBA2FC /* Sources */,
+				46E1E66F23354B0400EBA2FC /* Frameworks */,
+				46E1E67023354B0400EBA2FC /* Resources */,
+				F308A9D06F076CB21360905F /* [CP] Embed Pods Frameworks */,
+				B661AE1DE7F47D33454035F4 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = IRLKiller;
+			productName = IRLKiller;
+			productReference = 46E1E67223354B0400EBA2FC /* IRLKiller.app */;
+			productType = "com.apple.product-type.application";
+		};
+		46E1E68523354B0500EBA2FC /* IRLKillerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 46E1E69D23354B0500EBA2FC /* Build configuration list for PBXNativeTarget "IRLKillerTests" */;
+			buildPhases = (
+				471AE7C145B3CD259B249BE4 /* [CP] Check Pods Manifest.lock */,
+				46E1E68223354B0500EBA2FC /* Sources */,
+				46E1E68323354B0500EBA2FC /* Frameworks */,
+				46E1E68423354B0500EBA2FC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				46E1E68823354B0500EBA2FC /* PBXTargetDependency */,
+			);
+			name = IRLKillerTests;
+			productName = IRLKillerTests;
+			productReference = 46E1E68623354B0500EBA2FC /* IRLKillerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		46E1E66A23354B0400EBA2FC /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1010;
+				LastUpgradeCheck = 1010;
+				ORGANIZATIONNAME = "Aleksandr Vorobev";
+				TargetAttributes = {
+					46E1E67123354B0400EBA2FC = {
+						CreatedOnToolsVersion = 10.1;
+					};
+					46E1E68523354B0500EBA2FC = {
+						CreatedOnToolsVersion = 10.1;
+						TestTargetID = 46E1E67123354B0400EBA2FC;
+					};
+				};
+			};
+			buildConfigurationList = 46E1E66D23354B0400EBA2FC /* Build configuration list for PBXProject "IRLKiller" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 46E1E66923354B0400EBA2FC;
+			productRefGroup = 46E1E67323354B0400EBA2FC /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				46E1E67123354B0400EBA2FC /* IRLKiller */,
+				46E1E68523354B0500EBA2FC /* IRLKillerTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		46E1E67023354B0400EBA2FC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				46E1E68023354B0500EBA2FC /* LaunchScreen.storyboard in Resources */,
+				46E1E6AA23355A4A00EBA2FC /* GoogleService-Info.plist in Resources */,
+				46E1E67D23354B0500EBA2FC /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		46E1E68423354B0500EBA2FC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		471AE7C145B3CD259B249BE4 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-IRLKillerTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9F41DB0C1C5A8D9FA32A50D1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-IRLKiller-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B661AE1DE7F47D33454035F4 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-IRLKiller/Pods-IRLKiller-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-IRLKiller/Pods-IRLKiller-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-IRLKiller/Pods-IRLKiller-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F308A9D06F076CB21360905F /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-IRLKiller/Pods-IRLKiller-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-IRLKiller/Pods-IRLKiller-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-IRLKiller/Pods-IRLKiller-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		46E1E66E23354B0400EBA2FC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				46E1E6A623354CA900EBA2FC /* LoginViewController.swift in Sources */,
+				46E1E6A423354BB800EBA2FC /* TextFieldExtension.swift in Sources */,
+				F899ECCB23366475005A1A95 /* RegexExtension.swift in Sources */,
+				46E1E67623354B0400EBA2FC /* AppDelegate.swift in Sources */,
+				46E1E6AC23355EC100EBA2FC /* MainViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		46E1E68223354B0500EBA2FC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				46E1E68B23354B0500EBA2FC /* IRLKillerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		46E1E68823354B0500EBA2FC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 46E1E67123354B0400EBA2FC /* IRLKiller */;
+			targetProxy = 46E1E68723354B0500EBA2FC /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		46E1E67E23354B0500EBA2FC /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				46E1E67F23354B0500EBA2FC /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		46E1E69823354B0500EBA2FC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		46E1E69923354B0500EBA2FC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		46E1E69B23354B0500EBA2FC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DB279AA8633EC8855BA70875 /* Pods-IRLKiller.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = TV4Z7NX6LB;
+				INFOPLIST_FILE = IRLKiller/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.AleVoro.IRLKiller;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		46E1E69C23354B0500EBA2FC /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FCCBBAB4FE8A6F07C8CA77A3 /* Pods-IRLKiller.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = TV4Z7NX6LB;
+				INFOPLIST_FILE = IRLKiller/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.AleVoro.IRLKiller;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		46E1E69E23354B0500EBA2FC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 855C3A0AE27884FA01BA609F /* Pods-IRLKillerTests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = TV4Z7NX6LB;
+				INFOPLIST_FILE = IRLKillerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.AleVoro.IRLKillerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/IRLKiller.app/IRLKiller";
+			};
+			name = Debug;
+		};
+		46E1E69F23354B0500EBA2FC /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FEAF83958D61A1AFC56BAD55 /* Pods-IRLKillerTests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = TV4Z7NX6LB;
+				INFOPLIST_FILE = IRLKillerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.AleVoro.IRLKillerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/IRLKiller.app/IRLKiller";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		46E1E66D23354B0400EBA2FC /* Build configuration list for PBXProject "IRLKiller" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				46E1E69823354B0500EBA2FC /* Debug */,
+				46E1E69923354B0500EBA2FC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		46E1E69A23354B0500EBA2FC /* Build configuration list for PBXNativeTarget "IRLKiller" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				46E1E69B23354B0500EBA2FC /* Debug */,
+				46E1E69C23354B0500EBA2FC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		46E1E69D23354B0500EBA2FC /* Build configuration list for PBXNativeTarget "IRLKillerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				46E1E69E23354B0500EBA2FC /* Debug */,
+				46E1E69F23354B0500EBA2FC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 46E1E66A23354B0400EBA2FC /* Project object */;
+}

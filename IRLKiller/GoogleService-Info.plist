@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>413521291948-jfbhg9fmbgq8k0h4s22b9k05g2h8o1rh.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.413521291948-jfbhg9fmbgq8k0h4s22b9k05g2h8o1rh</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCwkRLmtctQnS1vHpPf8XRw5sBwTWhlbHY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>413521291948</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.AleVoro.IRLKiller</string>
+	<key>PROJECT_ID</key>
+	<string>irlkiller</string>
+	<key>STORAGE_BUCKET</key>
+	<string>irlkiller.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:413521291948:ios:fed30aa09a6db4bb1c0d09</string>
+	<key>DATABASE_URL</key>
+	<string>https://irlkiller.firebaseio.com</string>
+</dict>
+</plist>
