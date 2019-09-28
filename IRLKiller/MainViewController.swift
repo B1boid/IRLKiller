@@ -22,7 +22,7 @@ class MainViewController: UIViewController,MGLMapViewDelegate {
         let ref = Database.database().reference().child("users/\(userID!)")
         var login = ""
         
-        //
+        //check
         //чтение логина из БД
         ref.observeSingleEvent(of: .value,with: {(snapshot) in
             if let user = snapshot.value as? [String : AnyObject] {
