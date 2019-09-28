@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2FA027804731ECCE97E342FC /* Pods_IRLKillerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE081DB13F73E49A16327B3F /* Pods_IRLKillerTests.framework */; };
+		466ED40E233F92E300EB8CE0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 466ED40D233F92E300EB8CE0 /* Main.storyboard */; };
 		46E1E67623354B0400EBA2FC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E1E67523354B0400EBA2FC /* AppDelegate.swift */; };
 		46E1E67D23354B0500EBA2FC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 46E1E67C23354B0500EBA2FC /* Assets.xcassets */; };
 		46E1E68023354B0500EBA2FC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 46E1E67E23354B0500EBA2FC /* LaunchScreen.storyboard */; };
@@ -32,6 +33,7 @@
 
 /* Begin PBXFileReference section */
 		239D32A7EF405E587B26F857 /* Pods_IRLKiller.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IRLKiller.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		466ED40D233F92E300EB8CE0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		46E1E67223354B0400EBA2FC /* IRLKiller.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IRLKiller.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		46E1E67523354B0400EBA2FC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		46E1E67C23354B0500EBA2FC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -101,10 +103,11 @@
 				46E1E67523354B0400EBA2FC /* AppDelegate.swift */,
 				46E1E6AB23355EC100EBA2FC /* MainViewController.swift */,
 				46E1E6A523354CA900EBA2FC /* LoginViewController.swift */,
-				46E1E67C23354B0500EBA2FC /* Assets.xcassets */,
+				466ED40D233F92E300EB8CE0 /* Main.storyboard */,
 				46E1E67E23354B0500EBA2FC /* LaunchScreen.storyboard */,
 				46E1E6A923355A4A00EBA2FC /* GoogleService-Info.plist */,
 				46E1E68123354B0500EBA2FC /* Info.plist */,
+				46E1E67C23354B0500EBA2FC /* Assets.xcassets */,
 			);
 			path = IRLKiller;
 			sourceTree = "<group>";
@@ -237,6 +240,7 @@
 				46E1E68023354B0500EBA2FC /* LaunchScreen.storyboard in Resources */,
 				46E1E6AA23355A4A00EBA2FC /* GoogleService-Info.plist in Resources */,
 				46E1E67D23354B0500EBA2FC /* Assets.xcassets in Resources */,
+				466ED40E233F92E300EB8CE0 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
