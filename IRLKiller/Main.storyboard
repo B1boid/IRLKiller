@@ -89,11 +89,20 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eC9-Rp-PzN">
+                                <rect key="frame" x="280" y="16" width="79" height="30"/>
+                                <state key="normal" title="My location"/>
+                                <connections>
+                                    <action selector="clickMyLocation:" destination="gEl-Ix-SCQ" eventType="touchUpInside" id="wK3-xl-faQ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="GRe-rU-dMW" firstAttribute="top" secondItem="ack-7U-r0s" secondAttribute="bottom" constant="-26" id="2gq-fk-jKA"/>
                             <constraint firstItem="ack-7U-r0s" firstAttribute="top" secondItem="6Gy-Eh-l9e" secondAttribute="top" constant="-4" id="A1c-8j-AxS"/>
+                            <constraint firstItem="eC9-Rp-PzN" firstAttribute="top" secondItem="GRe-rU-dMW" secondAttribute="bottom" constant="-24.5" id="FGX-4k-3Hy"/>
+                            <constraint firstItem="eC9-Rp-PzN" firstAttribute="trailing" secondItem="6Gy-Eh-l9e" secondAttribute="trailing" constant="-16" id="L9k-xg-O1e"/>
                             <constraint firstItem="GRe-rU-dMW" firstAttribute="centerX" secondItem="vhS-EM-lLH" secondAttribute="centerX" constant="1.75" id="ted-mq-Cvl"/>
                             <constraint firstItem="ack-7U-r0s" firstAttribute="centerX" secondItem="vhS-EM-lLH" secondAttribute="centerX" constant="-147" id="zru-nX-I12"/>
                         </constraints>
