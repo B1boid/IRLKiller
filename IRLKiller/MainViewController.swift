@@ -13,7 +13,7 @@ class MainViewController: UIViewController,MGLMapViewDelegate {
     
     @IBOutlet weak var testText: UILabel!
     
-    @IBOutlet weak var mapView: MGLMapView!
+    
     
     
     override func viewDidLoad() {
