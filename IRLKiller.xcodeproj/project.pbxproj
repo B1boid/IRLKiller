@@ -17,6 +17,8 @@
 		46E1E6A623354CA900EBA2FC /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E1E6A523354CA900EBA2FC /* LoginViewController.swift */; };
 		46E1E6AA23355A4A00EBA2FC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 46E1E6A923355A4A00EBA2FC /* GoogleService-Info.plist */; };
 		46E1E6AC23355EC100EBA2FC /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E1E6AB23355EC100EBA2FC /* MainViewController.swift */; };
+		46E5CC8C23414A69004AF33D /* InventoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E5CC8B23414A69004AF33D /* InventoryViewController.swift */; };
+		46E5CC8E23414A7B004AF33D /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E5CC8D23414A7B004AF33D /* ProfileViewController.swift */; };
 		85298B718FA6D115B852C1B9 /* Pods_IRLKiller.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 239D32A7EF405E587B26F857 /* Pods_IRLKiller.framework */; };
 		F899ECCB23366475005A1A95 /* RegexExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F899ECCA23366475005A1A95 /* RegexExtension.swift */; };
 /* End PBXBuildFile section */
@@ -46,6 +48,8 @@
 		46E1E6A523354CA900EBA2FC /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		46E1E6A923355A4A00EBA2FC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		46E1E6AB23355EC100EBA2FC /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		46E5CC8B23414A69004AF33D /* InventoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryViewController.swift; sourceTree = "<group>"; };
+		46E5CC8D23414A7B004AF33D /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		67B54BEC521C8415A594831A /* Pods-IRLKillerUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IRLKillerUITests.debug.xcconfig"; path = "Target Support Files/Pods-IRLKillerUITests/Pods-IRLKillerUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		855C3A0AE27884FA01BA609F /* Pods-IRLKillerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IRLKillerTests.debug.xcconfig"; path = "Target Support Files/Pods-IRLKillerTests/Pods-IRLKillerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		BD49BAB0E9AF2D8A4075C710 /* Pods-IRLKillerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IRLKillerUITests.release.xcconfig"; path = "Target Support Files/Pods-IRLKillerUITests/Pods-IRLKillerUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -101,9 +105,11 @@
 			children = (
 				F899ECC923366443005A1A95 /* Extensions */,
 				46E1E67523354B0400EBA2FC /* AppDelegate.swift */,
-				46E1E6AB23355EC100EBA2FC /* MainViewController.swift */,
 				46E1E6A523354CA900EBA2FC /* LoginViewController.swift */,
+				46E1E6AB23355EC100EBA2FC /* MainViewController.swift */,
 				466ED40D233F92E300EB8CE0 /* Main.storyboard */,
+				46E5CC8B23414A69004AF33D /* InventoryViewController.swift */,
+				46E5CC8D23414A7B004AF33D /* ProfileViewController.swift */,
 				46E1E67E23354B0500EBA2FC /* LaunchScreen.storyboard */,
 				46E1E6A923355A4A00EBA2FC /* GoogleService-Info.plist */,
 				46E1E68123354B0500EBA2FC /* Info.plist */,
@@ -340,8 +346,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				46E1E6A623354CA900EBA2FC /* LoginViewController.swift in Sources */,
+				46E5CC8C23414A69004AF33D /* InventoryViewController.swift in Sources */,
 				46E1E6A423354BB800EBA2FC /* TextFieldExtension.swift in Sources */,
 				F899ECCB23366475005A1A95 /* RegexExtension.swift in Sources */,
+				46E5CC8E23414A7B004AF33D /* ProfileViewController.swift in Sources */,
 				46E1E67623354B0400EBA2FC /* AppDelegate.swift in Sources */,
 				46E1E6AC23355EC100EBA2FC /* MainViewController.swift in Sources */,
 			);

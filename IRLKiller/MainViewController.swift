@@ -17,6 +17,8 @@ class MainViewController: UIViewController,MGLMapViewDelegate {
         showMyLocation()
     }
     
+    @IBOutlet weak var mapView: MGLMapView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -25,7 +27,6 @@ class MainViewController: UIViewController,MGLMapViewDelegate {
         let ref = Database.database().reference().child("users/\(userID!)")
         var login = ""
         
-        //check
         //чтение логина из БД
         ref.observeSingleEvent(of: .value,with: {(snapshot) in
             if let user = snapshot.value as? [String : AnyObject] {
@@ -39,22 +40,14 @@ class MainViewController: UIViewController,MGLMapViewDelegate {
         
     }
     
-    var mapView:MGLMapView!
     
     func setUpMapView(){
-        // доабавляю программно
-        mapView = MGLMapView(frame: view.bounds, styleURL: URL(string:"mapbox://styles/b1boid/ck12egt7e02ax1cp52uginkky"))
-        
-        // Чтобы не видно было надписи mapbox внизу - смещаю
-        mapView.frame = CGRect(x: 0, y: 60, width: view.bounds.maxX, height: view.bounds.maxY)
         
         // Set the map view's delegate
         mapView.delegate = self
         
         // Allow the map view to display the user's location
         mapView.showsUserLocation = true
-
-        view.addSubview(mapView)
     }
     
     
@@ -74,7 +67,7 @@ class MainViewController: UIViewController,MGLMapViewDelegate {
     }
     
     func showMyLocation(){
-        let camera2 = MGLMapCamera(lookingAtCenter: mapView.userLocation?.coordinate ?? CLLocationCoordinate2D(latitude: 40.74699, longitude: -73.98742), altitude: 500, pitch: 30, heading: 180)
+        let camera2 = MGLMapCamera(lookingAtCenter: mapView.userLocation?.coordinate ?? mapView.centerCoordinate, altitude: 500, pitch: 30, heading: 180)
         mapView.setCamera(camera2, animated: false)
     }
     
