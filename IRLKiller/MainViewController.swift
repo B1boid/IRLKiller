@@ -18,7 +18,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     
     // Наше вычислимое поле будет каждый раз вычисляться при его запросе //
     var userLocation: CLLocationCoordinate2D {
-        return locationManager.location?.coordinate ?? basicLocation
+        get { return locationManager.location?.coordinate ?? basicLocation }
     }
     
     
@@ -90,13 +90,14 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     func reportLocationServicesDenied() {
         let alert = UIAlertController(title: "Location services disabled", message: "Please go Setting -> Privacy to enable location services for this app.", preferredStyle: .alert)
         
-        let alertAction = UIAlertAction(title: "alert", style: .default, handler: nil)
-        alert.addAction(alertAction)
+        let okButton = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alert.addAction(okButton)
+        self.present(alert, animated: true, completion: nil)
     }
     
     func mapViewDidFinishLoadingMap(_ mapView: MGLMapView) {
         // Wait for the map to load before initiating the first camera movement.
-
+        
         let currentCamera = MGLMapCamera(
             lookingAtCenter: userLocation,
             altitude: altitude, pitch: pitch, heading: heading
@@ -106,9 +107,14 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     
     // Ставим точку на нашего позьзователя
     func makeAnotationForUserPosition() {
-        let point = MGLPointAnnotation()
-        point.coordinate = userLocation
-        mapView.addAnnotation(point)
+        switch CLLocationManager.authorizationStatus() {
+        case .authorizedAlways, .authorizedWhenInUse:
+            let point = MGLPointAnnotation()
+            point.coordinate = userLocation
+            mapView.addAnnotation(point)
+        default:
+            break
+        }
     }
     
     // Удаляем все пометки
@@ -132,10 +138,13 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
 // НИХУЯ НЕ РАБОТАЕТ БЛЯТЬ
 extension MainViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        removeAnotations()
+        showMyLocation()
     }
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         checkLocationAuthorization()
+        if CLLocationManager.authorizationStatus() == .denied {
+            removeAnotations()
+        }
     }
 }
