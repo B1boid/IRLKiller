@@ -72,7 +72,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         doLogin()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         // Будет тру начиная со второго запуска приложения и будет авто переход в меню
         if Auth.auth().currentUser != nil {
             self.performSegue(withIdentifier: "showMenu", sender: self)
