@@ -13,12 +13,16 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     let heading: CLLocationDirection = 180
     
     
-    // Отвечает за геолокации на нашем телефоне // 
-    let locationManager = CLLocationManager()
+//    // Отвечает за геолокации на нашем телефоне //
+//    let locationManager = CLLocationManager()
     
-    // Наше вычислимое поле будет каждый раз вычисляться при его запросе //
+//    // Наше вычислимое поле будет каждый раз вычисляться при его запросе //
+//    var userLocation: CLLocationCoordinate2D {
+//        get { return locationManager.location?.coordinate ?? basicLocation }
+//    }
+    
     var userLocation: CLLocationCoordinate2D {
-        get { return locationManager.location?.coordinate ?? basicLocation }
+        get { return mapView.userLocation?.coordinate ?? basicLocation }
     }
     
     
@@ -54,47 +58,52 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             }
         })
         
-        checkLocationServices()
+        setupMapView()
+//        checkLocationServices()
+    }
+    
+    func setupMapView()  {
         mapView.delegate = self
+        mapView.showsUserLocation = true
     }
     
-    func setupLocatinoManager() {
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-    }
-    
-    // Для устройства могут быть выключены службы геолокации, нам нужно это проверить //
-    func checkLocationServices() {
-        if CLLocationManager.locationServicesEnabled() {
-            setupLocatinoManager()
-            checkLocationAuthorization()
-        } else {
-            reportLocationServicesDenied()
-        }
-    }
-    
-    // Могут быть отключены службы геолокации для нашего приложения //
-    func checkLocationAuthorization() {
-        switch CLLocationManager.authorizationStatus() {
-        case .denied, .restricted:
-            reportLocationServicesDenied()
-        case .notDetermined:
-            locationManager.requestWhenInUseAuthorization()
-        case .authorizedWhenInUse:
-            makeAnotationForUserPosition()
-        case .authorizedAlways: break
-        }
-    }
-    
-    // Пишем предупреждение о том что выключены службы геолокации или запрещен доступ в наше приложение
-    func reportLocationServicesDenied() {
-        let alert = UIAlertController(title: "Location services disabled", message: "Please go Setting -> Privacy to enable location services for this app.", preferredStyle: .alert)
-        
-        let okButton = UIAlertAction(title: "OK", style: .default, handler: nil)
-        alert.addAction(okButton)
-        self.present(alert, animated: true, completion: nil)
-    }
-    
+//    func setupLocatinoManager() {
+//        locationManager.delegate = self
+//        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+//    }
+//
+//    // Для устройства могут быть выключены службы геолокации, нам нужно это проверить //
+//    func checkLocationServices() {
+//        if CLLocationManager.locationServicesEnabled() {
+//            setupLocatinoManager()
+//            checkLocationAuthorization()
+//        } else {
+//            reportLocationServicesDenied()
+//        }
+//    }
+//
+//    // Могут быть отключены службы геолокации для нашего приложения //
+//    func checkLocationAuthorization() {
+//        switch CLLocationManager.authorizationStatus() {
+//        case .denied, .restricted:
+//            reportLocationServicesDenied()
+//        case .notDetermined:
+//            locationManager.requestWhenInUseAuthorization()
+//        case .authorizedWhenInUse:
+//            makeAnotationForUserPosition()
+//        case .authorizedAlways: break
+//        }
+//    }
+//
+//    // Пишем предупреждение о том что выключены службы геолокации или запрещен доступ в наше приложение
+//    func reportLocationServicesDenied() {
+//        let alert = UIAlertController(title: "Location services disabled", message: "Please go Setting -> Privacy to enable location services for this app.", preferredStyle: .alert)
+//
+//        let okButton = UIAlertAction(title: "OK", style: .default, handler: nil)
+//        alert.addAction(okButton)
+//        self.present(alert, animated: true, completion: nil)
+//    }
+//
     func mapViewDidFinishLoadingMap(_ mapView: MGLMapView) {
         // Wait for the map to load before initiating the first camera movement.
         
@@ -105,27 +114,9 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         mapView.setCamera(currentCamera, animated: true)
     }
     
-    // Ставим точку на нашего позьзователя
-    func makeAnotationForUserPosition() {
-        switch CLLocationManager.authorizationStatus() {
-        case .authorizedAlways, .authorizedWhenInUse:
-            let point = MGLPointAnnotation()
-            point.coordinate = userLocation
-            mapView.addAnnotation(point)
-        default:
-            break
-        }
-    }
-    
-    // Удаляем все пометки
-    func removeAnotations() {
-        guard let anotations = mapView.annotations else { return }
-        mapView.removeAnnotations(anotations)
-    }
-    
-    func showMyLocation() {
-        removeAnotations()
-        makeAnotationForUserPosition()
+     func showMyLocation() {
+//        removeAnotations()
+//        makeAnotationForUserPosition()
         let cameraFocusedOnUsersLocation = MGLMapCamera(
             lookingAtCenter: userLocation,
             altitude: altitude, pitch: pitch, heading: heading
@@ -135,16 +126,21 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
 }
 
 
-// НИХУЯ НЕ РАБОТАЕТ БЛЯТЬ
-extension MainViewController: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        showMyLocation()
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        checkLocationAuthorization()
-        if CLLocationManager.authorizationStatus() == .denied {
-            removeAnotations()
-        }
-    }
-}
+//// НИХУЯ НЕ РАБОТАЕТ БЛЯТЬ
+//extension MainViewController: CLLocationManagerDelegate {
+//    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+//        showMyLocation()
+//    }
+//
+//    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+//        checkLocationAuthorization()
+//        switch CLLocationManager.authorizationStatus() {
+//        case .denied:
+//            removeAnotations()
+//        case .authorizedAlways, .authorizedWhenInUse:
+//            showMyLocation()
+//        default:
+//            break
+//        }
+//    }
+//}
