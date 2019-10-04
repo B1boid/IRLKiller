@@ -8,7 +8,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     // 2param - относительно предыдущего view
     // 3param - высота текущего view
     // 4param - текущее view
-     typealias OffsetForView = (xOffset: CGFloat, yOffset: CGFloat, height: CGFloat, view: UIView)
+    typealias OffsetForView = (xOffset: CGFloat, yOffset: CGFloat, height: CGFloat, view: UIView)
     
     static let loadingImageName = "bg"
     static let bgImageName = "bg"
@@ -24,6 +24,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         textField.textAlignment = .center
         textField.borderStyle = .roundedRect
         textField.backgroundColor  = .clear
+        textField.maxLength = 18
         return textField
     }()
     
@@ -53,6 +54,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         let label = UILabel()
         label.textAlignment = .center
         label.textColor = .red
+        label.numberOfLines = 2
+        label.adjustsFontSizeToFitWidth = true
+        label.sizeToFit()
         return label
     }()
     
@@ -68,7 +72,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         doLogin()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         // Будет тру начиная со второго запуска приложения и будет авто переход в меню
         if Auth.auth().currentUser != nil {
             self.performSegue(withIdentifier: "showMenu", sender: self)
@@ -86,7 +90,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         subviews.forEach { view.addSubview($0) }
     }
     
-    override func viewDidLayoutSubviews() {
+    override func viewWillLayoutSubviews() {
         // В этот момент все фрэймы уже проставлены
         w = view.frame.width
         h = view.frame.height
@@ -110,26 +114,32 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             return current
         }
         
+        // Фон лежит ниже всех //
         bgImageView.frame = view.frame
+        bgImageView.layer.zPosition = -1
         
-        // Меняем размеры которые зависят от размера view 
+        // Меняем размеры которые зависят от размера view
         entryButton.titleLabel?.font =  UIFont(name: "Marker Felt", size: entryButton.frame.height - 20)
-        gameNameLabel.font = UIFont(name: "Rockwell",
-                                    size: min(view.frame.width / CGFloat(gameNameLabel.text!.count), gameNameLabel.frame.height))
         
+        gameNameLabel.font = UIFont(
+            name: "Rockwell",
+            size: min(gameNameLabel.frame.height,
+                      view.frame.width / CGFloat(gameNameLabel.text!.count))
+        )
         
+        loginTextField.font = UIFont(
+            name: "Rockwell",
+            size: min(loginTextField.frame.height, loginTextField.frame.width / CGFloat(14))
+        )
     }
     
     func doLogin() {
+        
         // Проверяем валидность логина и выводим сообщение об этом
         let login = loginTextField.text!.trimmingCharacters(in: .whitespaces)
         
-        let conditionForLoginValidity = login.isValid(.login)
-        guard conditionForLoginValidity else {
-            errorMsgLabel.text = """
-            Login must have {a-z} and {0-9} charecters\n
-            [minimum length = 4, max length = 14]
-            """
+        guard login.isValid(.login) else {
+            errorMsgLabel.text = "Login must have at least 4 chars"
             let _ = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(clearErrorMsg), userInfo: nil, repeats: false)
             return
         }

@@ -9,7 +9,7 @@ extension String {
     }
     
     enum Regex: String {
-        case login = "[a-zA-Z0-9-\\_]{4,14}"
+        case login = "[a-zA-Z0-9-\\_]{4,18}"
     }
     
     func isValid(_ validType: ValidityType) -> Bool {

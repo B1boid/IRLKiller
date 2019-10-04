@@ -23,10 +23,7 @@ extension UITextField {
     
     @objc func checkMaxLength(textField: UITextField) {
         guard let prospectiveText = self.text,
-            prospectiveText.count > maxLength
-            else {
-                return
-        }
+            prospectiveText.count > maxLength else { return }
         
         let selection = selectedTextRange
         

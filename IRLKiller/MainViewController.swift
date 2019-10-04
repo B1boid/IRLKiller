@@ -2,15 +2,24 @@ import UIKit
 import FirebaseUI
 import FirebaseDatabase
 import Mapbox
+import CoreLocation
 
 class MainViewController: UIViewController, MGLMapViewDelegate {
-    
     
     // Map settings
     let basicLocation = CLLocationCoordinate2D(latitude: 40.74699, longitude: -73.98742)
     let altitude: CLLocationDistance = 500
     let pitch: CGFloat = 30
     let heading: CLLocationDirection = 180
+    
+    
+    // Отвечает за геолокации на нашем телефоне // 
+    let locationManager = CLLocationManager()
+    
+    // Наше вычислимое поле будет каждый раз вычисляться при его запросе //
+    var userLocation: CLLocationCoordinate2D {
+        return locationManager.location?.coordinate ?? basicLocation
+    }
     
     
     // View and buttons
@@ -31,7 +40,6 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         let userID = Auth.auth().currentUser?.uid
         //Входим в ДБ сразу в веть с текущим пользователем
         let ref = Database.database().reference().child("users/\(userID!)")
@@ -45,48 +53,89 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                 self.loginText.text = login
             }
         })
-    
-        setUpMapView()
         
-    }
-    
-    
-    func setUpMapView() {
-        
-        // Set the map view's delegate
+        checkLocationServices()
         mapView.delegate = self
-        
-        // Allow the map view to display the user's location
-        mapView.showsUserLocation = true
-        mapView.userTrackingMode = .follow
     }
-
     
+    func setupLocatinoManager() {
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+    }
+    
+    // Для устройства могут быть выключены службы геолокации, нам нужно это проверить //
+    func checkLocationServices() {
+        if CLLocationManager.locationServicesEnabled() {
+            setupLocatinoManager()
+            checkLocationAuthorization()
+        } else {
+            reportLocationServicesDenied()
+        }
+    }
+    
+    // Могут быть отключены службы геолокации для нашего приложения //
+    func checkLocationAuthorization() {
+        switch CLLocationManager.authorizationStatus() {
+        case .denied, .restricted:
+            reportLocationServicesDenied()
+        case .notDetermined:
+            locationManager.requestWhenInUseAuthorization()
+        case .authorizedWhenInUse:
+            makeAnotationForUserPosition()
+        case .authorizedAlways: break
+        }
+    }
+    
+    // Пишем предупреждение о том что выключены службы геолокации или запрещен доступ в наше приложение
+    func reportLocationServicesDenied() {
+        let alert = UIAlertController(title: "Location services disabled", message: "Please go Setting -> Privacy to enable location services for this app.", preferredStyle: .alert)
+        
+        let alertAction = UIAlertAction(title: "alert", style: .default, handler: nil)
+        alert.addAction(alertAction)
+    }
     
     func mapViewDidFinishLoadingMap(_ mapView: MGLMapView) {
         // Wait for the map to load before initiating the first camera movement.
 
-        // Create a camera that rotates around the same center point, rotating 180°.
-        // `fromDistance:` is meters above mean sea level that an eye would have to be in order to see what the map view is showing.
-        
-        //Вообщем есть необьяснимый баг - при запуске программы когда эмулятор закрыт, то есть когда эмулятор открывается и сразу запускается приложение - иногда не находит координаты пользователя сразу, поэтому вводим вспомогательную камеру на фиксированную точку(в будущем на последнее местопложение пользователя)
-        let previousCamera = MGLMapCamera(
-            lookingAtCenter: basicLocation, altitude: altitude, pitch: pitch, heading: heading
-        )
-        mapView.fly(to: previousCamera, withDuration: 2, completionHandler: nil)
-        
         let currentCamera = MGLMapCamera(
-            lookingAtCenter: mapView.userLocation?.coordinate ?? basicLocation,
+            lookingAtCenter: userLocation,
             altitude: altitude, pitch: pitch, heading: heading
         )
         mapView.setCamera(currentCamera, animated: true)
     }
     
-    func showMyLocation(){
+    // Ставим точку на нашего позьзователя
+    func makeAnotationForUserPosition() {
+        let point = MGLPointAnnotation()
+        point.coordinate = userLocation
+        mapView.addAnnotation(point)
+    }
+    
+    // Удаляем все пометки
+    func removeAnotations() {
+        guard let anotations = mapView.annotations else { return }
+        mapView.removeAnnotations(anotations)
+    }
+    
+    func showMyLocation() {
+        removeAnotations()
+        makeAnotationForUserPosition()
         let cameraFocusedOnUsersLocation = MGLMapCamera(
-            lookingAtCenter: mapView.userLocation?.coordinate ?? mapView.centerCoordinate,
+            lookingAtCenter: userLocation,
             altitude: altitude, pitch: pitch, heading: heading
         )
         mapView.fly(to: cameraFocusedOnUsersLocation, withDuration: 2, completionHandler: nil)
+    }
+}
+
+
+// НИХУЯ НЕ РАБОТАЕТ БЛЯТЬ
+extension MainViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        removeAnotations()
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        checkLocationAuthorization()
     }
 }
