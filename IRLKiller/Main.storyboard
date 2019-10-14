@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -11,7 +15,7 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="LoginViewController" customModule="IRLKiller" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -29,11 +33,11 @@
             <objects>
                 <viewController id="gEl-Ix-SCQ" customClass="MainViewController" customModule="IRLKiller" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="vhS-EM-lLH">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V7x-1G-krY" customClass="MGLMapView">
-                                <rect key="frame" x="0.0" y="48" width="600" height="611"/>
+                                <rect key="frame" x="0.0" y="48" width="375" height="678"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="styleURL__" value="mapbox://styles/b1boid/ck12egt7e02ax1cp52uginkky"/>
@@ -46,15 +50,19 @@
                                     <action selector="logoutPressed:" destination="gEl-Ix-SCQ" eventType="touchUpInside" id="Cig-Go-5Mf"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eC9-Rp-PzN">
-                                <rect key="frame" x="501" y="16" width="79" height="30"/>
-                                <state key="normal" title="My location"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eC9-Rp-PzN">
+                                <rect key="frame" x="330" y="120" width="30" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="mKX-Tu-rya"/>
+                                    <constraint firstAttribute="width" constant="30" id="nPN-0h-xby"/>
+                                </constraints>
+                                <state key="normal" image="mylocation" backgroundImage="mylocation"/>
                                 <connections>
                                     <action selector="clickMyLocation:" destination="gEl-Ix-SCQ" eventType="touchUpInside" id="wK3-xl-faQ"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hi - " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GRe-rU-dMW">
-                                <rect key="frame" x="283" y="21" width="34" height="20"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hi" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GRe-rU-dMW">
+                                <rect key="frame" x="178.5" y="21" width="18.5" height="20"/>
                                 <fontDescription key="fontDescription" name="Rockwell-Regular" family="Rockwell" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -62,14 +70,14 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="eC9-Rp-PzN" firstAttribute="top" secondItem="6Gy-Eh-l9e" secondAttribute="top" constant="100" id="2bu-Fp-W1a"/>
                             <constraint firstItem="GRe-rU-dMW" firstAttribute="top" secondItem="ack-7U-r0s" secondAttribute="bottom" constant="-25" id="2gq-fk-jKA"/>
                             <constraint firstItem="ack-7U-r0s" firstAttribute="leading" secondItem="6Gy-Eh-l9e" secondAttribute="leading" id="4Cu-kF-Fsh"/>
                             <constraint firstItem="ack-7U-r0s" firstAttribute="top" secondItem="6Gy-Eh-l9e" secondAttribute="top" constant="-4" id="A1c-8j-AxS"/>
-                            <constraint firstItem="eC9-Rp-PzN" firstAttribute="top" secondItem="GRe-rU-dMW" secondAttribute="bottom" constant="-25" id="FGX-4k-3Hy"/>
-                            <constraint firstItem="eC9-Rp-PzN" firstAttribute="trailing" secondItem="6Gy-Eh-l9e" secondAttribute="trailing" constant="-20" id="L9k-xg-O1e"/>
                             <constraint firstItem="V7x-1G-krY" firstAttribute="top" secondItem="ack-7U-r0s" secondAttribute="bottom" constant="2" id="QF6-2c-7RM"/>
                             <constraint firstItem="V7x-1G-krY" firstAttribute="top" secondItem="GRe-rU-dMW" secondAttribute="bottom" constant="7" id="UiD-qJ-gSe"/>
                             <constraint firstItem="V7x-1G-krY" firstAttribute="trailing" secondItem="6Gy-Eh-l9e" secondAttribute="trailing" id="cBK-FW-6YE"/>
+                            <constraint firstAttribute="trailing" secondItem="eC9-Rp-PzN" secondAttribute="trailing" constant="15" id="gZN-T8-F5M"/>
                             <constraint firstAttribute="bottom" secondItem="V7x-1G-krY" secondAttribute="bottom" constant="-59" id="tVz-ke-khb"/>
                             <constraint firstItem="GRe-rU-dMW" firstAttribute="centerX" secondItem="vhS-EM-lLH" secondAttribute="centerX" id="ted-mq-Cvl"/>
                             <constraint firstItem="V7x-1G-krY" firstAttribute="leading" secondItem="6Gy-Eh-l9e" secondAttribute="leading" id="yzd-qf-vN5"/>
@@ -85,14 +93,14 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6b8-s0-Bwa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-44" y="749"/>
+            <point key="canvasLocation" x="-44" y="748.87556221889065"/>
         </scene>
         <!--Profile-->
         <scene sceneID="2N8-vb-gKg">
             <objects>
                 <viewController id="ctv-ku-LZg" customClass="ProfileViewController" customModule="IRLKiller" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Akn-Pp-3bZ">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="vwc-Ci-b0g"/>
@@ -111,7 +119,7 @@
             <objects>
                 <viewController id="Rge-D9-pdr" customClass="InventoryViewController" customModule="IRLKiller" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="zaq-Zp-y2C">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="5ec-xt-cBZ"/>
@@ -146,6 +154,7 @@
     <resources>
         <image name="inventory-icon" width="25" height="25"/>
         <image name="map-icon" width="25" height="25"/>
+        <image name="mylocation" width="170" height="170"/>
         <image name="profile-icon" width="25" height="25"/>
     </resources>
 </document>

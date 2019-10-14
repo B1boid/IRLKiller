@@ -107,11 +107,19 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     func mapViewDidFinishLoadingMap(_ mapView: MGLMapView) {
         // Wait for the map to load before initiating the first camera movement.
         
+        let currentCamera0 = MGLMapCamera(
+            lookingAtCenter: basicLocation,
+            altitude: altitude, pitch: pitch, heading: heading
+        )
+        mapView.setCamera(currentCamera0, animated: false)
+        
         let currentCamera = MGLMapCamera(
             lookingAtCenter: userLocation,
             altitude: altitude, pitch: pitch, heading: heading
         )
-        mapView.setCamera(currentCamera, animated: true)
+        mapView.setCamera(currentCamera, animated: false)
+        
+        
     }
     
      func showMyLocation() {

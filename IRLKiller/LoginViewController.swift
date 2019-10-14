@@ -24,7 +24,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         textField.textAlignment = .center
         textField.borderStyle = .roundedRect
         textField.backgroundColor  = .clear
-        textField.maxLength = 18
+        textField.maxLength = 15
         return textField
     }()
     
@@ -72,10 +72,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         doLogin()
     }
     
+    
     override func viewDidAppear(_ animated: Bool) {
         // Будет тру начиная со второго запуска приложения и будет авто переход в меню
         if Auth.auth().currentUser != nil {
             self.performSegue(withIdentifier: "showMenu", sender: self)
+            
         }
     }
     
@@ -137,10 +139,22 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         // Проверяем валидность логина и выводим сообщение об этом
         let login = loginTextField.text!.trimmingCharacters(in: .whitespaces)
+             
+        guard login != "Enter your login:" else {
+            errorMsgLabel.text = "Please enter login"
+            let _ = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(clearErrorMsg), userInfo: nil, repeats: false)
+            return
+        }
+        
+        guard login.count > 3 else {
+            errorMsgLabel.text = "Login must have at least 4 symbols"
+            let _ = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(clearErrorMsg), userInfo: nil, repeats: false)
+            return
+        }
         
         guard login.isValid(.login) else {
-            errorMsgLabel.text = "Login must have at least 4 chars"
-            let _ = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(clearErrorMsg), userInfo: nil, repeats: false)
+            errorMsgLabel.text = "Login must have only letters,digits or special symbols(\"-\",\"_\")"
+            let _ = Timer.scheduledTimer(timeInterval: 4.0, target: self, selector: #selector(clearErrorMsg), userInfo: nil, repeats: false)
             return
         }
     
@@ -149,6 +163,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         ref.child("usernames/\(login.lowercased())").observeSingleEvent(of: .value, with: { snapshot in
             guard !snapshot.exists() else {
                 self.errorMsgLabel.text = "Login is used"
+                let _ = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector:#selector(self.clearErrorMsg), userInfo: nil, repeats: false)
                 return
             }
             
