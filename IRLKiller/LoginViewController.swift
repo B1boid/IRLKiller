@@ -183,7 +183,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     // users в ней будут все данные пользователя и привязаны они к uid
                     // usernames нужна для проверки уникальности логина, в ней связка логин:uid
                     ref.child("users").updateChildValues(
-                        [ result!.user.uid : [ "login" : login, "score" : 0 ]]
+                        [ result!.user.uid : [ "login" : login, "online" : true,
+                                               "pos-x" : 40.74699, "pos-y" : -73.98742]]
                     )
                     ref.child("usernames").updateChildValues(
                         [ login.lowercased() : result!.user.uid ]
