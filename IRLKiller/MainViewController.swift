@@ -2,7 +2,6 @@ import UIKit
 import FirebaseUI
 import FirebaseDatabase
 import Mapbox
-import CoreLocation
 
 class MainViewController: UIViewController, MGLMapViewDelegate {
     
@@ -14,13 +13,17 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     let heading: CLLocationDirection = 180
     let userID = Auth.auth().currentUser?.uid
     
+    var userLocation: CLLocationCoordinate2D {
+        get { return mapView.userLocation?.coordinate ?? basicLocation }
+    }
+    
     struct Player {
         
-        var login:String
-        var position:CLLocationCoordinate2D
-        var isOnline:Bool
+        var login: String
+        var position: CLLocationCoordinate2D
+        var isOnline: Bool
         
-        init(login:String, position:CLLocationCoordinate2D, isOnline:Bool) {
+        init(login: String, position: CLLocationCoordinate2D, isOnline: Bool) {
             self.login = login;
             self.position = position;
             self.isOnline = isOnline;
@@ -28,11 +31,6 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     }
     
     var players = [String : Player]()
-    
-    
-    var userLocation: CLLocationCoordinate2D {
-        get { return mapView.userLocation?.coordinate ?? basicLocation }
-    }
     
     
     // View and buttons
@@ -68,7 +66,10 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                 let offlinePosY = user["pos-y"] as! Double
                 
                 //Камеру на последнюю локацию на всякий случай
-                self.basicLocation = CLLocationCoordinate2D(latitude: offlinePosX, longitude: offlinePosY)
+                self.basicLocation = CLLocationCoordinate2D(
+                    latitude: offlinePosX,
+                    longitude: offlinePosY
+                )
 
                 let currentCamera0 = MGLMapCamera(
                     lookingAtCenter: self.basicLocation,
@@ -87,31 +88,38 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         })
         
         setupMapView()
+        setupDataBaseTranslation()
+    }
+    
+    func setupDataBaseTranslation() {
         
-        //Каждые 5 секунд записывает твое новое местоположение в БД, если совпадает со старым обновление записи не происходит
         let _ = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(updateDB), userInfo: nil, repeats: false)
-       
-        let ref2 = Database.database().reference().child("users")
+        
+        let refToUsers = Database.database().reference().child("users")
         
         // Вызывается автоматически, когда изменяется какое либо значение у чела и отрисовывает его местопложение
-        ref2.observe(.childChanged) { (snapshot) in
+        refToUsers.observe(.childChanged) { (snapshot) in
             self.readNewData(snapshot: snapshot)
         }
         
         //вызывается в самом начале и отрисовывает всех челов, а также когда новый чел зарегистрировался тоже вызовется автоматичеки и его отрисует
-        ref2.observe(.childAdded) { (snapshot) in
+        refToUsers.observe(.childAdded) { (snapshot) in
             self.readNewData(snapshot: snapshot)
         }
     }
     
-    func readNewData(snapshot:DataSnapshot){
+    func readNewData(snapshot: DataSnapshot) {
         
         let isOnline = snapshot.childSnapshot(forPath: "online").value as! Bool
-        let curLogin = snapshot.childSnapshot(forPath: "login").value as! String
+        let curLogin = snapshot.childSnapshot(forPath: "login").value as? String ?? "nil"
         let posx = snapshot.childSnapshot(forPath: "pos-x").value as! Double
         let posy = snapshot.childSnapshot(forPath: "pos-y").value as! Double
         
-        let curPlayer = Player(login: curLogin,position: CLLocationCoordinate2D(latitude: posx, longitude: posy),isOnline: isOnline)
+        let curPlayer = Player(
+            login: curLogin,
+            position: CLLocationCoordinate2D(latitude: posx, longitude: posy),
+            isOnline: isOnline
+        )
         
         self.players[curLogin] = curPlayer
         
@@ -125,11 +133,14 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         print("Data Load to DB")
         
         let ref = Database.database().reference().child("users/\(userID!)")
-        ref.updateChildValues(["online" : true ,"pos-x": userLocation.latitude,"pos-y": userLocation.longitude])
+        ref.updateChildValues(
+            ["online" : true ,
+             "pos-x": userLocation.latitude,
+             "pos-y": userLocation.longitude])
         
         let _ = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(updateDB), userInfo: nil, repeats: false)
         
-//        for (curLog,player) in players {
+//        for (curLog, player) in players {
 //            print(player.login)
 //            print(player.position.latitude)
 //        }
@@ -150,7 +161,6 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
 //            altitude: altitude, pitch: pitch, heading: heading
 //        )
        // mapView.setCamera(currentCamera, animated: false)
-        
         
     }
     

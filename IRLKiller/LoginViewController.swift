@@ -13,6 +13,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     static let loadingImageName = "bg"
     static let bgImageName = "bg"
     static let greetingMsg = "Enter your login:"
+    
     var w: CGFloat!
     var h: CGFloat!
     
@@ -25,6 +26,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         textField.borderStyle = .roundedRect
         textField.backgroundColor  = .clear
         textField.maxLength = 15
+        textField.sizeToFit()
+        textField.adjustsFontSizeToFitWidth = true
         return textField
     }()
     
@@ -54,6 +57,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         let label = UILabel()
         label.textAlignment = .center
         label.textColor = .red
+        label.alpha = 0.5
         label.numberOfLines = 2
         label.adjustsFontSizeToFitWidth = true
         label.sizeToFit()
@@ -77,7 +81,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         // Будет тру начиная со второго запуска приложения и будет авто переход в меню
         if Auth.auth().currentUser != nil {
             self.performSegue(withIdentifier: "showMenu", sender: self)
-            
         }
     }
     
@@ -135,28 +138,35 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         )
     }
     
-    func doLogin() {
+    func checkLoginValidity(login: String) -> Bool {
         
-        // Проверяем валидность логина и выводим сообщение об этом
-        let login = loginTextField.text!.trimmingCharacters(in: .whitespaces)
-             
         guard login != "Enter your login:" else {
             errorMsgLabel.text = "Please enter login"
             let _ = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(clearErrorMsg), userInfo: nil, repeats: false)
-            return
+            return false;
         }
         
         guard login.count > 3 else {
             errorMsgLabel.text = "Login must have at least 4 symbols"
             let _ = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(clearErrorMsg), userInfo: nil, repeats: false)
-            return
+            return false;
         }
         
         guard login.isValid(.login) else {
-            errorMsgLabel.text = "Login must have only letters,digits or special symbols(\"-\",\"_\")"
+            errorMsgLabel.text = "Login must have only letters, digits or special symbols(\"-\",\"_\")"
             let _ = Timer.scheduledTimer(timeInterval: 4.0, target: self, selector: #selector(clearErrorMsg), userInfo: nil, repeats: false)
-            return
+            return false;
         }
+        
+        return true;
+    }
+    
+    func doLogin() {
+        
+        // Проверяем валидность логина и выводим сообщение об этом
+        let login = loginTextField.text!.trimmingCharacters(in: .whitespaces)
+        
+        guard checkLoginValidity(login: login) else { return }
     
         //Подключаемся к БД и ищем занят ли логин
         let ref = Database.database().reference()
@@ -198,7 +208,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         })
     }
     
-    func editGreetMsg(writeGreetIfEmpty: Bool = false) {
+    func editGreetMsg(writeGreetIfEmpty: Bool) {
         if loginTextField.text == LoginViewController.greetingMsg {
             loginTextField.text = ""
         }
@@ -223,7 +233,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     /* Когда начинаем печатать пропадает надпись что логин неправильный
      в случае неправильно введеного логина в первый раз */
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        editGreetMsg()
+        editGreetMsg(writeGreetIfEmpty: false)
     }
     
     //Закрывание клавиатуры по нажатию на другую область экрана
