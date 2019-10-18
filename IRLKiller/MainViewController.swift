@@ -16,6 +16,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     var userLocation: CLLocationCoordinate2D {
         get { return mapView.userLocation?.coordinate ?? basicLocation }
     }
+    var isNotAlreadyShown:Bool = true
     
     struct Player {
         
@@ -47,52 +48,51 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         try! Auth.auth().signOut()
     }
     
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        //Входим в ДБ сразу в веть с текущим пользователем
-        userID = Auth.auth().currentUser?.uid
-        let ref = Database.database().reference().child("users/\(userID!)")
-        var login = ""
-        
-        let currentCamera = MGLMapCamera(
-            lookingAtCenter: self.basicLocation,
-            altitude: self.altitude, pitch: self.pitch, heading: self.heading
-        )
-        self.mapView.alpha = 0
-        self.mapView.fly(to: currentCamera, withDuration: 2, completionHandler: nil)
+    override func viewDidAppear(_ animated: Bool) {
+        // isNotAlreadyShown = становится false когда карта appear первый раз чтобы когда карта appear при переключении на tabbar вкладках не делалось viewDidAppear второй раз
+        if Auth.auth().currentUser != nil && isNotAlreadyShown{
+            isNotAlreadyShown = false
+            userID = Auth.auth().currentUser?.uid
+            let ref = Database.database().reference().child("users/\(userID!)")
+            var login = ""
+            
+            let currentCamera = MGLMapCamera(
+                lookingAtCenter: self.basicLocation,
+                altitude: self.altitude, pitch: self.pitch, heading: self.heading
+            )
+            self.mapView.alpha = 0
+            self.mapView.setCamera(currentCamera, animated: false)
 
-        
-        //чтение логина из БД
-        ref.observeSingleEvent(of: .value, with: { (snapshot) in
-            if let user = snapshot.value as? [String : AnyObject] {
-                login = user["login"] as! String
-                print(login)
-                self.loginText.text = login
-                let offlinePosX = user["pos-x"] as! Double
-                let offlinePosY = user["pos-y"] as! Double
-                
-//                Камеру на последнюю локацию на всякий случай
-                self.basicLocation = CLLocationCoordinate2D(
-                    latitude: offlinePosX,
-                    longitude: offlinePosY
-                )
+            
+            //чтение логина из БД
+            ref.observeSingleEvent(of: .value, with: { (snapshot) in
+                if let user = snapshot.value as? [String : AnyObject] {
+                    login = user["login"] as! String
+                    print(login)
+                    self.loginText.text = login
+                    let offlinePosX = user["pos-x"] as! Double
+                    let offlinePosY = user["pos-y"] as! Double
+                    
+                    self.basicLocation = CLLocationCoordinate2D(
+                        latitude: offlinePosX,
+                        longitude: offlinePosY
+                    )
 
-             //    Камера на текущую позицию, если нашлас
-                let currentCamera = MGLMapCamera(
-                    lookingAtCenter: self.userLocation,
-                    altitude: self.altitude, pitch: self.pitch, heading: self.heading
-                )
-                self.mapView.fly(to: currentCamera, withDuration: 2, completionHandler: nil)
-                UIView.animate(withDuration: 2, animations: {
-                    self.mapView.alpha = 1
-                })
-                
-            }
-        })
-        
-        setupMapView()
-        setupDataBaseTranslation()
+                    let currentCamera0 = MGLMapCamera(
+                        lookingAtCenter: self.userLocation,
+                        altitude: self.altitude, pitch: self.pitch, heading: self.heading
+                    )
+                    self.mapView.fly(to: currentCamera0, withDuration: 2, completionHandler: nil)
+                    UIView.animate(withDuration: 2, animations: {
+                        self.mapView.alpha = 1
+                    })
+                    
+                }
+            })
+            
+            setupMapView()
+            setupDataBaseTranslation()
+        }
     }
     
     func setupDataBaseTranslation() {
@@ -134,16 +134,22 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     }
     
     @objc func updateDB() {
-        if let _ = userID {
+         let ref = Database.database().reference().child("users/\(userID!)")
+        //Следующих двух строк не будет в продакшене,они нужны чтобы когда акк удалили не крашилось приложение на устройсвте где сохранен этот акк,при вызове readNewData get пустой login
+          ref.observeSingleEvent(of: .value, with: { snapshot in
+            if snapshot.exists() {
             print("Data Load to DB")
-            print("x = \(userLocation.latitude), y = \(userLocation.longitude)")
+                print("x = \(self.userLocation.latitude), y = \(self.userLocation.longitude)")
             
-            let ref = Database.database().reference().child("users/\(userID!)")
             ref.updateChildValues(
                 ["online" : true ,
-                 "pos-x": userLocation.latitude,
-                 "pos-y": userLocation.longitude])
-        }
+                 "pos-x": self.userLocation.latitude,
+                 "pos-y": self.userLocation.longitude])
+            }else{
+                print("The account is deleted,please press test logout and rerun the app\nLOGOUT\nLOGOUT\nLOGOUT")
+            }
+        })
+       
     }
     
     
