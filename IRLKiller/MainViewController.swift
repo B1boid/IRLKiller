@@ -12,11 +12,12 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     let altitude: CLLocationDistance = 500
     let pitch: CGFloat = 30
     let heading: CLLocationDirection = 180
+    
     var userID: String?
     var userLocation: CLLocationCoordinate2D {
         get { return mapView.userLocation?.coordinate ?? basicLocation }
     }
-    var isNotAlreadyShown:Bool = true
+    var isNotAlreadyShown: Bool = true
     
     struct Player {
         
@@ -48,9 +49,9 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         try! Auth.auth().signOut()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         // isNotAlreadyShown = становится false когда карта appear первый раз чтобы когда карта appear при переключении на tabbar вкладках не делалось viewDidAppear второй раз
-        if Auth.auth().currentUser != nil && isNotAlreadyShown{
+        if Auth.auth().currentUser != nil && isNotAlreadyShown {
             isNotAlreadyShown = false
             userID = Auth.auth().currentUser?.uid
             let ref = Database.database().reference().child("users/\(userID!)")
@@ -82,11 +83,10 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                         lookingAtCenter: self.userLocation,
                         altitude: self.altitude, pitch: self.pitch, heading: self.heading
                     )
-                    self.mapView.fly(to: currentCamera0, withDuration: 2, completionHandler: nil)
+                    self.mapView.fly(to: currentCamera0, withDuration: 1, completionHandler: nil)
                     UIView.animate(withDuration: 2, animations: {
                         self.mapView.alpha = 1
                     })
-                    
                 }
             })
             
@@ -145,8 +145,8 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                 ["online" : true ,
                  "pos-x": self.userLocation.latitude,
                  "pos-y": self.userLocation.longitude])
-            }else{
-                print("The account is deleted,please press test logout and rerun the app\nLOGOUT\nLOGOUT\nLOGOUT")
+            } else {
+                print("The account is deleted, please press test logout and rerun the app\nLOGOUT\nLOGOUT\nLOGOUT")
             }
         })
        

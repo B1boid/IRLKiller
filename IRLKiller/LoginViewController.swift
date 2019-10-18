@@ -141,20 +141,17 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     func checkLoginValidity(login: String) -> Bool {
         
         guard login != "Enter your login:" else {
-            errorMsgLabel.text = "Please enter login"
-            let _ = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(clearErrorMsg), userInfo: nil, repeats: false)
+            showThenHideErrorMsg(duration: 4.0, error: "Please enter login")
             return false;
         }
         
         guard login.count > 3 else {
-            errorMsgLabel.text = "Login must have at least 4 symbols"
-            let _ = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(clearErrorMsg), userInfo: nil, repeats: false)
+            showThenHideErrorMsg(duration: 4.0, error: "Login must have at least 4 symbols")
             return false;
         }
         
         guard login.isValid(.login) else {
-            errorMsgLabel.text = "Login must have only letters, digits or special symbols(\"-\",\"_\")"
-            let _ = Timer.scheduledTimer(timeInterval: 4.0, target: self, selector: #selector(clearErrorMsg), userInfo: nil, repeats: false)
+            showThenHideErrorMsg(duration: 5.0, error: "Login must have only letters, digits or special symbols(\"-\",\"_\")")
             return false;
         }
         
@@ -172,8 +169,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         let ref = Database.database().reference()
         ref.child("usernames/\(login.lowercased())").observeSingleEvent(of: .value, with: { snapshot in
             guard !snapshot.exists() else {
-                self.errorMsgLabel.text = "Login is used"
-                let _ = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector:#selector(self.clearErrorMsg), userInfo: nil, repeats: false)
+                self.showThenHideErrorMsg(duration: 4.0, error: "Login is used")
                 return
             }
             
@@ -218,6 +214,15 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             loginTextField.text = LoginViewController.greetingMsg
         }
     }
+    
+    func showThenHideErrorMsg(duration: TimeInterval, error: String) {
+        errorMsgLabel.text = error
+        self.errorMsgLabel.alpha = 1
+        UIView.animate(withDuration: duration) {
+            self.errorMsgLabel.alpha = 0
+        }
+    }
+    
     
     @objc func clearErrorMsg() {
         errorMsgLabel.text = ""
