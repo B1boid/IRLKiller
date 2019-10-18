@@ -2,6 +2,7 @@ import UIKit
 import FirebaseUI
 import FirebaseDatabase
 import Mapbox
+import Firebase
 
 class MainViewController: UIViewController, MGLMapViewDelegate {
     
@@ -11,8 +12,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     let altitude: CLLocationDistance = 500
     let pitch: CGFloat = 30
     let heading: CLLocationDirection = 180
-    let userID = Auth.auth().currentUser?.uid
-    
+    var userID: String?
     var userLocation: CLLocationCoordinate2D {
         get { return mapView.userLocation?.coordinate ?? basicLocation }
     }
@@ -45,16 +45,23 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     // Чисто для теста,в игре нельзя разлогиниться
     @IBAction func logoutPressed(_ sender: Any) {
         try! Auth.auth().signOut()
-        self.dismiss(animated: false, completion: nil) //загрузка экрана логина
     }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
         //Входим в ДБ сразу в веть с текущим пользователем
+        userID = Auth.auth().currentUser?.uid
         let ref = Database.database().reference().child("users/\(userID!)")
         var login = ""
+        
+        let currentCamera = MGLMapCamera(
+            lookingAtCenter: self.basicLocation,
+            altitude: self.altitude, pitch: self.pitch, heading: self.heading
+        )
+        self.mapView.alpha = 0
+        self.mapView.fly(to: currentCamera, withDuration: 2, completionHandler: nil)
+
         
         //чтение логина из БД
         ref.observeSingleEvent(of: .value, with: { (snapshot) in
@@ -65,24 +72,21 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                 let offlinePosX = user["pos-x"] as! Double
                 let offlinePosY = user["pos-y"] as! Double
                 
-                //Камеру на последнюю локацию на всякий случай
+//                Камеру на последнюю локацию на всякий случай
                 self.basicLocation = CLLocationCoordinate2D(
                     latitude: offlinePosX,
                     longitude: offlinePosY
                 )
 
-                let currentCamera0 = MGLMapCamera(
-                    lookingAtCenter: self.basicLocation,
-                    altitude: self.altitude, pitch: self.pitch, heading: self.heading
-                )
-                self.mapView.setCamera(currentCamera0, animated: false)
-                
-                // Камера на текущую позицию, если нашлась
+             //    Камера на текущую позицию, если нашлас
                 let currentCamera = MGLMapCamera(
                     lookingAtCenter: self.userLocation,
                     altitude: self.altitude, pitch: self.pitch, heading: self.heading
                 )
-                self.mapView.setCamera(currentCamera, animated: false)
+                self.mapView.fly(to: currentCamera, withDuration: 2, completionHandler: nil)
+                UIView.animate(withDuration: 2, animations: {
+                    self.mapView.alpha = 1
+                })
                 
             }
         })
@@ -93,7 +97,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     
     func setupDataBaseTranslation() {
         
-        let _ = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(updateDB), userInfo: nil, repeats: false)
+        let _ = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(updateDB), userInfo: nil, repeats: true)
         
         let refToUsers = Database.database().reference().child("users")
         
@@ -111,7 +115,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     func readNewData(snapshot: DataSnapshot) {
         
         let isOnline = snapshot.childSnapshot(forPath: "online").value as! Bool
-        let curLogin = snapshot.childSnapshot(forPath: "login").value as? String ?? "nil"
+        let curLogin = snapshot.childSnapshot(forPath: "login").value as! String
         let posx = snapshot.childSnapshot(forPath: "pos-x").value as! Double
         let posy = snapshot.childSnapshot(forPath: "pos-y").value as! Double
         
@@ -124,26 +128,22 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         self.players[curLogin] = curPlayer
         
         print("show: \(curLogin)")
-        print("pos: \(posx)")
-        
+        print("x: \(posx), y: \(posy)")
+    
         // тут отрисовываем чела на карте
     }
     
-    @objc func updateDB(){
-        print("Data Load to DB")
-        
-        let ref = Database.database().reference().child("users/\(userID!)")
-        ref.updateChildValues(
-            ["online" : true ,
-             "pos-x": userLocation.latitude,
-             "pos-y": userLocation.longitude])
-        
-        let _ = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(updateDB), userInfo: nil, repeats: false)
-        
-//        for (curLog, player) in players {
-//            print(player.login)
-//            print(player.position.latitude)
-//        }
+    @objc func updateDB() {
+        if let _ = userID {
+            print("Data Load to DB")
+            print("x = \(userLocation.latitude), y = \(userLocation.longitude)")
+            
+            let ref = Database.database().reference().child("users/\(userID!)")
+            ref.updateChildValues(
+                ["online" : true ,
+                 "pos-x": userLocation.latitude,
+                 "pos-y": userLocation.longitude])
+        }
     }
     
     
@@ -151,18 +151,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         mapView.delegate = self
         mapView.showsUserLocation = true
     }
-    
 
-    func mapViewDidFinishLoadingMap(_ mapView: MGLMapView) {
-        // Wait for the map to load before initiating the first camera movement.
-        
-//        let currentCamera = MGLMapCamera(
-//            lookingAtCenter: userLocation,
-//            altitude: altitude, pitch: pitch, heading: heading
-//        )
-       // mapView.setCamera(currentCamera, animated: false)
-        
-    }
     
      func showMyLocation() {
         let cameraFocusedOnUsersLocation = MGLMapCamera(

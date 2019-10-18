@@ -25,7 +25,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         textField.textAlignment = .center
         textField.borderStyle = .roundedRect
         textField.backgroundColor  = .clear
-        textField.maxLength = 15
+        textField.maxLength = 18
         textField.sizeToFit()
         textField.adjustsFontSizeToFitWidth = true
         return textField
@@ -75,14 +75,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @objc func logginButtonPressed() {
         doLogin()
     }
-    
-    
-    override func viewDidAppear(_ animated: Bool) {
-        // Будет тру начиная со второго запуска приложения и будет авто переход в меню
-        if Auth.auth().currentUser != nil {
-            self.performSegue(withIdentifier: "showMenu", sender: self)
-        }
-    }
+//
+//
+//    override func viewDidAppear(_ animated: Bool) {
+//        // Будет тру начиная со второго запуска приложения и будет авто переход в меню
+//        if Auth.auth().currentUser != nil {
+////            self.performSegue(withIdentifier: "showMenu", sender: self)
+//        }
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -200,7 +200,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                         [ login.lowercased() : result!.user.uid ]
                     )
                     self.loadingImageView.removeFromSuperview()
-                    self.performSegue(withIdentifier: "showMenu", sender: self)
+                    self.dismiss(animated: true, completion: nil)
                 } else {
                     print(error!.localizedDescription)
                 }
