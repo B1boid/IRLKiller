@@ -20,16 +20,9 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     var isNotAlreadyShown: Bool = true
     
     struct Player {
-        
         var login: String
         var position: CLLocationCoordinate2D
         var isOnline: Bool
-        
-        init(login: String, position: CLLocationCoordinate2D, isOnline: Bool) {
-            self.login = login;
-            self.position = position;
-            self.isOnline = isOnline;
-        }
     }
     
     var players = [String : Player]()
@@ -97,6 +90,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     
     func setupDataBaseTranslation() {
         
+        // Ставим обновление базы данных каждые 5 секунд
         let _ = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(updateDB), userInfo: nil, repeats: true)
         
         let refToUsers = Database.database().reference().child("users")
@@ -134,17 +128,18 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     }
     
     @objc func updateDB() {
-         let ref = Database.database().reference().child("users/\(userID!)")
+        let ref = Database.database().reference().child("users/\(userID!)")
         //Следующих двух строк не будет в продакшене,они нужны чтобы когда акк удалили не крашилось приложение на устройсвте где сохранен этот акк,при вызове readNewData get пустой login
-          ref.observeSingleEvent(of: .value, with: { snapshot in
+        ref.observeSingleEvent(of: .value, with: { snapshot in
             if snapshot.exists() {
-            print("Data Load to DB")
+                print("Data Load to DB")
                 print("x = \(self.userLocation.latitude), y = \(self.userLocation.longitude)")
-            
-            ref.updateChildValues(
-                ["online" : true ,
-                 "pos-x": self.userLocation.latitude,
-                 "pos-y": self.userLocation.longitude])
+                
+                let location = self.userLocation
+                ref.updateChildValues(
+                    ["online" : true ,
+                     "pos-x"  : location.latitude,
+                     "pos-y"  : location.longitude])
             } else {
                 print("The account is deleted, please press test logout and rerun the app\nLOGOUT\nLOGOUT\nLOGOUT")
             }

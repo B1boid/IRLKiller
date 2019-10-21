@@ -75,14 +75,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @objc func logginButtonPressed() {
         doLogin()
     }
-//
-//
-//    override func viewDidAppear(_ animated: Bool) {
-//        // Будет тру начиная со второго запуска приложения и будет авто переход в меню
-//        if Auth.auth().currentUser != nil {
-////            self.performSegue(withIdentifier: "showMenu", sender: self)
-//        }
-//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -120,7 +112,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         }
         
         // Фон лежит ниже всех //
-        bgImageView.frame = view.frame
+        bgImageView.frame = self.view.frame
         bgImageView.layer.zPosition = -1
         
         // Меняем размеры которые зависят от размера view
@@ -141,17 +133,17 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     func checkLoginValidity(login: String) -> Bool {
         
         guard login != "Enter your login:" else {
-            showThenHideErrorMsg(duration: 4.0, error: "Please enter login")
+            showThenHideErrorMsg(duration: 5.0, error: "Please enter login")
             return false;
         }
         
         guard login.count > 3 else {
-            showThenHideErrorMsg(duration: 4.0, error: "Login must have at least 4 symbols")
+            showThenHideErrorMsg(duration: 5.0, error: "Login must have at least 4 symbols")
             return false;
         }
         
         guard login.isValid(.login) else {
-            showThenHideErrorMsg(duration: 5.0, error: "Login must have only letters, digits or special symbols(\"-\",\"_\")")
+            showThenHideErrorMsg(duration: 6.0, error: "Login must have only letters, digits or special symbols(\"-\",\"_\")")
             return false;
         }
         
@@ -169,7 +161,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         let ref = Database.database().reference()
         ref.child("usernames/\(login.lowercased())").observeSingleEvent(of: .value, with: { snapshot in
             guard !snapshot.exists() else {
-                self.showThenHideErrorMsg(duration: 4.0, error: "Login is used")
+                self.showThenHideErrorMsg(duration: 5.0, error: "Login is used")
                 return
             }
             

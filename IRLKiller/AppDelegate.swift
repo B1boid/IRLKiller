@@ -6,14 +6,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.0) {
             if Auth.auth().currentUser == nil {
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let login = storyboard.instantiateViewController(withIdentifier: "login")
-                self.window?.rootViewController?.present(login, animated: true, completion: nil)
+                let loginVC = storyboard.instantiateViewController(withIdentifier: "login")
+                loginVC.modalPresentationStyle = .fullScreen
+                self.window?.rootViewController?.present(loginVC, animated: true, completion: nil)
             }
         }
         return true
