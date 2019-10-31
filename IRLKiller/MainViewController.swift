@@ -25,8 +25,16 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         var isOnline: Bool
     }
     
+    class MyCustomPointAnnotation: MGLPointAnnotation {
+        var typeOfImage: String = "online"
+    }
+    
+    
     var players = [String : Player]()
     
+    var annotationsPlayers = [String : MGLAnnotation]()
+    
+    var myLogin = ""
     
     // View and buttons
     @IBOutlet weak var loginText: UILabel!
@@ -48,7 +56,6 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             isNotAlreadyShown = false
             userID = Auth.auth().currentUser?.uid
             let ref = Database.database().reference().child("users/\(userID!)")
-            var login = ""
             
             let currentCamera = MGLMapCamera(
                 lookingAtCenter: self.basicLocation,
@@ -61,9 +68,9 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             //чтение логина из БД
             ref.observeSingleEvent(of: .value, with: { (snapshot) in
                 if let user = snapshot.value as? [String : AnyObject] {
-                    login = user["login"] as! String
-                    print(login)
-                    self.loginText.text = login
+                    self.myLogin = user["login"] as! String
+                    print(self.myLogin)
+                    self.loginText.text = self.myLogin
                     let offlinePosX = user["pos-x"] as! Double
                     let offlinePosY = user["pos-y"] as! Double
                     
@@ -97,16 +104,16 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         
         // Вызывается автоматически, когда изменяется какое либо значение у чела и отрисовывает его местопложение
         refToUsers.observe(.childChanged) { (snapshot) in
-            self.readNewData(snapshot: snapshot)
+            self.readNewData(snapshot: snapshot,isAdding: false)
         }
         
         //вызывается в самом начале и отрисовывает всех челов, а также когда новый чел зарегистрировался тоже вызовется автоматичеки и его отрисует
         refToUsers.observe(.childAdded) { (snapshot) in
-            self.readNewData(snapshot: snapshot)
+            self.readNewData(snapshot: snapshot,isAdding: true)
         }
     }
     
-    func readNewData(snapshot: DataSnapshot) {
+    func readNewData(snapshot: DataSnapshot, isAdding:Bool) {
         
         let isOnline = snapshot.childSnapshot(forPath: "online").value as! Bool
         let curLogin = snapshot.childSnapshot(forPath: "login").value as! String
@@ -125,6 +132,24 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         print("x: \(posx), y: \(posy)")
     
         // тут отрисовываем чела на карте
+        if curLogin != myLogin{
+            let curPoint = MyCustomPointAnnotation()
+            curPoint.coordinate = CLLocationCoordinate2D(latitude: posx, longitude: posy)
+            curPoint.title = curLogin
+            if isOnline{
+                curPoint.typeOfImage = "online"
+            }else{
+                curPoint.typeOfImage = "offline"
+            }
+            if isAdding{
+                mapView.addAnnotation(curPoint)
+                self.annotationsPlayers[curLogin] = curPoint
+            }else{
+                mapView.removeAnnotation(annotationsPlayers[curLogin]!)
+                mapView.addAnnotation(curPoint)
+                self.annotationsPlayers[curLogin] = curPoint
+            }
+        }
     }
     
     @objc func updateDB() {
@@ -161,4 +186,38 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         )
         mapView.fly(to: cameraFocusedOnUsersLocation, withDuration: 2, completionHandler: nil)
     }
+    
+
+    // This delegate method is where you tell the map to load an image for a specific annotation based on the willUseImage property of the custom subclass.
+    func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
+        
+        var curType = "online"
+        var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "online")
+        // For better performance, always try to reuse existing annotations.
+        if let castAnnotation = annotation as? MyCustomPointAnnotation {
+            if (castAnnotation.typeOfImage == "offline") {
+                annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "offline")
+                curType = "offline"
+            }
+        }
+
+        // If there is no reusable annotation image available, initialize a new one.
+        if(annotationImage == nil) {
+            switch curType{
+                
+            case "offline":   annotationImage = MGLAnnotationImage(image: UIImage(named: "enemy-offline")!, reuseIdentifier: "offline")
+                
+            default: annotationImage = MGLAnnotationImage(image: UIImage(named: "enemy-online")!, reuseIdentifier: "online")
+            }
+        }
+
+        return annotationImage
+    }
+
+    func mapView(_ mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
+    // Always allow callouts to popup when annotations are tapped.
+        return true
+    }
+  
 }
+
