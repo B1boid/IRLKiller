@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="RIQ-4v-6rk">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="RIQ-4v-6rk">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -13,7 +11,6 @@
         <!--Login View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="login" id="BYZ-38-t0r" customClass="LoginViewController" customModule="IRLKiller" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -22,8 +19,9 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-518" y="-44"/>
+            <point key="canvasLocation" x="-271" y="-205"/>
         </scene>
         <!--Map-->
         <scene sceneID="XuY-xW-zVL">
@@ -34,21 +32,21 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V7x-1G-krY" customClass="MGLMapView">
-                                <rect key="frame" x="0.0" y="48" width="375" height="678"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="698"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="styleURL__" value="mapbox://styles/b1boid/ck12egt7e02ax1cp52uginkky"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ack-7U-r0s">
-                                <rect key="frame" x="0.0" y="16" width="81" height="30"/>
+                                <rect key="frame" x="0.0" y="-4" width="81" height="30"/>
                                 <state key="normal" title="Test Logout"/>
                                 <connections>
                                     <action selector="logoutPressed:" destination="gEl-Ix-SCQ" eventType="touchUpInside" id="Cig-Go-5Mf"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eC9-Rp-PzN">
-                                <rect key="frame" x="330" y="120" width="30" height="30"/>
+                                <rect key="frame" x="330" y="100" width="30" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="mKX-Tu-rya"/>
                                     <constraint firstAttribute="width" constant="30" id="nPN-0h-xby"/>
@@ -59,7 +57,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hi" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GRe-rU-dMW">
-                                <rect key="frame" x="178.5" y="21" width="18.5" height="20"/>
+                                <rect key="frame" x="178.5" y="1" width="18.5" height="20"/>
                                 <fontDescription key="fontDescription" name="Rockwell-Regular" family="Rockwell" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -92,6 +90,25 @@
             </objects>
             <point key="canvasLocation" x="-44" y="748.87556221889065"/>
         </scene>
+        <!--Inventory-->
+        <scene sceneID="hL4-hk-fem">
+            <objects>
+                <tableViewController id="cgX-36-HdK" customClass="InventoryViewController" customModule="IRLKiller" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="xQ6-KO-ucM">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <connections>
+                            <outlet property="dataSource" destination="cgX-36-HdK" id="iAl-r6-f9l"/>
+                            <outlet property="delegate" destination="cgX-36-HdK" id="CVc-pY-9bv"/>
+                        </connections>
+                    </tableView>
+                    <tabBarItem key="tabBarItem" title="Inventory" image="inventory-icon" id="Z9S-KW-lzM"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0av-az-Tj0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="944.79999999999995" y="753.37331334332839"/>
+        </scene>
         <!--Profile-->
         <scene sceneID="2N8-vb-gKg">
             <objects>
@@ -102,31 +119,12 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="vwc-Ci-b0g"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Profile" image="profile-icon" id="Szh-Te-tUV">
-                        <color key="badgeColor" red="1" green="0.57810515169999999" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </tabBarItem>
+                    <tabBarItem key="tabBarItem" title="Profile" image="profile-icon" id="Szh-Te-tUV"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X7j-qx-3ct" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2009" y="749"/>
-        </scene>
-        <!--Inventory-->
-        <scene sceneID="reP-Ca-8Fa">
-            <objects>
-                <viewController id="Rge-D9-pdr" customClass="InventoryViewController" customModule="IRLKiller" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="zaq-Zp-y2C">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <viewLayoutGuide key="safeArea" id="5ec-xt-cBZ"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="Inventory" image="inventory-icon" id="LTu-wD-tp6"/>
-                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="S4K-XO-5Re" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1130" y="749"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="YBM-Hm-eG3">
@@ -136,23 +134,23 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <color key="selectedImageTintColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
+                        <color key="selectedImageTintColor" systemColor="systemIndigoColor" red="0.34509803919999998" green="0.33725490200000002" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </tabBar>
                     <connections>
                         <segue destination="gEl-Ix-SCQ" kind="relationship" relationship="viewControllers" id="U0q-Vv-dq1"/>
-                        <segue destination="Rge-D9-pdr" kind="relationship" relationship="viewControllers" id="33d-99-dJD"/>
+                        <segue destination="cgX-36-HdK" kind="relationship" relationship="viewControllers" id="6c4-lX-33W"/>
                         <segue destination="ctv-ku-LZg" kind="relationship" relationship="viewControllers" id="enu-bc-7MV"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XaK-gI-cFG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="374" y="-43"/>
+            <point key="canvasLocation" x="982" y="-204"/>
         </scene>
     </scenes>
     <resources>
         <image name="inventory-icon" width="25" height="25"/>
         <image name="map-icon" width="25" height="25"/>
-        <image name="mylocation" width="170" height="170"/>
+        <image name="mylocation" width="170.66667175292969" height="170.66667175292969"/>
         <image name="profile-icon" width="25" height="25"/>
     </resources>
 </document>

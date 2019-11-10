@@ -63,7 +63,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             )
             self.mapView.alpha = 0
             self.mapView.setCamera(currentCamera, animated: false)
-
+            
             
             //чтение логина из БД
             ref.observeSingleEvent(of: .value, with: { (snapshot) in
@@ -78,7 +78,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                         latitude: offlinePosX,
                         longitude: offlinePosY
                     )
-
+                    
                     let currentCamera0 = MGLMapCamera(
                         lookingAtCenter: self.userLocation,
                         altitude: self.altitude, pitch: self.pitch, heading: self.heading
@@ -104,16 +104,16 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         
         // Вызывается автоматически, когда изменяется какое либо значение у чела и отрисовывает его местопложение
         refToUsers.observe(.childChanged) { (snapshot) in
-            self.readNewData(snapshot: snapshot,isAdding: false)
+            self.readNewData(snapshot: snapshot, isAdding: false)
         }
         
         //вызывается в самом начале и отрисовывает всех челов, а также когда новый чел зарегистрировался тоже вызовется автоматичеки и его отрисует
         refToUsers.observe(.childAdded) { (snapshot) in
-            self.readNewData(snapshot: snapshot,isAdding: true)
+            self.readNewData(snapshot: snapshot, isAdding: true)
         }
     }
     
-    func readNewData(snapshot: DataSnapshot, isAdding:Bool) {
+    func readNewData(snapshot: DataSnapshot, isAdding: Bool) {
         
         let isOnline = snapshot.childSnapshot(forPath: "online").value as! Bool
         let curLogin = snapshot.childSnapshot(forPath: "login").value as! String
@@ -130,25 +130,22 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         
         print("show: \(curLogin)")
         print("x: \(posx), y: \(posy)")
-    
+        
         // тут отрисовываем чела на карте
-        if curLogin != myLogin{
-            let curPoint = MyCustomPointAnnotation()
-            curPoint.coordinate = CLLocationCoordinate2D(latitude: posx, longitude: posy)
-            curPoint.title = curLogin
-            if isOnline{
-                curPoint.typeOfImage = "online"
-            }else{
-                curPoint.typeOfImage = "offline"
-            }
-            if isAdding{
-                mapView.addAnnotation(curPoint)
-                self.annotationsPlayers[curLogin] = curPoint
-            }else{
+        if curLogin != myLogin {
+            let curPoint: MyCustomPointAnnotation = {
+                let anotation = MyCustomPointAnnotation()
+                anotation.coordinate = CLLocationCoordinate2D(latitude: posx, longitude: posy)
+                anotation.title = curLogin
+                anotation.typeOfImage = isOnline ? "online" : "offline"
+                return anotation
+            }()
+            
+            if !isAdding {
                 mapView.removeAnnotation(annotationsPlayers[curLogin]!)
-                mapView.addAnnotation(curPoint)
-                self.annotationsPlayers[curLogin] = curPoint
             }
+            mapView.addAnnotation(curPoint)
+            self.annotationsPlayers[curLogin] = curPoint
         }
     }
     
@@ -169,7 +166,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                 print("The account is deleted, please press test logout and rerun the app\nLOGOUT\nLOGOUT\nLOGOUT")
             }
         })
-       
+        
     }
     
     
@@ -177,9 +174,9 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         mapView.delegate = self
         mapView.showsUserLocation = true
     }
-
     
-     func showMyLocation() {
+    
+    func showMyLocation() {
         let cameraFocusedOnUsersLocation = MGLMapCamera(
             lookingAtCenter: userLocation,
             altitude: altitude, pitch: pitch, heading: heading
@@ -187,7 +184,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         mapView.fly(to: cameraFocusedOnUsersLocation, withDuration: 2, completionHandler: nil)
     }
     
-
+    
     // This delegate method is where you tell the map to load an image for a specific annotation based on the willUseImage property of the custom subclass.
     func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
         
@@ -200,24 +197,29 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                 curType = "offline"
             }
         }
-
+        
         // If there is no reusable annotation image available, initialize a new one.
         if(annotationImage == nil) {
-            switch curType{
+            switch curType {
                 
-            case "offline":   annotationImage = MGLAnnotationImage(image: UIImage(named: "enemy-offline")!, reuseIdentifier: "offline")
+            case "offline":
+                annotationImage = MGLAnnotationImage(
+                    image: UIImage(named: "enemy-offline")!,
+                    reuseIdentifier: "offline")
                 
-            default: annotationImage = MGLAnnotationImage(image: UIImage(named: "enemy-online")!, reuseIdentifier: "online")
+            default:
+                annotationImage = MGLAnnotationImage(
+                    image: UIImage(named: "enemy-online")!,
+                    reuseIdentifier: "online")
             }
         }
-
+        
         return annotationImage
     }
-
+    
     func mapView(_ mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
-    // Always allow callouts to popup when annotations are tapped.
+        // Always allow callouts to popup when annotations are tapped.
         return true
     }
-  
 }
 
