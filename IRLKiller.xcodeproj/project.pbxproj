@@ -17,9 +17,14 @@
 		46E1E6A623354CA900EBA2FC /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E1E6A523354CA900EBA2FC /* LoginViewController.swift */; };
 		46E1E6AA23355A4A00EBA2FC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 46E1E6A923355A4A00EBA2FC /* GoogleService-Info.plist */; };
 		46E1E6AC23355EC100EBA2FC /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E1E6AB23355EC100EBA2FC /* MainViewController.swift */; };
-		46E5CC8C23414A69004AF33D /* InventoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E5CC8B23414A69004AF33D /* InventoryViewController.swift */; };
 		46E5CC8E23414A7B004AF33D /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E5CC8D23414A7B004AF33D /* ProfileViewController.swift */; };
 		85298B718FA6D115B852C1B9 /* Pods_IRLKiller.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 239D32A7EF405E587B26F857 /* Pods_IRLKiller.framework */; };
+		F81411802378526E004A323E /* InventoryOffset.swift in Sources */ = {isa = PBXBuildFile; fileRef = F814117F2378526E004A323E /* InventoryOffset.swift */; };
+		F81DD8FE23757618003662CC /* InventoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81DD8FD23757618003662CC /* InventoryCollectionViewCell.swift */; };
+		F868C0C3237737C000B678AB /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868C0C2237737C000B678AB /* DetailViewController.swift */; };
+		F890CED7237628510071A4FA /* InventoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F890CED3237628490071A4FA /* InventoryViewController.swift */; };
+		F890CED8237628510071A4FA /* WeaponModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F890CED42376284D0071A4FA /* WeaponModel.swift */; };
+		F890CEDF237629050071A4FA /* InventoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F890CEDE237629050071A4FA /* InventoryTableViewCell.swift */; };
 		F899ECCB23366475005A1A95 /* RegexExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F899ECCA23366475005A1A95 /* RegexExtension.swift */; };
 /* End PBXBuildFile section */
 
@@ -48,13 +53,18 @@
 		46E1E6A523354CA900EBA2FC /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		46E1E6A923355A4A00EBA2FC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		46E1E6AB23355EC100EBA2FC /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
-		46E5CC8B23414A69004AF33D /* InventoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryViewController.swift; sourceTree = "<group>"; };
 		46E5CC8D23414A7B004AF33D /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		67B54BEC521C8415A594831A /* Pods-IRLKillerUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IRLKillerUITests.debug.xcconfig"; path = "Target Support Files/Pods-IRLKillerUITests/Pods-IRLKillerUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		855C3A0AE27884FA01BA609F /* Pods-IRLKillerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IRLKillerTests.debug.xcconfig"; path = "Target Support Files/Pods-IRLKillerTests/Pods-IRLKillerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		BD49BAB0E9AF2D8A4075C710 /* Pods-IRLKillerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IRLKillerUITests.release.xcconfig"; path = "Target Support Files/Pods-IRLKillerUITests/Pods-IRLKillerUITests.release.xcconfig"; sourceTree = "<group>"; };
 		DB279AA8633EC8855BA70875 /* Pods-IRLKiller.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IRLKiller.debug.xcconfig"; path = "Target Support Files/Pods-IRLKiller/Pods-IRLKiller.debug.xcconfig"; sourceTree = "<group>"; };
 		DE081DB13F73E49A16327B3F /* Pods_IRLKillerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IRLKillerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F814117F2378526E004A323E /* InventoryOffset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryOffset.swift; sourceTree = "<group>"; };
+		F81DD8FD23757618003662CC /* InventoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryCollectionViewCell.swift; sourceTree = "<group>"; };
+		F868C0C2237737C000B678AB /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		F890CED3237628490071A4FA /* InventoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InventoryViewController.swift; sourceTree = "<group>"; };
+		F890CED42376284D0071A4FA /* WeaponModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeaponModel.swift; sourceTree = "<group>"; };
+		F890CEDE237629050071A4FA /* InventoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InventoryTableViewCell.swift; sourceTree = "<group>"; };
 		F899ECCA23366475005A1A95 /* RegexExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegexExtension.swift; sourceTree = "<group>"; };
 		FCCBBAB4FE8A6F07C8CA77A3 /* Pods-IRLKiller.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IRLKiller.release.xcconfig"; path = "Target Support Files/Pods-IRLKiller/Pods-IRLKiller.release.xcconfig"; sourceTree = "<group>"; };
 		FEAF83958D61A1AFC56BAD55 /* Pods-IRLKillerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IRLKillerTests.release.xcconfig"; path = "Target Support Files/Pods-IRLKillerTests/Pods-IRLKillerTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -103,13 +113,13 @@
 		46E1E67423354B0400EBA2FC /* IRLKiller */ = {
 			isa = PBXGroup;
 			children = (
+				F890CED1237627FD0071A4FA /* Inventory */,
 				F899ECC923366443005A1A95 /* Extensions */,
-				46E1E67523354B0400EBA2FC /* AppDelegate.swift */,
 				46E1E6A523354CA900EBA2FC /* LoginViewController.swift */,
 				46E1E6AB23355EC100EBA2FC /* MainViewController.swift */,
-				466ED40D233F92E300EB8CE0 /* Main.storyboard */,
-				46E5CC8B23414A69004AF33D /* InventoryViewController.swift */,
 				46E5CC8D23414A7B004AF33D /* ProfileViewController.swift */,
+				466ED40D233F92E300EB8CE0 /* Main.storyboard */,
+				46E1E67523354B0400EBA2FC /* AppDelegate.swift */,
 				46E1E67E23354B0500EBA2FC /* LaunchScreen.storyboard */,
 				46E1E6A923355A4A00EBA2FC /* GoogleService-Info.plist */,
 				46E1E68123354B0500EBA2FC /* Info.plist */,
@@ -147,6 +157,19 @@
 				DE081DB13F73E49A16327B3F /* Pods_IRLKillerTests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F890CED1237627FD0071A4FA /* Inventory */ = {
+			isa = PBXGroup;
+			children = (
+				F890CED42376284D0071A4FA /* WeaponModel.swift */,
+				F890CED3237628490071A4FA /* InventoryViewController.swift */,
+				F890CEDE237629050071A4FA /* InventoryTableViewCell.swift */,
+				F81DD8FD23757618003662CC /* InventoryCollectionViewCell.swift */,
+				F814117F2378526E004A323E /* InventoryOffset.swift */,
+				F868C0C2237737C000B678AB /* DetailViewController.swift */,
+			);
+			path = Inventory;
 			sourceTree = "<group>";
 		};
 		F899ECC923366443005A1A95 /* Extensions */ = {
@@ -345,10 +368,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F81DD8FE23757618003662CC /* InventoryCollectionViewCell.swift in Sources */,
+				F81411802378526E004A323E /* InventoryOffset.swift in Sources */,
 				46E1E6A623354CA900EBA2FC /* LoginViewController.swift in Sources */,
-				46E5CC8C23414A69004AF33D /* InventoryViewController.swift in Sources */,
+				F868C0C3237737C000B678AB /* DetailViewController.swift in Sources */,
+				F890CED7237628510071A4FA /* InventoryViewController.swift in Sources */,
 				46E1E6A423354BB800EBA2FC /* TextFieldExtension.swift in Sources */,
+				F890CED8237628510071A4FA /* WeaponModel.swift in Sources */,
 				F899ECCB23366475005A1A95 /* RegexExtension.swift in Sources */,
+				F890CEDF237629050071A4FA /* InventoryTableViewCell.swift in Sources */,
 				46E5CC8E23414A7B004AF33D /* ProfileViewController.swift in Sources */,
 				46E1E67623354B0400EBA2FC /* AppDelegate.swift in Sources */,
 				46E1E6AC23355EC100EBA2FC /* MainViewController.swift in Sources */,
