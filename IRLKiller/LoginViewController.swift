@@ -25,7 +25,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         textField.textAlignment = .center
         textField.borderStyle = .roundedRect
         textField.backgroundColor  = .clear
-        textField.maxLength = 18
+        textField.maxLength = 14
         textField.sizeToFit()
         textField.adjustsFontSizeToFitWidth = true
         return textField
@@ -182,7 +182,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     // usernames нужна для проверки уникальности логина, в ней связка логин:uid
                     ref.child("users").updateChildValues(
                         [ result!.user.uid : [ "login" : login, "online" : true,
-                                               "pos-x" : 40.74699, "pos-y" : -73.98742]]
+                                               "pos-x" : 40.74699, "pos-y" : -73.98742,
+                                               "health": 100,"rating": 1200]]
                     )
                     ref.child("usernames").updateChildValues(
                         [ login.lowercased() : result!.user.uid ]

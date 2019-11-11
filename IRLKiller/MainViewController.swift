@@ -23,6 +23,8 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         var login: String
         var position: CLLocationCoordinate2D
         var isOnline: Bool
+        var health: Int
+        var rating: Int
     }
     
     class MyCustomPointAnnotation: MGLPointAnnotation {
@@ -35,6 +37,8 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     var annotationsPlayers = [String : MGLAnnotation]()
     
     var myLogin = ""
+    var myRating = 0
+    var myHealth = 100
     
     // View and buttons
     @IBOutlet weak var loginText: UILabel!
@@ -69,6 +73,8 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             ref.observeSingleEvent(of: .value, with: { (snapshot) in
                 if let user = snapshot.value as? [String : AnyObject] {
                     self.myLogin = user["login"] as! String
+                    self.myRating = user["rating"] as! Int
+                    self.myHealth = user["health"] as! Int
                     print(self.myLogin)
                     self.loginText.text = self.myLogin
                     let offlinePosX = user["pos-x"] as! Double
@@ -119,11 +125,15 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         let curLogin = snapshot.childSnapshot(forPath: "login").value as! String
         let posx = snapshot.childSnapshot(forPath: "pos-x").value as! Double
         let posy = snapshot.childSnapshot(forPath: "pos-y").value as! Double
+        let curHealth = snapshot.childSnapshot(forPath: "health").value as! Int
+        let curRating = snapshot.childSnapshot(forPath: "rating").value as! Int
         
         let curPlayer = Player(
             login: curLogin,
             position: CLLocationCoordinate2D(latitude: posx, longitude: posy),
-            isOnline: isOnline
+            isOnline: isOnline,
+            health: curHealth,
+            rating: curRating
         )
         
         self.players[curLogin] = curPlayer
@@ -134,38 +144,46 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         // тут отрисовываем чела на карте
         if curLogin != myLogin {
             let curPoint: MyCustomPointAnnotation = {
-                let anotation = MyCustomPointAnnotation()
-                anotation.coordinate = CLLocationCoordinate2D(latitude: posx, longitude: posy)
-                anotation.title = curLogin
-                anotation.typeOfImage = isOnline ? "online" : "offline"
-                return anotation
+                let annotation = MyCustomPointAnnotation()
+                annotation.coordinate = CLLocationCoordinate2D(latitude: posx, longitude: posy)
+                annotation.title = curLogin
+                annotation.subtitle = "AK-47  \(curHealth)HP"
+                annotation.typeOfImage = isOnline ? "online" : "offline"
+                return annotation
             }()
-            
-            if !isAdding {
-                mapView.removeAnnotation(annotationsPlayers[curLogin]!)
+            if curHealth > 0 {
+                DispatchQueue.main.async {
+                    if !isAdding {
+                        if let currentPoint = self.annotationsPlayers[curLogin]{
+                            self.mapView.removeAnnotation(currentPoint)
+                        }
+                    }
+                    self.mapView.addAnnotation(curPoint)
+                    self.annotationsPlayers[curLogin] = curPoint
+                }
             }
-            mapView.addAnnotation(curPoint)
-            self.annotationsPlayers[curLogin] = curPoint
         }
     }
     
     @objc func updateDB() {
-        let ref = Database.database().reference().child("users/\(userID!)")
-        //Следующих двух строк не будет в продакшене,они нужны чтобы когда акк удалили не крашилось приложение на устройсвте где сохранен этот акк,при вызове readNewData get пустой login
-        ref.observeSingleEvent(of: .value, with: { snapshot in
-            if snapshot.exists() {
-                print("Data Load to DB")
-                print("x = \(self.userLocation.latitude), y = \(self.userLocation.longitude)")
-                
-                let location = self.userLocation
-                ref.updateChildValues(
-                    ["online" : true ,
-                     "pos-x"  : location.latitude,
-                     "pos-y"  : location.longitude])
-            } else {
-                print("The account is deleted, please press test logout and rerun the app\nLOGOUT\nLOGOUT\nLOGOUT")
-            }
-        })
+        DispatchQueue.global(qos: .utility).async {
+            let ref = Database.database().reference().child("users/\(self.userID!)")
+            //Следующих двух строк не будет в продакшене,они нужны чтобы когда акк удалили не крашилось приложение на устройсвте где сохранен этот акк,при вызове readNewData get пустой login
+            ref.observeSingleEvent(of: .value, with: { snapshot in
+                if snapshot.exists() {
+                    print("Data Load to DB")
+                    print("x = \(self.userLocation.latitude), y = \(self.userLocation.longitude)")
+                    
+                    let location = self.userLocation
+                    ref.updateChildValues(
+                        ["online" : true ,
+                         "pos-x"  : location.latitude,
+                         "pos-y"  : location.longitude])
+                } else {
+                    print("The account is deleted, please press test logout and rerun the app\nLOGOUT\nLOGOUT\nLOGOUT")
+                }
+            })
+        }
         
     }
     
@@ -220,6 +238,108 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     func mapView(_ mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
         // Always allow callouts to popup when annotations are tapped.
         return true
+    }
+    
+    
+    func mapView(_ mapView: MGLMapView, leftCalloutAccessoryViewFor annotation: MGLAnnotation) -> UIView? {
+        if (annotation.title! != "You Are Here") {
+            // Callout height is fixed; width expands to fit its content.
+            let label = UILabel(frame: CGRect(x: 0, y: 0, width: 42, height: 20))
+            if let curPlayer = players[annotation.title!!]{
+                let curRating = curPlayer.rating
+                switch curRating{
+                case 2000...:
+                    label.textColor = UIColor(red: 1, green: 0.7, blue: 0, alpha: 1)
+                case 1800..<2000:
+                    label.textColor = UIColor(red: 1, green: 0, blue: 1, alpha: 1)
+                case 1600..<1800:
+                    label.textColor = UIColor(red: 0, green: 0, blue: 1, alpha: 1)
+                case 1400..<1600:
+                    label.textColor = UIColor(red: 0, green: 1, blue: 1, alpha: 1)
+                case 1000..<1400:
+                    label.textColor = UIColor(red: 0, green: 1, blue: 0, alpha: 1)
+                default:
+                    label.textColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)
+                }
+                label.text = String(curPlayer.rating)
+                return label
+            }
+        }
+        return nil
+    }
+    
+    
+    func mapView(_ mapView: MGLMapView, rightCalloutAccessoryViewFor annotation: MGLAnnotation) -> UIView? {
+        if (annotation.title! != "You Are Here") {
+            let button = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 25))
+            button.backgroundColor = .black
+            button.setTitle("Shoot", for: .normal)
+            button.frame = CGRect(x: 0, y: 0, width: 50, height: 20)
+            return button
+        }
+        
+        return nil
+    }
+    
+    //Нажатие на Shoot в аннотации
+    func mapView(_ mapView: MGLMapView, annotation: MGLAnnotation, calloutAccessoryControlTapped control: UIControl) {
+        // Hide the callout view.
+        
+        mapView.deselectAnnotation(annotation, animated: false)
+        //
+        //Если откатилась перезарядка
+        //потом будет
+        //
+        //И если хватает дистанции
+        //потом будет
+        let alert = UIAlertController(title: "Nice shot", message: "-20 HP", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        if let curPlayer = players[annotation.title!!]{
+            let ref = Database.database().reference().child("usernames/\(players[annotation.title!!]!.login.lowercased())")
+            ref.observeSingleEvent(of: .value, with: { (snapshot) in
+                if let curID = snapshot.value as? String {
+                    var curHealth = curPlayer.health - 20
+                    var Rating1 = self.myRating
+                    var Rating2 = curPlayer.rating
+                    if curHealth <= 0{
+                        curHealth = 0
+                        self.mapView.removeAnnotation(self.annotationsPlayers[curPlayer.login]!)
+                        let delta:Double = Double(abs(Rating1-Rating2))
+                        var delta2:Double = 0
+                        print(delta,"RatingsDelta")
+                        switch delta {
+                        case ..<100:
+                            delta2 = (25 - 5*delta/100).rounded()
+                        case 100..<1390:
+                            delta2 = (20 - 5*log2(delta/100)).rounded()
+                        default:
+                            delta2 = 1
+                        }
+                        print(delta2)
+                        if Rating1 < Rating2 {
+                            delta2 = 50 - delta2
+                        }
+                        print(delta2,"Plus/Minus Delta")
+                        Rating2-=Int(delta2)
+                        Rating1+=Int(delta2)
+                        self.myRating = Rating1
+                        DispatchQueue.global(qos: .utility).async {
+                            let ref2 = Database.database().reference().child("users/\(self.userID!)")
+                            ref2.updateChildValues(["rating" : Rating1])
+                        }
+                        
+                    }
+                    
+                    DispatchQueue.global(qos: .utility).async {
+                        let ref3 = Database.database().reference().child("users/\(curID)")
+                        ref3.updateChildValues(["health" : curHealth,"rating":Rating2])
+                    }
+                }
+            })
+        }
+        //можно не алерт будет сделать а всплывающее окно свое
+        self.present(alert, animated: true, completion: nil)
+        
     }
 }
 
