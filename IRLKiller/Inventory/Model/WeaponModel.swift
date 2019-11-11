@@ -12,18 +12,11 @@ protocol WeaponProtocol {
 }
 
 struct Weapon: WeaponProtocol  {
-    
     var weaponName: String
-    
     var weaponImageName: String
-    
     var weaponCost: Int
-    
     var weaponDistance: Int
-    
     var weaponCapacity: Int
-    
     var weaponReloadTime: Float
-    
     var weaponDamage: Float    
 }

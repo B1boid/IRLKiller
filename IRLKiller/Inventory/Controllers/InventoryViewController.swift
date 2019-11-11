@@ -1,14 +1,11 @@
 import UIKit
 
-
 class InventoryViewController: UITableViewController {
-    
-    let model: [[Int]] = Array(repeating: Array(repeating: 10, count: 20), count: 15)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.backgroundColor = .systemOrange
+        tableView.backgroundColor = #colorLiteral(red: 0.6039316654, green: 1, blue: 0.5143471956, alpha: 1)
         tableView.register(InventoryTableViewCell.self, forCellReuseIdentifier: InventoryTableViewCell.reuseId)
     }
     
@@ -18,7 +15,7 @@ class InventoryViewController: UITableViewController {
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return model.count
+        return Weapons.allCases.count
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -28,14 +25,14 @@ class InventoryViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: InventoryTableViewCell.reuseId,
                                                  for: indexPath) as! InventoryTableViewCell
-        cell.collectionView.backgroundColor = .systemOrange
+        cell.collectionView.backgroundColor = #colorLiteral(red: 0.6039316654, green: 1, blue: 0.5143471956, alpha: 1)
         cell.collectionView.reloadData()
         return cell
     }
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         guard let tableViewCell = cell as? InventoryTableViewCell else { return }
-        tableViewCell.setCollectionViewDataSourceDelegate(self, forRow: indexPath.row)
+        tableViewCell.setCollectionViewDataSourceDelegate(self, forRow: indexPath.section)
     }
     
     // MARK: - header params
@@ -44,13 +41,13 @@ class InventoryViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-        case 0:
-            return "Guns"
-        case 1:
-            return "Grenade"
-        default:
-            return "Nothing"
+        return Weapons.allCases[section].rawValue.capitalized
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        if let headerView = view as? UITableViewHeaderFooterView {
+            print("IN")
+            headerView.backgroundView?.tintColor = .red
         }
     }
 }
@@ -58,7 +55,9 @@ class InventoryViewController: UITableViewController {
 extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return model[collectionView.tag].count
+        let key = Weapons.allCases[collectionView.tag].rawValue
+        guard let values = weaponItems[key] else { return 0 }
+        return values.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -66,6 +65,7 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
                                                       for: indexPath) as! InventoryCollectionViewCell
         
         cell.weaponName = "gun"
+        cell.descriptionText = "Nice gun\nYou are Welcome to play"
         cell.backgroundColor = .white
         return cell
     }
