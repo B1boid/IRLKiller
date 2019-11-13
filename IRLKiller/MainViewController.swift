@@ -154,7 +154,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             if curHealth > 0 {
                 DispatchQueue.main.async {
                     if !isAdding {
-                        if let currentPoint = self.annotationsPlayers[curLogin]{
+                        if let currentPoint = self.annotationsPlayers[curLogin] {
                             self.mapView.removeAnnotation(currentPoint)
                         }
                     }
@@ -171,7 +171,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             //Следующих двух строк не будет в продакшене,они нужны чтобы когда акк удалили не крашилось приложение на устройсвте где сохранен этот акк,при вызове readNewData get пустой login
             ref.observeSingleEvent(of: .value, with: { snapshot in
                 if snapshot.exists() {
-                    print("Data Load to DB")
+                    print("Data Load to DB")q
                     print("x = \(self.userLocation.latitude), y = \(self.userLocation.longitude)")
                     
                     let location = self.userLocation
@@ -217,7 +217,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         }
         
         // If there is no reusable annotation image available, initialize a new one.
-        if(annotationImage == nil) {
+        if (annotationImage == nil) {
             switch curType {
                 
             case "offline":
@@ -247,7 +247,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             let label = UILabel(frame: CGRect(x: 0, y: 0, width: 42, height: 20))
             if let curPlayer = players[annotation.title!!]{
                 let curRating = curPlayer.rating
-                switch curRating{
+                switch curRating {
                 case 2000...:
                     label.textColor = UIColor(red: 1, green: 0.7, blue: 0, alpha: 1)
                 case 1800..<2000:
@@ -271,10 +271,9 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     
     func mapView(_ mapView: MGLMapView, rightCalloutAccessoryViewFor annotation: MGLAnnotation) -> UIView? {
         if (annotation.title! != "You Are Here") {
-            let button = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 25))
+            let button = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 20))
             button.backgroundColor = .black
             button.setTitle("Shoot", for: .normal)
-            button.frame = CGRect(x: 0, y: 0, width: 50, height: 20)
             return button
         }
         
@@ -282,6 +281,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     }
     
     //Нажатие на Shoot в аннотации
+    
     func mapView(_ mapView: MGLMapView, annotation: MGLAnnotation, calloutAccessoryControlTapped control: UIControl) {
         // Hide the callout view.
         
@@ -301,17 +301,17 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                     var curHealth = curPlayer.health - 20
                     var Rating1 = self.myRating
                     var Rating2 = curPlayer.rating
-                    if curHealth <= 0{
+                    if curHealth <= 0 {
                         curHealth = 0
                         self.mapView.removeAnnotation(self.annotationsPlayers[curPlayer.login]!)
-                        let delta:Double = Double(abs(Rating1-Rating2))
-                        var delta2:Double = 0
+                        let delta: Double = Double(abs(Rating1 - Rating2))
+                        var delta2: Double = 0
                         print(delta,"RatingsDelta")
                         switch delta {
                         case ..<100:
-                            delta2 = (25 - 5*delta/100).rounded()
+                            delta2 = (25 - 5 * delta / 100).rounded()
                         case 100..<1390:
-                            delta2 = (20 - 5*log2(delta/100)).rounded()
+                            delta2 = (20 - 5 * log2(delta / 100)).rounded()
                         default:
                             delta2 = 1
                         }
@@ -320,8 +320,8 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                             delta2 = 50 - delta2
                         }
                         print(delta2,"Plus/Minus Delta")
-                        Rating2-=Int(delta2)
-                        Rating1+=Int(delta2)
+                        Rating2 -= Int(delta2)
+                        Rating1 += Int(delta2)
                         self.myRating = Rating1
                         DispatchQueue.global(qos: .utility).async {
                             let ref2 = Database.database().reference().child("users/\(self.userID!)")
@@ -339,7 +339,6 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         }
         //можно не алерт будет сделать а всплывающее окно свое
         self.present(alert, animated: true, completion: nil)
-        
     }
 }
 
