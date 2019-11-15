@@ -19,13 +19,15 @@
 		46E1E6AC23355EC100EBA2FC /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E1E6AB23355EC100EBA2FC /* MainViewController.swift */; };
 		46E5CC8E23414A7B004AF33D /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E5CC8D23414A7B004AF33D /* ProfileViewController.swift */; };
 		85298B718FA6D115B852C1B9 /* Pods_IRLKiller.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 239D32A7EF405E587B26F857 /* Pods_IRLKiller.framework */; };
-		F81411802378526E004A323E /* InventoryOffset.swift in Sources */ = {isa = PBXBuildFile; fileRef = F814117F2378526E004A323E /* InventoryOffset.swift */; };
-		F83B738B2378A9D0005100AF /* WeaponData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B738A2378A9D0005100AF /* WeaponData.swift */; };
-		F83B73982378AB4E005100AF /* InventoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B73972378AB4E005100AF /* InventoryCollectionViewCell.swift */; };
-		F83B739A2378AB57005100AF /* InventoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83B73992378AB57005100AF /* InventoryTableViewCell.swift */; };
-		F868C0C3237737C000B678AB /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868C0C2237737C000B678AB /* DetailViewController.swift */; };
-		F890CED7237628510071A4FA /* InventoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F890CED3237628490071A4FA /* InventoryViewController.swift */; };
-		F890CED8237628510071A4FA /* WeaponModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F890CED42376284D0071A4FA /* WeaponModel.swift */; };
+		F83686CB237DD99E0024B44C /* WeaponModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83686C2237DD99E0024B44C /* WeaponModel.swift */; };
+		F83686CC237DD99E0024B44C /* WeaponData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83686C3237DD99E0024B44C /* WeaponData.swift */; };
+		F83686CD237DD99E0024B44C /* InventoryConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83686C4237DD99E0024B44C /* InventoryConstants.swift */; };
+		F83686CE237DD99E0024B44C /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83686C6237DD99E0024B44C /* DetailViewController.swift */; };
+		F83686CF237DD99E0024B44C /* InventoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83686C7237DD99E0024B44C /* InventoryViewController.swift */; };
+		F83686D0237DD99E0024B44C /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83686C8237DD99E0024B44C /* ContainerViewController.swift */; };
+		F83686E1237DE06E0024B44C /* InventoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83686DE237DE06E0024B44C /* InventoryTableViewCell.swift */; };
+		F83686E2237DE06E0024B44C /* InventoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83686DF237DE06E0024B44C /* InventoryCollectionViewCell.swift */; };
+		F83686E3237DE06E0024B44C /* DescriptionWeaponView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83686E0237DE06E0024B44C /* DescriptionWeaponView.swift */; };
 		F899ECCB23366475005A1A95 /* RegexExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F899ECCA23366475005A1A95 /* RegexExtension.swift */; };
 /* End PBXBuildFile section */
 
@@ -60,13 +62,15 @@
 		BD49BAB0E9AF2D8A4075C710 /* Pods-IRLKillerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IRLKillerUITests.release.xcconfig"; path = "Target Support Files/Pods-IRLKillerUITests/Pods-IRLKillerUITests.release.xcconfig"; sourceTree = "<group>"; };
 		DB279AA8633EC8855BA70875 /* Pods-IRLKiller.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IRLKiller.debug.xcconfig"; path = "Target Support Files/Pods-IRLKiller/Pods-IRLKiller.debug.xcconfig"; sourceTree = "<group>"; };
 		DE081DB13F73E49A16327B3F /* Pods_IRLKillerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IRLKillerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F814117F2378526E004A323E /* InventoryOffset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryOffset.swift; sourceTree = "<group>"; };
-		F83B738A2378A9D0005100AF /* WeaponData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeaponData.swift; sourceTree = "<group>"; };
-		F83B73972378AB4E005100AF /* InventoryCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InventoryCollectionViewCell.swift; sourceTree = "<group>"; };
-		F83B73992378AB57005100AF /* InventoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InventoryTableViewCell.swift; sourceTree = "<group>"; };
-		F868C0C2237737C000B678AB /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
-		F890CED3237628490071A4FA /* InventoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InventoryViewController.swift; sourceTree = "<group>"; };
-		F890CED42376284D0071A4FA /* WeaponModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeaponModel.swift; sourceTree = "<group>"; };
+		F83686C2237DD99E0024B44C /* WeaponModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeaponModel.swift; sourceTree = "<group>"; };
+		F83686C3237DD99E0024B44C /* WeaponData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeaponData.swift; sourceTree = "<group>"; };
+		F83686C4237DD99E0024B44C /* InventoryConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InventoryConstants.swift; sourceTree = "<group>"; };
+		F83686C6237DD99E0024B44C /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		F83686C7237DD99E0024B44C /* InventoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InventoryViewController.swift; sourceTree = "<group>"; };
+		F83686C8237DD99E0024B44C /* ContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
+		F83686DE237DE06E0024B44C /* InventoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InventoryTableViewCell.swift; sourceTree = "<group>"; };
+		F83686DF237DE06E0024B44C /* InventoryCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InventoryCollectionViewCell.swift; sourceTree = "<group>"; };
+		F83686E0237DE06E0024B44C /* DescriptionWeaponView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DescriptionWeaponView.swift; sourceTree = "<group>"; };
 		F899ECCA23366475005A1A95 /* RegexExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegexExtension.swift; sourceTree = "<group>"; };
 		FCCBBAB4FE8A6F07C8CA77A3 /* Pods-IRLKiller.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IRLKiller.release.xcconfig"; path = "Target Support Files/Pods-IRLKiller/Pods-IRLKiller.release.xcconfig"; sourceTree = "<group>"; };
 		FEAF83958D61A1AFC56BAD55 /* Pods-IRLKillerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IRLKillerTests.release.xcconfig"; path = "Target Support Files/Pods-IRLKillerTests/Pods-IRLKillerTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -115,7 +119,7 @@
 		46E1E67423354B0400EBA2FC /* IRLKiller */ = {
 			isa = PBXGroup;
 			children = (
-				F890CED1237627FD0071A4FA /* Inventory */,
+				F83686BD237DD99E0024B44C /* Inventory */,
 				F899ECC923366443005A1A95 /* Extensions */,
 				46E1E6A523354CA900EBA2FC /* LoginViewController.swift */,
 				46E1E6AB23355EC100EBA2FC /* MainViewController.swift */,
@@ -161,42 +165,52 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		F83B73892378A9B6005100AF /* Model */ = {
+		F83686BD237DD99E0024B44C /* Inventory */ = {
 			isa = PBXGroup;
 			children = (
-				F814117F2378526E004A323E /* InventoryOffset.swift */,
-				F890CED42376284D0071A4FA /* WeaponModel.swift */,
-				F83B738A2378A9D0005100AF /* WeaponData.swift */,
+				F83686C1237DD99E0024B44C /* Model */,
+				F83686DC237DE06E0024B44C /* Views */,
+				F83686C5237DD99E0024B44C /* Controllers */,
+			);
+			path = Inventory;
+			sourceTree = "<group>";
+		};
+		F83686C1237DD99E0024B44C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				F83686C2237DD99E0024B44C /* WeaponModel.swift */,
+				F83686C3237DD99E0024B44C /* WeaponData.swift */,
+				F83686C4237DD99E0024B44C /* InventoryConstants.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
 		};
-		F83B738C2378AA64005100AF /* Cells */ = {
+		F83686C5237DD99E0024B44C /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				F83B73972378AB4E005100AF /* InventoryCollectionViewCell.swift */,
-				F83B73992378AB57005100AF /* InventoryTableViewCell.swift */,
-			);
-			path = Cells;
-			sourceTree = "<group>";
-		};
-		F83B738D2378AA83005100AF /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				F890CED3237628490071A4FA /* InventoryViewController.swift */,
-				F868C0C2237737C000B678AB /* DetailViewController.swift */,
+				F83686C6237DD99E0024B44C /* DetailViewController.swift */,
+				F83686C7237DD99E0024B44C /* InventoryViewController.swift */,
+				F83686C8237DD99E0024B44C /* ContainerViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
 		};
-		F890CED1237627FD0071A4FA /* Inventory */ = {
+		F83686DC237DE06E0024B44C /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				F83B738D2378AA83005100AF /* Controllers */,
-				F83B738C2378AA64005100AF /* Cells */,
-				F83B73892378A9B6005100AF /* Model */,
+				F83686DD237DE06E0024B44C /* Cells */,
+				F83686E0237DE06E0024B44C /* DescriptionWeaponView.swift */,
 			);
-			path = Inventory;
+			path = Views;
+			sourceTree = "<group>";
+		};
+		F83686DD237DE06E0024B44C /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				F83686DE237DE06E0024B44C /* InventoryTableViewCell.swift */,
+				F83686DF237DE06E0024B44C /* InventoryCollectionViewCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		F899ECC923366443005A1A95 /* Extensions */ = {
@@ -395,18 +409,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F81411802378526E004A323E /* InventoryOffset.swift in Sources */,
+				F83686CD237DD99E0024B44C /* InventoryConstants.swift in Sources */,
 				46E1E6A623354CA900EBA2FC /* LoginViewController.swift in Sources */,
-				F868C0C3237737C000B678AB /* DetailViewController.swift in Sources */,
-				F83B73982378AB4E005100AF /* InventoryCollectionViewCell.swift in Sources */,
-				F890CED7237628510071A4FA /* InventoryViewController.swift in Sources */,
-				F83B738B2378A9D0005100AF /* WeaponData.swift in Sources */,
+				F83686D0237DD99E0024B44C /* ContainerViewController.swift in Sources */,
 				46E1E6A423354BB800EBA2FC /* TextFieldExtension.swift in Sources */,
-				F890CED8237628510071A4FA /* WeaponModel.swift in Sources */,
+				F83686CE237DD99E0024B44C /* DetailViewController.swift in Sources */,
+				F83686E3237DE06E0024B44C /* DescriptionWeaponView.swift in Sources */,
+				F83686CF237DD99E0024B44C /* InventoryViewController.swift in Sources */,
 				F899ECCB23366475005A1A95 /* RegexExtension.swift in Sources */,
+				F83686E2237DE06E0024B44C /* InventoryCollectionViewCell.swift in Sources */,
+				F83686CC237DD99E0024B44C /* WeaponData.swift in Sources */,
+				F83686CB237DD99E0024B44C /* WeaponModel.swift in Sources */,
 				46E5CC8E23414A7B004AF33D /* ProfileViewController.swift in Sources */,
 				46E1E67623354B0400EBA2FC /* AppDelegate.swift in Sources */,
-				F83B739A2378AB57005100AF /* InventoryTableViewCell.swift in Sources */,
+				F83686E1237DE06E0024B44C /* InventoryTableViewCell.swift in Sources */,
 				46E1E6AC23355EC100EBA2FC /* MainViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -563,7 +579,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = TV4Z7NX6LB;
+				DEVELOPMENT_TEAM = BUK7X3U9Z9;
 				INFOPLIST_FILE = IRLKiller/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -582,7 +598,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = TV4Z7NX6LB;
+				DEVELOPMENT_TEAM = BUK7X3U9Z9;
 				INFOPLIST_FILE = IRLKiller/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

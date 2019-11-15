@@ -13,6 +13,8 @@ class InventoryCollectionViewCell: UICollectionViewCell {
     private lazy var weaponNameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .white
+        label.backgroundColor = .clear
         return label
     }()
     
@@ -20,6 +22,8 @@ class InventoryCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 10)
+        label.textColor = .white
+        label.backgroundColor = .clear
         return label
     }()
     
@@ -35,7 +39,7 @@ class InventoryCollectionViewCell: UICollectionViewCell {
         didSet {
             if let name = weaponName {
                 weaponIV.image = UIImage(named: name)
-                weaponNameLabel.text = name
+                weaponNameLabel.text = name.capitalized
             }
         }
     }
@@ -43,6 +47,7 @@ class InventoryCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        self.backgroundColor = .darkGray
         self.addSubview(weaponNameLabel)
         self.addSubview(weaponIV)
         self.addSubview(descriptionLabel)
@@ -66,19 +71,22 @@ class InventoryCollectionViewCell: UICollectionViewCell {
         beutifyLabelText(label: descriptionLabel)
         
         setupCornerRadius()
-        layourConstrains(cornerRadius: InventoryOffset.cornerRadius)
+        layourConstrains()
     }
     
     func setupCornerRadius() {
         weaponIV.clipsToBounds = true
-        weaponIV.layer.cornerRadius = InventoryOffset.cornerRadius
-        self.layer.cornerRadius = InventoryOffset.cornerRadius
+        weaponIV.layer.cornerRadius = InventoryConstants.cornerRadius
+        self.layer.cornerRadius = InventoryConstants.cornerRadius
     }
     
-    func layourConstrains(cornerRadius: CGFloat) {
+    func layourConstrains() {
+        
+        let halfRadius = InventoryConstants.cornerRadius / 2
+        
         weaponNameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 1).isActive = true
-        weaponNameLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: cornerRadius / 2).isActive = true
-        weaponNameLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -cornerRadius / 2).isActive = true
+        weaponNameLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: halfRadius).isActive = true
+        weaponNameLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -halfRadius).isActive = true
         weaponNameLabel.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 1 / 9).isActive = true
         
         weaponIV.topAnchor.constraint(equalTo: weaponNameLabel.bottomAnchor, constant: 2).isActive = true
@@ -87,8 +95,8 @@ class InventoryCollectionViewCell: UICollectionViewCell {
         weaponIV.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 6 / 9).isActive = true
         
         descriptionLabel.topAnchor.constraint(equalTo: weaponIV.bottomAnchor, constant: 1).isActive = true
-        descriptionLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: cornerRadius / 2).isActive = true
-        descriptionLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -cornerRadius / 2).isActive = true
-        descriptionLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -cornerRadius / 2).isActive = true
+        descriptionLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: halfRadius).isActive = true
+        descriptionLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -halfRadius).isActive = true
+        descriptionLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -halfRadius).isActive = true
     }
 }

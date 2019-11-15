@@ -12,13 +12,13 @@ class InventoryTableViewCell: UITableViewCell {
         let layout: UICollectionViewFlowLayout = {
             let layout = UICollectionViewFlowLayout()
             layout.scrollDirection = .horizontal
-            layout.minimumLineSpacing = InventoryOffset.minLineSpacing
-            layout.itemSize = InventoryOffset.collectionViewCellSize
+            layout.minimumLineSpacing = InventoryConstants.minLineSpacing
+            layout.itemSize = InventoryConstants.collectionViewCellSize
             
-            layout.sectionInset = UIEdgeInsets(top: InventoryOffset.top,
-                                               left: InventoryOffset.left,
-                                               bottom: InventoryOffset.bottom,
-                                               right: InventoryOffset.right)
+            layout.sectionInset = UIEdgeInsets(top: InventoryConstants.top,
+                                               left: InventoryConstants.left,
+                                               bottom: InventoryConstants.bottom,
+                                               right: InventoryConstants.right)
             return layout
         }()
 

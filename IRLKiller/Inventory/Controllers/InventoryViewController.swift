@@ -5,11 +5,11 @@ class InventoryViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.backgroundColor = #colorLiteral(red: 0.6039316654, green: 1, blue: 0.5143471956, alpha: 1)
+        tableView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         tableView.register(InventoryTableViewCell.self, forCellReuseIdentifier: InventoryTableViewCell.reuseId)
     }
     
-    // MARK: - Cell params
+    // MARK:- tableView cell params
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
@@ -19,13 +19,13 @@ class InventoryViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return InventoryOffset.tableViewCellHeight
+        return InventoryConstants.tableViewCellHeight
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: InventoryTableViewCell.reuseId,
                                                  for: indexPath) as! InventoryTableViewCell
-        cell.collectionView.backgroundColor = #colorLiteral(red: 0.6039316654, green: 1, blue: 0.5143471956, alpha: 1)
+        cell.collectionView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         cell.collectionView.reloadData()
         return cell
     }
@@ -35,7 +35,7 @@ class InventoryViewController: UITableViewController {
         tableViewCell.setCollectionViewDataSourceDelegate(self, forRow: indexPath.section)
     }
     
-    // MARK: - header params
+    // MARK:- tableView header params
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 20
     }
@@ -47,13 +47,14 @@ class InventoryViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         if let headerView = view as? UITableViewHeaderFooterView {
             print("IN")
-            headerView.backgroundView?.tintColor = .red
+            headerView.backgroundColor = .systemPink
         }
     }
 }
 
 extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
+    // MARK:- collectionView methods
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let key = Weapons.allCases[collectionView.tag].rawValue
         guard let values = weaponItems[key] else { return 0 }
@@ -66,23 +67,17 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
         
         cell.weaponName = "gun"
         cell.descriptionText = "Nice gun\nYou are Welcome to play"
-        cell.backgroundColor = .white
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let tappedItem = collectionView.cellForItem(at: indexPath) as! InventoryCollectionViewCell
-        let dvc = DetailViewController()
-        dvc.modalPresentationStyle = .fullScreen
-        self.present(dvc, animated: true) {
-            print("Presented")
-        }
+        let parentVC = self.parent as! ContainerViewController
+        parentVC.showDetailViewController()
     }
 }
 
 extension InventoryViewController: UICollectionViewDelegateFlowLayout {
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize { return InventoryOffset.collectionViewCellSize }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize { return InventoryConstants.collectionViewCellSize }
     
 }
-

@@ -4,7 +4,7 @@ import FirebaseDatabase
 import Mapbox
 import Firebase
 
-class MainViewController: UIViewController, MGLMapViewDelegate {
+class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManagerDelegate {
     
     // Map settings
     var basicLocation = CLLocationCoordinate2D (latitude: 48.8582573, longitude: 2.2945111)
@@ -36,6 +36,8 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
     
     var annotationsPlayers = [String : MGLAnnotation]()
     
+    let locationManager = CLLocationManager()
+    
     var myLogin = ""
     var myRating = 0
     var myHealth = 100
@@ -54,9 +56,44 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
         try! Auth.auth().signOut()
     }
     
+    func checkLocationServices() {
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            checkLocationAuthorization()
+        } else {
+            print("Disanled")
+        }
+    }
+    
+    
+    func checkLocationAuthorization() {
+        switch CLLocationManager.authorizationStatus() {
+        case .denied, .restricted:
+            let alert = UIAlertController(title: "My Title", message: "This is my message.", preferredStyle: UIAlertController.Style.alert)
+            
+            // add an action (button)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+            
+            // show the alert
+            self.present(alert, animated: true, completion: nil)
+        case .notDetermined:
+            locationManager.requestWhenInUseAuthorization()
+            checkLocationAuthorization()
+        case .authorizedAlways, .authorizedWhenInUse:
+            break
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        checkLocationServices()
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         // isNotAlreadyShown = становится false когда карта appear первый раз чтобы когда карта appear при переключении на tabbar вкладках не делалось viewDidAppear второй раз
+        
         if Auth.auth().currentUser != nil && isNotAlreadyShown {
+            
             isNotAlreadyShown = false
             userID = Auth.auth().currentUser?.uid
             let ref = Database.database().reference().child("users/\(userID!)")
@@ -152,16 +189,15 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
                 return annotation
             }()
             if curHealth > 0 {
-                DispatchQueue.main.async {
-                    if !isAdding {
-                        if let currentPoint = self.annotationsPlayers[curLogin] {
-                            self.mapView.removeAnnotation(currentPoint)
-                        }
+                if !isAdding {
+                    if let currentPoint = self.annotationsPlayers[curLogin] {
+                        self.mapView.removeAnnotation(currentPoint)
                     }
-                    self.mapView.addAnnotation(curPoint)
-                    self.annotationsPlayers[curLogin] = curPoint
                 }
+                self.mapView.addAnnotation(curPoint)
+                self.annotationsPlayers[curLogin] = curPoint
             }
+            
         }
     }
     
@@ -171,7 +207,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate {
             //Следующих двух строк не будет в продакшене,они нужны чтобы когда акк удалили не крашилось приложение на устройсвте где сохранен этот акк,при вызове readNewData get пустой login
             ref.observeSingleEvent(of: .value, with: { snapshot in
                 if snapshot.exists() {
-                    print("Data Load to DB")q
+                    print("Data Load to DB")
                     print("x = \(self.userLocation.latitude), y = \(self.userLocation.longitude)")
                     
                     let location = self.userLocation

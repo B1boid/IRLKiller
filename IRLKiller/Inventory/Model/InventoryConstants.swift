@@ -1,11 +1,11 @@
 import UIKit
 
-struct InventoryOffset {
+struct InventoryConstants {
     
-    static let screenHeight = UIScreen.main.bounds.height
-    static let screenWidth = UIScreen.main.bounds.width
+    private static let screenHeight = UIScreen.main.bounds.height
+    private static let screenWidth = UIScreen.main.bounds.width
     
-    static let itemsPerRow: CGFloat = 2
+    private static let itemsPerRow: CGFloat = 2
     
     static let top: CGFloat = 5
     static let bottom: CGFloat = 5

@@ -3,7 +3,7 @@
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -91,23 +91,20 @@
             <point key="canvasLocation" x="-44" y="748.87556221889065"/>
         </scene>
         <!--Inventory-->
-        <scene sceneID="hL4-hk-fem">
+        <scene sceneID="e4k-ZD-GFp">
             <objects>
-                <tableViewController id="cgX-36-HdK" customClass="InventoryViewController" customModule="IRLKiller" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="xQ6-KO-ucM">
+                <viewController id="A1k-4i-yO7" customClass="ContainerViewController" customModule="IRLKiller" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="cjH-aY-e2e">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <connections>
-                            <outlet property="dataSource" destination="cgX-36-HdK" id="iAl-r6-f9l"/>
-                            <outlet property="delegate" destination="cgX-36-HdK" id="CVc-pY-9bv"/>
-                        </connections>
-                    </tableView>
-                    <tabBarItem key="tabBarItem" title="Inventory" image="inventory-icon" id="Z9S-KW-lzM"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="0av-az-Tj0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                        <viewLayoutGuide key="safeArea" id="Dt8-Bd-HdF"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Inventory" image="inventory-icon" selectedImage="inventory-icon" id="xYs-u9-vvv"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dDX-UG-xf2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="944.79999999999995" y="753.37331334332839"/>
+            <point key="canvasLocation" x="927" y="749"/>
         </scene>
         <!--Profile-->
         <scene sceneID="2N8-vb-gKg">
@@ -138,7 +135,7 @@
                     </tabBar>
                     <connections>
                         <segue destination="gEl-Ix-SCQ" kind="relationship" relationship="viewControllers" id="U0q-Vv-dq1"/>
-                        <segue destination="cgX-36-HdK" kind="relationship" relationship="viewControllers" id="6c4-lX-33W"/>
+                        <segue destination="A1k-4i-yO7" kind="relationship" relationship="viewControllers" id="igD-lJ-oI9"/>
                         <segue destination="ctv-ku-LZg" kind="relationship" relationship="viewControllers" id="enu-bc-7MV"/>
                     </connections>
                 </tabBarController>
