@@ -3,6 +3,8 @@ import FirebaseUI
 import FirebaseDatabase
 import Mapbox
 import Firebase
+import MapKit
+import CoreLocation
 
 class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManagerDelegate {
     
@@ -56,36 +58,46 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         try! Auth.auth().signOut()
     }
     
+    func showPrivacyAlert(){
+        let alert = UIAlertController(title: "Please allow geolocation access to use the app", message: "Settings-> Privacy->Location Services-> IRLKiller-> While using the app. Then RESTART the app", preferredStyle: UIAlertController.Style.alert)
+        
+        // add an action (button)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: { (action: UIAlertAction!) in
+            self.checkLocationServices()
+        }))
+        
+        // show the alert
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     func checkLocationServices() {
         if CLLocationManager.locationServicesEnabled() {
             locationManager.delegate = self
             checkLocationAuthorization()
         } else {
-            print("Disanled")
+            showPrivacyAlert()
         }
     }
     
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        checkLocationAuthorization()
+    }
     
     func checkLocationAuthorization() {
         switch CLLocationManager.authorizationStatus() {
         case .denied, .restricted:
-            let alert = UIAlertController(title: "My Title", message: "This is my message.", preferredStyle: UIAlertController.Style.alert)
-            
-            // add an action (button)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-            
-            // show the alert
-            self.present(alert, animated: true, completion: nil)
+            showPrivacyAlert()
+            break
         case .notDetermined:
             locationManager.requestWhenInUseAuthorization()
-            checkLocationAuthorization()
+            break
         case .authorizedAlways, .authorizedWhenInUse:
             break
         }
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+        super.viewDidAppear(false)
         checkLocationServices()
     }
     
@@ -208,13 +220,14 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             ref.observeSingleEvent(of: .value, with: { snapshot in
                 if snapshot.exists() {
                     print("Data Load to DB")
-                    print("x = \(self.userLocation.latitude), y = \(self.userLocation.longitude)")
-                    
                     let location = self.userLocation
-                    ref.updateChildValues(
-                        ["online" : true ,
-                         "pos-x"  : location.latitude,
-                         "pos-y"  : location.longitude])
+                    if (location.latitude != -180 && location.longitude != -180){
+                        print("x = \(self.userLocation.latitude), y = \(self.userLocation.longitude)")
+                        ref.updateChildValues(
+                            ["online" : true ,
+                             "pos-x"  : location.latitude,
+                             "pos-y"  : location.longitude])
+                    }
                 } else {
                     print("The account is deleted, please press test logout and rerun the app\nLOGOUT\nLOGOUT\nLOGOUT")
                 }
@@ -377,4 +390,3 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         self.present(alert, animated: true, completion: nil)
     }
 }
-
