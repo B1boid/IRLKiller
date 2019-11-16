@@ -16,6 +16,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     var w: CGFloat!
     var h: CGFloat!
+    let TC = TimeConverter()
     
     // Окно для ввода логина
     let loginTextField: UITextField = {
@@ -180,9 +181,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     //Создаем две ветки в БД
                     // users в ней будут все данные пользователя и привязаны они к uid
                     // usernames нужна для проверки уникальности логина, в ней связка логин:uid
+                    
                     ref.child("users").updateChildValues(
                         [ result!.user.uid : [ "login" : login,
-                                               "online" : true,
+                                               "time-online" : self.TC.getCurTimeUTC(),
+                                               "time-death": self.TC.getCurTimeUTC(),
                                                "pos-x" : 40.74699,
                                                "pos-y" : -73.98742,
                                                "health": 100,

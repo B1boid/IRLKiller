@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2FA027804731ECCE97E342FC /* Pods_IRLKillerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE081DB13F73E49A16327B3F /* Pods_IRLKillerTests.framework */; };
+		4645B849238041A100339315 /* TimeConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4645B848238041A100339315 /* TimeConverter.swift */; };
 		466ED40E233F92E300EB8CE0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 466ED40D233F92E300EB8CE0 /* Main.storyboard */; };
 		46E1E67623354B0400EBA2FC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E1E67523354B0400EBA2FC /* AppDelegate.swift */; };
 		46E1E67D23354B0500EBA2FC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 46E1E67C23354B0500EBA2FC /* Assets.xcassets */; };
@@ -43,6 +44,7 @@
 
 /* Begin PBXFileReference section */
 		239D32A7EF405E587B26F857 /* Pods_IRLKiller.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IRLKiller.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4645B848238041A100339315 /* TimeConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeConverter.swift; sourceTree = "<group>"; };
 		466ED40D233F92E300EB8CE0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		46E1E67223354B0400EBA2FC /* IRLKiller.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IRLKiller.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		46E1E67523354B0400EBA2FC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -57,7 +59,6 @@
 		46E1E6A923355A4A00EBA2FC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		46E1E6AB23355EC100EBA2FC /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		46E5CC8D23414A7B004AF33D /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
-		46F123A7237F037200A2E0C9 /* TestLocation.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = TestLocation.gpx; sourceTree = "<group>"; };
 		67B54BEC521C8415A594831A /* Pods-IRLKillerUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IRLKillerUITests.debug.xcconfig"; path = "Target Support Files/Pods-IRLKillerUITests/Pods-IRLKillerUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		855C3A0AE27884FA01BA609F /* Pods-IRLKillerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IRLKillerTests.debug.xcconfig"; path = "Target Support Files/Pods-IRLKillerTests/Pods-IRLKillerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		BD49BAB0E9AF2D8A4075C710 /* Pods-IRLKillerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IRLKillerUITests.release.xcconfig"; path = "Target Support Files/Pods-IRLKillerUITests/Pods-IRLKillerUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -100,7 +101,6 @@
 		46E1E66923354B0400EBA2FC = {
 			isa = PBXGroup;
 			children = (
-				46F123A7237F037200A2E0C9 /* TestLocation.gpx */,
 				46E1E67423354B0400EBA2FC /* IRLKiller */,
 				46E1E68923354B0500EBA2FC /* IRLKillerTests */,
 				46E1E67323354B0400EBA2FC /* Products */,
@@ -132,6 +132,7 @@
 				46E1E6A923355A4A00EBA2FC /* GoogleService-Info.plist */,
 				46E1E68123354B0500EBA2FC /* Info.plist */,
 				46E1E67C23354B0500EBA2FC /* Assets.xcassets */,
+				4645B848238041A100339315 /* TimeConverter.swift */,
 			);
 			path = IRLKiller;
 			sourceTree = "<group>";
@@ -416,6 +417,7 @@
 				F83686D0237DD99E0024B44C /* ContainerViewController.swift in Sources */,
 				46E1E6A423354BB800EBA2FC /* TextFieldExtension.swift in Sources */,
 				F83686CE237DD99E0024B44C /* DetailViewController.swift in Sources */,
+				4645B849238041A100339315 /* TimeConverter.swift in Sources */,
 				F83686E3237DE06E0024B44C /* DescriptionWeaponView.swift in Sources */,
 				F83686CF237DD99E0024B44C /* InventoryViewController.swift in Sources */,
 				F899ECCB23366475005A1A95 /* RegexExtension.swift in Sources */,
