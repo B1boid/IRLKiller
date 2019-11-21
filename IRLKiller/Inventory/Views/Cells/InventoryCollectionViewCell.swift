@@ -13,7 +13,8 @@ class InventoryCollectionViewCell: UICollectionViewCell {
     private lazy var weaponNameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .white
+        label.font = UIFont.systemFont(ofSize: 30)
+        label.textColor = .black
         label.backgroundColor = .clear
         return label
     }()
@@ -21,8 +22,8 @@ class InventoryCollectionViewCell: UICollectionViewCell {
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 10)
-        label.textColor = .white
+        label.font = UIFont.systemFont(ofSize: 30)
+        label.textColor = .black
         label.backgroundColor = .clear
         return label
     }()
@@ -47,7 +48,7 @@ class InventoryCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.backgroundColor = .darkGray
+        self.backgroundColor = #colorLiteral(red: 0.7453920841, green: 0.8645043969, blue: 1, alpha: 0.9995117188)
         self.addSubview(weaponNameLabel)
         self.addSubview(weaponIV)
         self.addSubview(descriptionLabel)
@@ -71,7 +72,7 @@ class InventoryCollectionViewCell: UICollectionViewCell {
         beutifyLabelText(label: descriptionLabel)
         
         setupCornerRadius()
-        layourConstrains()
+        layoutConstrains()
     }
     
     func setupCornerRadius() {
@@ -80,7 +81,7 @@ class InventoryCollectionViewCell: UICollectionViewCell {
         self.layer.cornerRadius = InventoryConstants.cornerRadius
     }
     
-    func layourConstrains() {
+    func layoutConstrains() {
         
         let halfRadius = InventoryConstants.cornerRadius / 2
         

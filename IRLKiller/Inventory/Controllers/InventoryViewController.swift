@@ -5,7 +5,7 @@ class InventoryViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        tableView.backgroundColor = #colorLiteral(red: 0.1019607857, green: 0.2784313858, blue: 0.400000006, alpha: 1)
         tableView.register(InventoryTableViewCell.self, forCellReuseIdentifier: InventoryTableViewCell.reuseId)
     }
     
@@ -25,7 +25,7 @@ class InventoryViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: InventoryTableViewCell.reuseId,
                                                  for: indexPath) as! InventoryTableViewCell
-        cell.collectionView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        cell.collectionView.backgroundColor = #colorLiteral(red: 0.1019607857, green: 0.2784313858, blue: 0.400000006, alpha: 1)
         cell.collectionView.reloadData()
         return cell
     }
@@ -46,8 +46,9 @@ class InventoryViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         if let headerView = view as? UITableViewHeaderFooterView {
-            print("IN")
-            headerView.backgroundColor = .systemPink
+            let customColorView = UIView()
+            customColorView.backgroundColor = #colorLiteral(red: 0.07484105974, green: 0.5732269883, blue: 0.8167666793, alpha: 1)
+            headerView.backgroundView = customColorView
         }
     }
 }
@@ -81,3 +82,5 @@ extension InventoryViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize { return InventoryConstants.collectionViewCellSize }
     
 }
+
+
