@@ -43,9 +43,11 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     var myLogin = ""
     var myRating = 0
     var myHealth = 100
+    var myKD = 4
     var timeOfDeath = ""
     var isAlive = true
     let TC = TimeConverter()
+    let defaults = UserDefaults.standard
     
     // View and buttons
     @IBOutlet weak var loginText: UILabel!
@@ -264,7 +266,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                 isAlive = true
             }else{
                 mapView.showsUserLocation = false
-                print("left until rebirth ~\(5-TC.showDiff(oldDate: timeOfDeath, diff: 5))min")
+                print("left until rebirth ~\(5-TC.showDiff(oldDate: timeOfDeath))min")
                 let _ = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(checkRebirth), userInfo: nil, repeats: false)
             }
         }
@@ -369,61 +371,73 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         // Hide the callout view.
         
         //если живой то можешь стрелять
-        if isAlive{
+        guard isAlive else{return}
+        
+        //Если откатилась перезарядка
+        if defaults.string(forKey: "TimeOfLastShot") != nil {
+            guard TC.isMoreThenDiffInSeconds(oldDate: defaults.string(forKey: "TimeOfLastShot")!, diff: myKD)   else {
+                print("Kd remaining : sec  \(myKD-(TC.showDiffInSec(oldDate:defaults.string(forKey: "TimeOfLastShot")!)))")
+                return
+            }
+        }
+        
+        if let curPlayer = players[annotation.title!!]{
+            
+            // если хватает дистанции оружия
+            guard sqrt(pow(curPlayer.position.latitude - self.userLocation.latitude,2)+pow(curPlayer.position.longitude - self.userLocation.longitude,2))<0.0005 else {
+                return
+            }
+           
             mapView.deselectAnnotation(annotation, animated: false)
-            //
-            //Если откатилась перезарядка
-            //потом будет
-            //
-            //И если хватает дистанции
-            //потом будет
             let alert = UIAlertController(title: "Nice shot", message: "-20 HP", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            if let curPlayer = players[annotation.title!!]{
-                let ref = Database.database().reference().child("usernames/\(players[annotation.title!!]!.login.lowercased())")
-                ref.observeSingleEvent(of: .value, with: { (snapshot) in
-                    if let curID = snapshot.value as? String {
-                        var curHealth = curPlayer.health - 20
-                        var Rating1 = self.myRating
-                        var Rating2 = curPlayer.rating
-                        if curHealth <= 0 {
-                            curHealth = 0
-                            self.mapView.removeAnnotation(self.annotationsPlayers[curPlayer.login]!)
-                            let delta: Double = Double(abs(Rating1 - Rating2))
-                            var delta2: Double = 0
-                            print(delta,"RatingsDelta")
-                            switch delta {
-                            case ..<100:
-                                delta2 = (25 - 5 * delta / 100).rounded()
-                            case 100..<1390:
-                                delta2 = (20 - 5 * log2(delta / 100)).rounded()
-                            default:
-                                delta2 = 1
-                            }
-                            print(delta2)
-                            if Rating1 < Rating2 {
-                                delta2 = 50 - delta2
-                            }
-                            print(delta2,"Plus/Minus Delta")
-                            Rating2 -= Int(delta2)
-                            Rating1 += Int(delta2)
-                            self.myRating = Rating1
-                            DispatchQueue.global(qos: .utility).async {
-                                let ref2 = Database.database().reference().child("users/\(self.userID!)")
-                                ref2.updateChildValues(["rating" : Rating1])
-                            }
-                            
+                      alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            
+            let ref = Database.database().reference().child("usernames/\(players[annotation.title!!]!.login.lowercased())")
+            ref.observeSingleEvent(of: .value, with: { (snapshot) in
+                if let curID = snapshot.value as? String {
+                    var curHealth = curPlayer.health - 20
+                    var Rating1 = self.myRating
+                    var Rating2 = curPlayer.rating
+                    if curHealth <= 0 {
+                        curHealth = 0
+                        self.mapView.removeAnnotation(self.annotationsPlayers[curPlayer.login]!)
+                        let delta: Double = Double(abs(Rating1 - Rating2))
+                        var delta2: Double = 0
+                        print(delta,"RatingsDelta")
+                        switch delta {
+                        case ..<100:
+                            delta2 = (25 - 5 * delta / 100).rounded()
+                        case 100..<1390:
+                            delta2 = (20 - 5 * log2(delta / 100)).rounded()
+                        default:
+                            delta2 = 1
+                        }
+                        print(delta2)
+                        if Rating1 < Rating2 {
+                            delta2 = 50 - delta2
+                        }
+                        print(delta2,"Plus/Minus Delta")
+                        Rating2 -= Int(delta2)
+                        Rating1 += Int(delta2)
+                        self.myRating = Rating1
+                        DispatchQueue.global(qos: .utility).async {
+                            let ref2 = Database.database().reference().child("users/\(self.userID!)")
+                            ref2.updateChildValues(["rating" : Rating1])
                         }
                         
-                        DispatchQueue.global(qos: .utility).async {
-                            let ref3 = Database.database().reference().child("users/\(curID)")
-                            ref3.updateChildValues(["health" : curHealth,"rating":Rating2,"time-death":self.TC.getCurTimeUTC()])
-                        }
                     }
-                })
-            }
+                    
+                    DispatchQueue.global(qos: .utility).async {
+                        let ref3 = Database.database().reference().child("users/\(curID)")
+                        ref3.updateChildValues(["health" : curHealth,"rating":Rating2,"time-death":self.TC.getCurTimeUTC()])
+                    }
+                }
+            })
+            defaults.set(TC.getCurTimeUTCWithSec(), forKey: "TimeOfLastShot")
             //можно не алерт будет сделать а всплывающее окно свое
             self.present(alert, animated: true, completion: nil)
         }
+        
+        
     }
 }
