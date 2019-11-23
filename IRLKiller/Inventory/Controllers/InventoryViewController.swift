@@ -25,6 +25,7 @@ class InventoryViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: InventoryTableViewCell.reuseId,
                                                  for: indexPath) as! InventoryTableViewCell
+        
         cell.collectionView.backgroundColor = #colorLiteral(red: 0.1019607857, green: 0.2784313858, blue: 0.400000006, alpha: 1)
         cell.collectionView.reloadData()
         return cell
@@ -37,17 +38,22 @@ class InventoryViewController: UITableViewController {
     
     // MARK:- tableView header params
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 20
+        return 30
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return Weapons.allCases[section].rawValue.capitalized
     }
     
+    // MARK:- Change header colors
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         if let headerView = view as? UITableViewHeaderFooterView {
+            headerView.textLabel?.textColor = #colorLiteral(red: 0.06274510175, green: 0, blue: 0.1921568662, alpha: 1)
+            headerView.textLabel?.textAlignment = .center
+            headerView.textLabel?.font = UIFont(name: "Kefa", size: headerView.bounds.height / 1.25)
+                        
             let customColorView = UIView()
-            customColorView.backgroundColor = #colorLiteral(red: 0.07484105974, green: 0.5732269883, blue: 0.8167666793, alpha: 1)
+            customColorView.backgroundColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)
             headerView.backgroundView = customColorView
         }
     }
@@ -66,14 +72,25 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: InventoryCollectionViewCell.reuseId,
                                                       for: indexPath) as! InventoryCollectionViewCell
         
-        cell.weaponName = "gun"
-        cell.descriptionText = "Nice gun\nYou are Welcome to play"
+        guard let data = getData(for: collectionView, at: indexPath) else { return UICollectionViewCell() }
+        cell.weaponName = data.weaponName
+//        cell.descriptionText = "Nice gun"
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let data = getData(for: collectionView, at: indexPath) else { return }
         let parentVC = self.parent as! ContainerViewController
-        parentVC.showDetailViewController()
+        parentVC.showDetailViewController(data: data)
+    }
+    
+    
+    // MARK:- Get data by collection view and indexPath
+    func getData(for collectionView: UICollectionView, at indexPath: IndexPath) -> Weapon? {
+        let key = Weapons.allCases[collectionView.tag].rawValue
+        guard let values = weaponItems[key] else { return nil }
+        let data = values[indexPath.row]
+        return data
     }
 }
 

@@ -11,7 +11,7 @@ class DetailViewController: UIViewController {
     private lazy var closeButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(closeDetailViewController), for: .touchUpInside)
+        button.addTarget(self, action: #selector(closeDetailViewControllerAction), for: .touchUpInside)
         return button
     }()
     
@@ -125,8 +125,7 @@ class DetailViewController: UIViewController {
     private func layoutWeaponImage() {
         weaponImage.backgroundColor = #colorLiteral(red: 0.8300592303, green: 0.8200153708, blue: 0.7629007101, alpha: 1)
         weaponImage.layer.cornerRadius = 10
-        weaponImage.contentMode = .scaleToFill
-        weaponImage.clipsToBounds = true
+        weaponImage.contentMode = .scaleAspectFit
         
         let xOffset: CGFloat = 20
         let yOffset = nameLabel.frame.maxY + 2
@@ -173,10 +172,9 @@ class DetailViewController: UIViewController {
     // MARK:- Reload data
     private func reloadData(data: Weapon) {
         viewWillLayoutSubviews()
-        let images = [UIImage.shootgun, UIImage.revolver, UIImage.basic, UIImage.knife]
-        weaponImage.image = images.randomElement()!
-        nameLabel.font = UIFont(name: nameLabel.font.fontName, size: 80)
-        nameLabel.text = "AK-47"
+        weaponImage.image = UIImage(named: data.weaponName)!
+        nameLabel.font = UIFont(name: nameLabel.font.fontName, size: 100)
+        nameLabel.text = data.weaponName
         detailCollectionView.reloadData()
     }
     
@@ -204,7 +202,7 @@ class DetailViewController: UIViewController {
             let xInsideCondition = (mainView.frame.minX...mainView.frame.maxX).contains(pointOfTap.x)
             let yInsideCondition = (mainView.frame.minY...mainView.frame.maxY).contains(pointOfTap.y)
             guard xInsideCondition && yInsideCondition else {
-                closeDetailViewController()
+                closeDetailViewControllerAction()
                 return
             }
         default:
@@ -212,9 +210,13 @@ class DetailViewController: UIViewController {
         }
     }
     
-    @objc private func closeDetailViewController() {
+    @objc private func closeDetailViewControllerAction() {
         let parent = self.parent as! ContainerViewController
         parent.hideDetailViewController()
+    }
+    
+    private func chooseWeaponAction() {
+        
     }
 }
 
@@ -231,8 +233,6 @@ extension DetailViewController: UICollectionViewDataSource, UICollectionViewDele
         let params = getPropertyByIndx(index: indexPath.row)
         cell.descriptionLabel.text = params.name
         cell.valueLabel.text = String(params.value)
-        print("From collection view", cell.valueLabel.textAlignment.rawValue)
-       // cell.valueLabel.textAlignment = .center
         return cell
     }
 }
@@ -258,7 +258,7 @@ struct CellConstants {
 
 
 extension UIImage {
-    static let shootgun = UIImage(named: "shootgun")
+    static let shootgun = UIImage(named: "shotgun")
     static let revolver = UIImage(named: "revolver")
     static let knife = UIImage(named: "knife")
     static let basic = UIImage(named: "basic")

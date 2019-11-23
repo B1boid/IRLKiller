@@ -16,7 +16,7 @@ class ContainerViewController: UIViewController {
         add(child: inventoryVC)
     }
     
-    func showDetailViewController() {
+    func showDetailViewController(data: Weapon) {
         if detailVC == nil {
             let xOffset: CGFloat = 10
             let width  = self.view.bounds.width - 2 * xOffset
@@ -30,11 +30,11 @@ class ContainerViewController: UIViewController {
         } else {
             self.view.insertSubview(detailVC.view, aboveSubview: inventoryVC.view)
         }
-        detailVC.weapon = Weapon(weaponName: "gun", weaponCost: 10, weaponDistance: 11, weaponCapacity: 101,
-                                 weaponReloadTime: 108, weaponDamage: 10)
+        
+        detailVC.weapon = data
         
         UIView.animate(withDuration: 0.3,
-                       animations: { self.inventoryVC.view.alpha = 0.1 })
+                       animations: { self.inventoryVC.view.alpha = 0.5 })
     }
     
     func hideDetailViewController() {

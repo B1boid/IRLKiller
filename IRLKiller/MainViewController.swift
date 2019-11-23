@@ -371,7 +371,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         // Hide the callout view.
         
         //если живой то можешь стрелять
-        guard isAlive else{return}
+        guard isAlive else { return }
         
         //Если откатилась перезарядка
         if defaults.string(forKey: "TimeOfLastShot") != nil {
