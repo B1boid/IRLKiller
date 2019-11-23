@@ -1,6 +1,6 @@
 protocol WeaponProtocol {
-    
-    var weaponName: String { set get }
+
+//    var name: String { set get }
 //
 //    var weaponCost: Int  { set get }
 //    var weaponDistance: Int { set get }
@@ -11,10 +11,10 @@ protocol WeaponProtocol {
 }
 
 struct Weapon: WeaponProtocol  {
-    var weaponName: String
-    var weaponCost: Float
-    var weaponDistance: Float
-    var weaponCapacity: Float
-    var weaponReloadTime: Float
-    var weaponDamage: Float
+    let name: String
+    let cost: Float
+    let distance: Float
+    let capacity: Float
+    let reloadTime: Float
+    let damage: Float
 }

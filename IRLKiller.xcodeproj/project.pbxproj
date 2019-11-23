@@ -27,9 +27,9 @@
 		F83686CF237DD99E0024B44C /* InventoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83686C7237DD99E0024B44C /* InventoryViewController.swift */; };
 		F83686D0237DD99E0024B44C /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83686C8237DD99E0024B44C /* ContainerViewController.swift */; };
 		F899ECCB23366475005A1A95 /* RegexExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F899ECCA23366475005A1A95 /* RegexExtension.swift */; };
-		F8B81BCE2386F9A10089199F /* InventoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B81BCB2386F9A10089199F /* InventoryTableViewCell.swift */; };
-		F8B81BCF2386F9A10089199F /* InventoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B81BCC2386F9A10089199F /* InventoryCollectionViewCell.swift */; };
-		F8B81BD02386F9A10089199F /* DetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B81BCD2386F9A10089199F /* DetailCollectionViewCell.swift */; };
+		F8E327332389441200E369FD /* InventoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E327302389441200E369FD /* InventoryTableViewCell.swift */; };
+		F8E327342389441200E369FD /* InventoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E327312389441200E369FD /* InventoryCollectionViewCell.swift */; };
+		F8E327352389441200E369FD /* DetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E327322389441200E369FD /* DetailCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,9 +71,9 @@
 		F83686C7237DD99E0024B44C /* InventoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InventoryViewController.swift; sourceTree = "<group>"; };
 		F83686C8237DD99E0024B44C /* ContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		F899ECCA23366475005A1A95 /* RegexExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegexExtension.swift; sourceTree = "<group>"; };
-		F8B81BCB2386F9A10089199F /* InventoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InventoryTableViewCell.swift; sourceTree = "<group>"; };
-		F8B81BCC2386F9A10089199F /* InventoryCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InventoryCollectionViewCell.swift; sourceTree = "<group>"; };
-		F8B81BCD2386F9A10089199F /* DetailCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailCollectionViewCell.swift; sourceTree = "<group>"; };
+		F8E327302389441200E369FD /* InventoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InventoryTableViewCell.swift; sourceTree = "<group>"; };
+		F8E327312389441200E369FD /* InventoryCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InventoryCollectionViewCell.swift; sourceTree = "<group>"; };
+		F8E327322389441200E369FD /* DetailCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailCollectionViewCell.swift; sourceTree = "<group>"; };
 		FCCBBAB4FE8A6F07C8CA77A3 /* Pods-IRLKiller.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IRLKiller.release.xcconfig"; path = "Target Support Files/Pods-IRLKiller/Pods-IRLKiller.release.xcconfig"; sourceTree = "<group>"; };
 		FEAF83958D61A1AFC56BAD55 /* Pods-IRLKillerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IRLKillerTests.release.xcconfig"; path = "Target Support Files/Pods-IRLKillerTests/Pods-IRLKillerTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -171,7 +171,7 @@
 		F83686BD237DD99E0024B44C /* Inventory */ = {
 			isa = PBXGroup;
 			children = (
-				F8B81BCA2386F9A10089199F /* Cells */,
+				F8E3272E2389441200E369FD /* Views */,
 				F83686C1237DD99E0024B44C /* Model */,
 				F83686C5237DD99E0024B44C /* Controllers */,
 			);
@@ -207,15 +207,23 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		F8B81BCA2386F9A10089199F /* Cells */ = {
+		F8E3272E2389441200E369FD /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				F8B81BCB2386F9A10089199F /* InventoryTableViewCell.swift */,
-				F8B81BCC2386F9A10089199F /* InventoryCollectionViewCell.swift */,
-				F8B81BCD2386F9A10089199F /* DetailCollectionViewCell.swift */,
+				F8E3272F2389441200E369FD /* Cells */,
 			);
-			name = Cells;
-			path = ../../../../Desktop/Cells;
+			name = Views;
+			path = "../../../../Downloads/IRLKiller-master/IRLKiller/Inventory/Views";
+			sourceTree = "<group>";
+		};
+		F8E3272F2389441200E369FD /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				F8E327302389441200E369FD /* InventoryTableViewCell.swift */,
+				F8E327312389441200E369FD /* InventoryCollectionViewCell.swift */,
+				F8E327322389441200E369FD /* DetailCollectionViewCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -408,10 +416,10 @@
 				F83686CD237DD99E0024B44C /* InventoryConstants.swift in Sources */,
 				46E1E6A623354CA900EBA2FC /* LoginViewController.swift in Sources */,
 				F83686D0237DD99E0024B44C /* ContainerViewController.swift in Sources */,
-				F8B81BD02386F9A10089199F /* DetailCollectionViewCell.swift in Sources */,
-				F8B81BCF2386F9A10089199F /* InventoryCollectionViewCell.swift in Sources */,
+				F8E327352389441200E369FD /* DetailCollectionViewCell.swift in Sources */,
+				F8E327342389441200E369FD /* InventoryCollectionViewCell.swift in Sources */,
 				46E1E6A423354BB800EBA2FC /* TextFieldExtension.swift in Sources */,
-				F8B81BCE2386F9A10089199F /* InventoryTableViewCell.swift in Sources */,
+				F8E327332389441200E369FD /* InventoryTableViewCell.swift in Sources */,
 				F83686CE237DD99E0024B44C /* DetailViewController.swift in Sources */,
 				4645B849238041A100339315 /* TimeConverter.swift in Sources */,
 				F83686CF237DD99E0024B44C /* InventoryViewController.swift in Sources */,

@@ -1,6 +1,14 @@
 import UIKit
 
+// MARK:- CollectionViewReloadDataDelegate
+// Сделан для того, чтобы после выбора оружия collectionView обновился, чтобы не обновлять все время
+protocol CollectionViewReloadDataDelegate {
+    func reloadDataInCollectionView(for indexPath: IndexPath)
+}
+
 class InventoryViewController: UITableViewController {
+    
+    private let weaponData = WeaponData.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,19 +34,19 @@ class InventoryViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: InventoryTableViewCell.reuseId,
                                                  for: indexPath) as! InventoryTableViewCell
         
-        cell.collectionView.backgroundColor = #colorLiteral(red: 0.1019607857, green: 0.2784313858, blue: 0.400000006, alpha: 1)
-        cell.collectionView.reloadData()
+        cell.collectionView.backgroundColor = tableView.backgroundColor
         return cell
     }
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+//        print("Table view will display \(Weapons.allCases[indexPath.section].rawValue) \n -------------------- \n")
         guard let tableViewCell = cell as? InventoryTableViewCell else { return }
         tableViewCell.setCollectionViewDataSourceDelegate(self, forRow: indexPath.section)
     }
     
     // MARK:- tableView header params
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 30
+        return InventoryConstants.headerViewHeight
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -64,34 +72,41 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
     // MARK:- collectionView methods
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let key = Weapons.allCases[collectionView.tag].rawValue
-        guard let values = weaponItems[key] else { return 0 }
+        guard let values = weaponData.items[key] else { return 1 }
         return values.count
     }
+    
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: InventoryCollectionViewCell.reuseId,
                                                       for: indexPath) as! InventoryCollectionViewCell
         
-        guard let data = getData(for: collectionView, at: indexPath) else { return UICollectionViewCell() }
-        cell.weaponName = data.weaponName
-//        cell.descriptionText = "Nice gun"
+        if (indexPath.row == 0) {
+            cell.backgroundColor = .red
+        } else {
+            cell.backgroundColor = InventoryCollectionViewCell.standartColor
+        }
+        
+        let weaponType = Weapons.allCases[collectionView.tag].rawValue
+        guard let data = weaponData.getWeapon(for: weaponType, index: indexPath.row) else { return cell }
+        cell.weaponName = data.name
+        cell.descriptionText = "Nice gun"
         return cell
     }
     
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let data = getData(for: collectionView, at: indexPath) else { return }
         let parentVC = self.parent as! ContainerViewController
-        parentVC.showDetailViewController(data: data)
+        let section = collectionView.tag
+        let indexInSection = indexPath.row
+        parentVC.showDetailViewController(weaponSection: section, weaponIndex: indexInSection)
     }
     
-    
-    // MARK:- Get data by collection view and indexPath
-    func getData(for collectionView: UICollectionView, at indexPath: IndexPath) -> Weapon? {
-        let key = Weapons.allCases[collectionView.tag].rawValue
-        guard let values = weaponItems[key] else { return nil }
-        let data = values[indexPath.row]
-        return data
-    }
+//
+//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+//        // Здесь происходит обновление после reloadData()
+//        print("Collection view display: \(Weapons.allCases[collectionView.tag].rawValue) | \(indexPath.row + 1)")
+//    }
 }
 
 extension InventoryViewController: UICollectionViewDelegateFlowLayout {
@@ -101,3 +116,12 @@ extension InventoryViewController: UICollectionViewDelegateFlowLayout {
 }
 
 
+// MARK:- Delegate extension
+extension InventoryViewController: CollectionViewReloadDataDelegate {
+    
+    func reloadDataInCollectionView(for indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath) as! InventoryTableViewCell
+        print("reload data")
+        cell.collectionView.reloadData()
+    }
+}

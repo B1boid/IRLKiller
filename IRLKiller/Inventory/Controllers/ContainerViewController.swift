@@ -16,28 +16,28 @@ class ContainerViewController: UIViewController {
         add(child: inventoryVC)
     }
     
-    func showDetailViewController(data: Weapon) {
+    func showDetailViewController(weaponSection: Int, weaponIndex: Int) {
         if detailVC == nil {
             let xOffset: CGFloat = 10
             let width  = self.view.bounds.width - 2 * xOffset
             let height = self.view.bounds.height / 1.5
             detailVC = DetailViewController(mainViewFrame: CGRect(x: xOffset,
-                                                                      y: (self.view.bounds.height - height) / 2,
-                                                                      width: width,
-                                                                      height: height))
+                                                                  y: (self.view.bounds.height - height) / 2,
+                                                                  width: width,
+                                                                  height: height))
             
             add(child: detailVC)
+            detailVC.delegate = inventoryVC
         } else {
             self.view.insertSubview(detailVC.view, aboveSubview: inventoryVC.view)
         }
-        
-        detailVC.weapon = data
-        
-        UIView.animate(withDuration: 0.3,
-                       animations: { self.inventoryVC.view.alpha = 0.5 })
+        detailVC.setIndexPath(weaponSection: weaponSection, weaponIndex: weaponIndex)
+            
+        inventoryVC.view.removeFromSuperview()
     }
     
     func hideDetailViewController() {
+        self.view.insertSubview(inventoryVC.view, aboveSubview: detailVC.view)
         detailVC.view.removeFromSuperview()
         self.inventoryVC.view.alpha = 1
     }

@@ -2,28 +2,65 @@ enum Weapons: String, CaseIterable {
     case gun
     case grenade
     case rifle
+    case a
+    case b
+    case c
+    case d
 }
 
-let weaponItems = [
+class WeaponData {
     
-    Weapons.gun.rawValue: [
-        Weapon(weaponName: "shotgun", weaponCost: 10, weaponDistance: 10, weaponCapacity: 10, weaponReloadTime: 6, weaponDamage: 50),
-        Weapon(weaponName: "revolver", weaponCost: 20, weaponDistance: 20, weaponCapacity: 7, weaponReloadTime: 5, weaponDamage: 20)
-    ],
+    static let shared = WeaponData()
     
-    Weapons.grenade.rawValue: [
-        Weapon(weaponName: "shotgun", weaponCost: 10, weaponDistance: 10, weaponCapacity: 10, weaponReloadTime: 6, weaponDamage: 50),
-        Weapon(weaponName: "revolver", weaponCost: 20, weaponDistance: 20, weaponCapacity: 7, weaponReloadTime: 5, weaponDamage: 20),
-        Weapon(weaponName: "basic", weaponCost: 10, weaponDistance: 10, weaponCapacity: 10, weaponReloadTime: 6, weaponDamage: 50),
-        Weapon(weaponName: "knife", weaponCost: 20, weaponDistance: 20, weaponCapacity: 7, weaponReloadTime: 5, weaponDamage: 20),
-    ],
+    fileprivate init() {
+        
+    }
     
-    Weapons.rifle.rawValue: [
-        Weapon(weaponName: "shotgun", weaponCost: 10, weaponDistance: 10, weaponCapacity: 10, weaponReloadTime: 6, weaponDamage: 50),
-        Weapon(weaponName: "revolver", weaponCost: 20, weaponDistance: 20, weaponCapacity: 7, weaponReloadTime: 5, weaponDamage: 20),
-        Weapon(weaponName: "basic", weaponCost: 10, weaponDistance: 10, weaponCapacity: 10, weaponReloadTime: 6, weaponDamage: 50),
-        Weapon(weaponName: "revolver", weaponCost: 20, weaponDistance: 20, weaponCapacity: 7, weaponReloadTime: 5, weaponDamage: 20),
-        Weapon(weaponName: "shotgun", weaponCost: 10, weaponDistance: 10, weaponCapacity: 10, weaponReloadTime: 6, weaponDamage: 50),
-        Weapon(weaponName: "knife", weaponCost: 20, weaponDistance: 20, weaponCapacity: 7, weaponReloadTime: 5, weaponDamage: 20)
+    func getWeapon(for key: String, index: Int) -> Weapon? {
+        guard let values = items[key] else { return nil }
+        return values[index]
+    }
+    
+    var tagNeedReload: [Bool] = Array(repeating: false, count: 7)
+    
+    var items: [String: [Weapon]] = [
+        
+        Weapons.gun.rawValue: [
+            Weapon(name: "shotgun", cost: 10, distance: 10, capacity: 10, reloadTime: 6, damage: 50),
+            Weapon(name: "revolver", cost: 20, distance: 20, capacity: 7, reloadTime: 5, damage: 20)
+        ],
+        
+        Weapons.grenade.rawValue: [
+            Weapon(name: "shotgun", cost: 10, distance: 10, capacity: 10, reloadTime: 6, damage: 50),
+            Weapon(name: "knife", cost: 20, distance: 20, capacity: 7, reloadTime: 5, damage: 20),
+            Weapon(name: "basic", cost: 10, distance: 10, capacity: 10, reloadTime: 6, damage: 50),
+            Weapon(name: "revolver", cost: 20, distance: 20, capacity: 7, reloadTime: 5, damage: 20),
+        ],
+        
+        Weapons.rifle.rawValue: [
+            Weapon(name: "shotgun", cost: 10, distance: 10, capacity: 10, reloadTime: 6, damage: 50),
+            Weapon(name: "knife", cost: 20, distance: 20, capacity: 7, reloadTime: 5, damage: 20),
+            Weapon(name: "basic", cost: 10, distance: 10, capacity: 10, reloadTime: 6, damage: 50),
+            Weapon(name: "revolver", cost: 20, distance: 20, capacity: 7, reloadTime: 5, damage: 20),
+            Weapon(name: "basic", cost: 10, distance: 10, capacity: 10, reloadTime: 6, damage: 50),
+            Weapon(name: "revolver", cost: 20, distance: 20, capacity: 7, reloadTime: 5, damage: 20)
+        ],
+        
+        Weapons.a.rawValue: [
+            Weapon(name: "knife", cost: 20, distance: 20, capacity: 7, reloadTime: 5, damage: 20),
+        ],
+        
+        Weapons.b.rawValue: [
+            Weapon(name: "knife", cost: 20, distance: 20, capacity: 7, reloadTime: 5, damage: 20),
+        ],
+        
+        Weapons.c.rawValue: [
+            Weapon(name: "knife", cost: 20, distance: 20, capacity: 7, reloadTime: 5, damage: 20),
+        ],
+        
+        Weapons.d.rawValue: [
+            Weapon(name: "knife", cost: 20, distance: 20, capacity: 7, reloadTime: 5, damage: 20),
+        ],
     ]
-]
+}
+

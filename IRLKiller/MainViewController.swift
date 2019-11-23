@@ -198,8 +198,8 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         
         self.players[curLogin] = curPlayer
         
-        print("show: \(curLogin)")
-        print("x: \(posx), y: \(posy)")
+//        print("show: \(curLogin)")
+//        print("x: \(posx), y: \(posy)")
         
         // тут отрисовываем чела на карте
         if curLogin != myLogin {
@@ -239,10 +239,10 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             //Следующих двух строк не будет в продакшене,они нужны чтобы когда акк удалили не крашилось приложение на устройсвте где сохранен этот акк,при вызове readNewData get пустой login
             ref.observeSingleEvent(of: .value, with: { snapshot in
                 if snapshot.exists() {
-                    print("Data Load to DB")
                     let location = self.userLocation
                     if (location.latitude != -180 && location.longitude != -180){
-                        print("x = \(self.userLocation.latitude), y = \(self.userLocation.longitude)")
+//                        print("Data Load to DB")
+//                        print("x = \(self.userLocation.latitude), y = \(self.userLocation.longitude)")
                         ref.updateChildValues(
                             ["time-online" : self.TC.getCurTimeUTC() ,
                              "pos-x"  : location.latitude,

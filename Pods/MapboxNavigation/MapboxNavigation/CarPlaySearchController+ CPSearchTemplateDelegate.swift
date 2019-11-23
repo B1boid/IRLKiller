@@ -52,8 +52,8 @@ extension CarPlaySearchController: CPSearchTemplateDelegate {
         guard let items = recentSearchItems else { return }
         let extendedItems = resultsOrNoResults(items, limit: CarPlaySearchController.MaximumExtendedSearchResults)
         
-        let section = CPListSection(items: extendedItems)
-        let template = CPListTemplate(title: recentSearchText, sections: [section])
+        let weaponSection = CPListSection(items: extendedItems)
+        let template = CPListTemplate(title: recentSearchText, sections: [weaponSection])
         template.delegate = self
         delegate?.pushTemplate(template, animated: true)
     }
