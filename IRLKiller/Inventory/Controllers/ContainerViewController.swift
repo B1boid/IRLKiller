@@ -14,6 +14,7 @@ class ContainerViewController: UIViewController {
     private func configureInventoryVC() {
         inventoryVC = InventoryViewController()
         add(child: inventoryVC)
+        self.view.addSubview(inventoryVC.view)
     }
     
     func showDetailViewController(weaponSection: Int, weaponIndex: Int) {
@@ -28,18 +29,32 @@ class ContainerViewController: UIViewController {
             
             add(child: detailVC)
             detailVC.delegate = inventoryVC
-        } else {
-            self.view.insertSubview(detailVC.view, aboveSubview: inventoryVC.view)
         }
+        
+        detailVC.view.transform = CGAffineTransform(scaleX: 0.8, y: 1.2)
+        view.insertSubview(detailVC.view, aboveSubview: inventoryVC.view)
+        UIView.animate(withDuration: 0.3,
+                       delay: 0,
+                       usingSpringWithDamping: 0.5,
+                       initialSpringVelocity: 0,
+                       options: [],
+                       animations: {
+                self.inventoryVC.view.alpha = 0.2
+                self.detailVC.view.transform = .identity
+        },
+                       completion: nil)
+
         detailVC.setIndexPath(weaponSection: weaponSection, weaponIndex: weaponIndex)
-            
-        inventoryVC.view.removeFromSuperview()
+    
     }
     
     func hideDetailViewController() {
-        self.view.insertSubview(inventoryVC.view, aboveSubview: detailVC.view)
-        detailVC.view.removeFromSuperview()
-        self.inventoryVC.view.alpha = 1
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [], animations: {
+            self.inventoryVC.view.alpha = 1
+            self.detailVC.view.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
+        }, completion: { (succes) in
+            self.detailVC.view.removeFromSuperview()
+        })
     }
 }
 
@@ -48,14 +63,6 @@ extension ContainerViewController {
     
     func add(child: UIViewController) {
         self.addChild(child)
-        self.view.addSubview(child.view)
         child.didMove(toParent: self)
     }
 }
-
-//
-//extension UIImage {
-//    static var reload: UIImage {
-//        return UIImage("sdfg")
-//    }
-//}

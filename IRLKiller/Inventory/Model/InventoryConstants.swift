@@ -14,12 +14,12 @@ struct InventoryConstants {
     
     static let minLineSpacing: CGFloat = screenWidth / 40
     
-    static let tableViewCellHeight: CGFloat = screenHeight * 6 / 25
+    static let tableViewCellHeight: CGFloat = screenHeight * (6 / 28)
     static let headerViewHeight: CGFloat = tableViewCellHeight / 6
     
     static let collectionViewCellSize: CGSize = CGSize(
         width: (screenWidth - left - right - (itemsPerRow - 1) * minLineSpacing) / itemsPerRow,
-        height: tableViewCellHeight - top - bottom)
+        height: tableViewCellHeight - top - bottom - 1)
     
     static let cornerRadius = tableViewCellHeight / 16
 }

@@ -14,6 +14,7 @@ class InventoryViewController: UITableViewController {
         super.viewDidLoad()
         
         tableView.backgroundColor = #colorLiteral(red: 0.1019607857, green: 0.2784313858, blue: 0.400000006, alpha: 1)
+        tableView.showsVerticalScrollIndicator = false
         tableView.register(InventoryTableViewCell.self, forCellReuseIdentifier: InventoryTableViewCell.reuseId)
     }
     
@@ -44,9 +45,9 @@ class InventoryViewController: UITableViewController {
         tableViewCell.setCollectionViewDataSourceDelegate(self, forRow: indexPath.section)
     }
     
-    // MARK:- tableView header params
+    // MARK:- tableView header attributes
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return InventoryConstants.headerViewHeight
+        return InventoryConstants.tableViewCellHeight / 8
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -82,10 +83,11 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
                                                       for: indexPath) as! InventoryCollectionViewCell
         
         if (indexPath.row == 0) {
-            cell.backgroundColor = .red
+            cell.layer.borderColor = InventoryCollectionViewCell.chooseColor
         } else {
-            cell.backgroundColor = InventoryCollectionViewCell.standartColor
+            cell.layer.borderColor = InventoryCollectionViewCell.standartColor
         }
+//        cell.applyCellDesign(shadowColor: #colorLiteral(red: 0.3098039329, green: 0.01568627544, blue: 0.1294117719, alpha: 1))
         
         let weaponType = Weapons.allCases[collectionView.tag].rawValue
         guard let data = weaponData.getWeapon(for: weaponType, index: indexPath.row) else { return cell }
@@ -121,7 +123,7 @@ extension InventoryViewController: CollectionViewReloadDataDelegate {
     
     func reloadDataInCollectionView(for indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! InventoryTableViewCell
-        print("reload data")
         cell.collectionView.reloadData()
+        print("reload data")
     }
 }

@@ -3,7 +3,7 @@ import UIKit
 
 class DetailViewController: UIViewController {
     
-    var weaponData = WeaponData.shared
+    private let weaponData = WeaponData.shared
     var delegate: CollectionViewReloadDataDelegate?
     
     private var curWeapon: Weapon!
@@ -89,7 +89,7 @@ class DetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
+        self.view.backgroundColor = .clear
     }
     
     override func viewWillLayoutSubviews() {
