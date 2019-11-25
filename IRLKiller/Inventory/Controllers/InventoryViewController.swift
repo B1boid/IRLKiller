@@ -9,16 +9,29 @@ protocol CollectionViewReloadDataDelegate {
 class InventoryViewController: UITableViewController {
     
     private let weaponData = WeaponData.shared
+    private var statusBarColorChangeView: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.backgroundColor = #colorLiteral(red: 0.1019607857, green: 0.2784313858, blue: 0.400000006, alpha: 1)
+        setupTableView()
+        setupBarView()
+    }
+    
+    private func setupBarView() {
+        statusBarColorChangeView = UIView()
+        statusBarColorChangeView.backgroundColor = InventoryViewController.bgColor
+        statusBarColorChangeView.frame = view.safeAreaLayoutGuide.layoutFrame
+    }
+    
+    private func setupTableView() {
+        tableView.backgroundColor = InventoryViewController.bgColor
         tableView.showsVerticalScrollIndicator = false
+        tableView.shouldScrollSectionHeaders = true
         tableView.register(InventoryTableViewCell.self, forCellReuseIdentifier: InventoryTableViewCell.reuseId)
     }
     
-    // MARK:- tableView cell params
+    // MARK:- tableView cell attributes
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
@@ -40,7 +53,7 @@ class InventoryViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-//        print("Table view will display \(Weapons.allCases[indexPath.section].rawValue) \n -------------------- \n")
+        //        print("Table view will display \(Weapons.allCases[indexPath.section].rawValue) \n -------------------- \n")
         guard let tableViewCell = cell as? InventoryTableViewCell else { return }
         tableViewCell.setCollectionViewDataSourceDelegate(self, forRow: indexPath.section)
     }
@@ -57,12 +70,12 @@ class InventoryViewController: UITableViewController {
     // MARK:- Change header colors
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         if let headerView = view as? UITableViewHeaderFooterView {
-            headerView.textLabel?.textColor = #colorLiteral(red: 0.06274510175, green: 0, blue: 0.1921568662, alpha: 1)
+            headerView.textLabel?.textColor = #colorLiteral(red: 0.07587141544, green: 0.1329714358, blue: 0.2183612585, alpha: 1)
             headerView.textLabel?.textAlignment = .center
             headerView.textLabel?.font = UIFont(name: "Kefa", size: headerView.bounds.height / 1.25)
-                        
+            
             let customColorView = UIView()
-            customColorView.backgroundColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)
+            customColorView.backgroundColor = InventoryViewController.headerColor
             headerView.backgroundView = customColorView
         }
     }
@@ -82,12 +95,14 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: InventoryCollectionViewCell.reuseId,
                                                       for: indexPath) as! InventoryCollectionViewCell
         
-        if (indexPath.row == 0) {
+        switch indexPath.row {
+        case 0:
             cell.layer.borderColor = InventoryCollectionViewCell.chooseColor
-        } else {
+        default:
             cell.layer.borderColor = InventoryCollectionViewCell.standartColor
         }
-//        cell.applyCellDesign(shadowColor: #colorLiteral(red: 0.3098039329, green: 0.01568627544, blue: 0.1294117719, alpha: 1))
+        
+        cell.backgroundColor = InventoryViewController.weaponCellColor
         
         let weaponType = Weapons.allCases[collectionView.tag].rawValue
         guard let data = weaponData.getWeapon(for: weaponType, index: indexPath.row) else { return cell }
@@ -104,11 +119,11 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
         parentVC.showDetailViewController(weaponSection: section, weaponIndex: indexInSection)
     }
     
-//
-//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        // Здесь происходит обновление после reloadData()
-//        print("Collection view display: \(Weapons.allCases[collectionView.tag].rawValue) | \(indexPath.row + 1)")
-//    }
+    //
+    //    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+    //        // Здесь происходит обновление после reloadData()
+    //        print("Collection view display: \(Weapons.allCases[collectionView.tag].rawValue) | \(indexPath.row + 1)")
+    //    }
 }
 
 extension InventoryViewController: UICollectionViewDelegateFlowLayout {
@@ -118,12 +133,44 @@ extension InventoryViewController: UICollectionViewDelegateFlowLayout {
 }
 
 
-// MARK:- Delegate extension
+// MARK:- Delegate extension & colors constants
 extension InventoryViewController: CollectionViewReloadDataDelegate {
     
     func reloadDataInCollectionView(for indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! InventoryTableViewCell
         cell.collectionView.reloadData()
         print("reload data")
+    }
+    
+    static let bgColor = #colorLiteral(red: 0.2092410028, green: 0.3064872622, blue: 0.4088295698, alpha: 1)
+    static let weaponCellColor = #colorLiteral(red: 0.5943054557, green: 0.8013091683, blue: 0.8286970258, alpha: 1)
+    static let headerColor = #colorLiteral(red: 0.9223738313, green: 0.9414827228, blue: 0.9628887773, alpha: 1)
+}
+
+extension UITableView {
+    
+    static let shouldScrollSectionHeadersDummyViewHeight = CGFloat(100)
+    
+    var shouldScrollSectionHeaders: Bool {
+        set {
+            if newValue {
+                tableHeaderView = UIView(frame: CGRect(x: 0,
+                                                       y: 0,
+                                                       width: bounds.size.width,
+                                                       height: UITableView.shouldScrollSectionHeadersDummyViewHeight))
+                
+                // Говорим что наш контент(ячейки) не будет(будут) налезать на headerView
+                contentInset = UIEdgeInsets(top: (-1) * UITableView.shouldScrollSectionHeadersDummyViewHeight,
+                                            left: 0,
+                                            bottom: 0,
+                                            right: 0)
+            } else {
+                tableHeaderView = nil
+                contentInset = .zero
+            }
+        }
+        get {
+            return tableHeaderView != nil && contentInset.top == UITableView.shouldScrollSectionHeadersDummyViewHeight
+        }
     }
 }

@@ -31,6 +31,7 @@ class ContainerViewController: UIViewController {
             detailVC.delegate = inventoryVC
         }
         
+        // Animating view appereance 
         detailVC.view.transform = CGAffineTransform(scaleX: 0.8, y: 1.2)
         view.insertSubview(detailVC.view, aboveSubview: inventoryVC.view)
         UIView.animate(withDuration: 0.3,
@@ -45,11 +46,10 @@ class ContainerViewController: UIViewController {
                        completion: nil)
 
         detailVC.setIndexPath(weaponSection: weaponSection, weaponIndex: weaponIndex)
-    
     }
     
     func hideDetailViewController() {
-        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [], animations: {
+        UIView.animate(withDuration: 0.2, animations: {
             self.inventoryVC.view.alpha = 1
             self.detailVC.view.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
         }, completion: { (succes) in

@@ -96,15 +96,23 @@ class DetailViewController: UIViewController {
         super.viewWillLayoutSubviews()
         
         print("Start layout")
-        mainView.layer.cornerRadius = cornerRadius
-        mainView.backgroundColor = #colorLiteral(red: 0.1516100168, green: 0.211818397, blue: 0.1466259658, alpha: 1)
-        detailCollectionView.backgroundColor = mainView.backgroundColor
+        designMainView()
         
         layoutNameLabel()
         layoutWeaponImage()
         layoutDetailCollectionView()
         layoutCloseButton()
         layoutChooseButton()
+    }
+    
+    
+    // MARK:- Design main view
+    private func designMainView() {
+        mainView.layer.cornerRadius = cornerRadius
+        mainView.backgroundColor = #colorLiteral(red: 0.1165478751, green: 0.301977098, blue: 0.3084881604, alpha: 1)
+        mainView.layer.borderWidth = 4
+        mainView.layer.borderColor = #colorLiteral(red: 0.4340616167, green: 0.727235496, blue: 0.5600054264, alpha: 1)
+        detailCollectionView.backgroundColor = mainView.backgroundColor
     }
     
     // MARK:- Layout functions
@@ -128,7 +136,7 @@ class DetailViewController: UIViewController {
     }
     
     private func layoutWeaponImage() {
-        weaponImage.backgroundColor = #colorLiteral(red: 0.8300592303, green: 0.8200153708, blue: 0.7629007101, alpha: 1)
+        weaponImage.backgroundColor = #colorLiteral(red: 0.8981302381, green: 0.8737419248, blue: 0.8740172982, alpha: 1)
         weaponImage.layer.cornerRadius = 10
         weaponImage.contentMode = .scaleAspectFit
         
@@ -164,7 +172,7 @@ class DetailViewController: UIViewController {
     }
     
     private func layoutChooseButton() {
-        chooseButton.backgroundColor = #colorLiteral(red: 0.2891684771, green: 0.1964806318, blue: 0.3006016016, alpha: 1)
+        chooseButton.backgroundColor = #colorLiteral(red: 0.4193970859, green: 0.6569570899, blue: 0.6623717546, alpha: 1)
         chooseButton.setTitle("Choose this weapon", for: .normal)
         chooseButton.setTitleColor(.white, for: .normal)
         chooseButton.titleLabel?.adjustsFontSizeToFitWidth = true
@@ -239,7 +247,7 @@ extension DetailViewController: UICollectionViewDataSource, UICollectionViewDele
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailCollectionViewCell.reuseId, for: indexPath) as! DetailCollectionViewCell
         
-        cell.backgroundColor = #colorLiteral(red: 0.2891684771, green: 0.1964806318, blue: 0.3006016016, alpha: 1)
+        cell.backgroundColor = #colorLiteral(red: 0.2044287026, green: 0.4524510503, blue: 0.4624926448, alpha: 1)
         let attribute = WeaponAttributes.allCases[indexPath.row]
         let attributeName = attribute.rawValue.split(separator: "_").joined(separator: " ")
         let atrributeValue = String(attribute.getValue(weapon: curWeapon))
@@ -278,7 +286,7 @@ enum WeaponAttributes: String, CaseIterable {
 struct AttributeCellConstants {
     static let minInteritemSpacing: CGFloat = 10
     static let itemsPerRow: CGFloat = 4
-    static let inset: CGFloat = 5
+    static let inset: CGFloat = 10
     
     static func calcWidth(collectionViewWidth: CGFloat) -> CGFloat {
         return (collectionViewWidth - (AttributeCellConstants.itemsPerRow - 1) * AttributeCellConstants.minInteritemSpacing
