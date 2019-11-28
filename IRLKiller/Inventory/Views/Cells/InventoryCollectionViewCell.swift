@@ -48,7 +48,9 @@ class InventoryCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.backgroundColor = #colorLiteral(red: 0.7453920841, green: 0.8645043969, blue: 1, alpha: 0.9995117188)
+        self.backgroundColor = InventoryCollectionViewCell.standartBorderColor
+        self.layer.borderColor = InventoryCollectionViewCell.standartBorderColor.cgColor
+        self.layer.borderWidth = 4
         self.addSubview(weaponNameLabel)
         self.addSubview(weaponIV)
         self.addSubview(descriptionLabel)
@@ -58,46 +60,61 @@ class InventoryCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func beutifyLabelText(label: UILabel) {
+    private func beutifyLabelText(label: UILabel) {
         label.adjustsFontSizeToFitWidth = true
         label.textAlignment = .center
-        label.sizeToFit()
-        label.numberOfLines = 3
+        label.numberOfLines = 2
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        beutifyLabelText(label: weaponNameLabel)
-        beutifyLabelText(label: descriptionLabel)
-        
         setupCornerRadius()
-        layoutConstrains()
+        
+        let cornerOffset = InventoryConstants.cornerRadius / 2
+        
+        layoutNameLabel(cornerOffset: cornerOffset)
+        layoutImageView()
+        layoutDescriptionLabel(cornerOffset: cornerOffset)
     }
     
-    func setupCornerRadius() {
-        weaponIV.clipsToBounds = true
+    private func setupCornerRadius() {
         weaponIV.layer.cornerRadius = InventoryConstants.cornerRadius
         self.layer.cornerRadius = InventoryConstants.cornerRadius
     }
     
-    func layoutConstrains() {
+    private func layoutNameLabel(cornerOffset: CGFloat) {
+        weaponNameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 5).isActive                       = true
+        weaponNameLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: cornerOffset).isActive    = true
+        weaponNameLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -cornerOffset).isActive = true
+        weaponNameLabel.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 2 / 9).isActive           = true
         
-        let halfRadius = InventoryConstants.cornerRadius / 2
-        
-        weaponNameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 1).isActive = true
-        weaponNameLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: halfRadius).isActive = true
-        weaponNameLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -halfRadius).isActive = true
-        weaponNameLabel.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 1 / 9).isActive = true
-        
-        weaponIV.topAnchor.constraint(equalTo: weaponNameLabel.bottomAnchor, constant: 2).isActive = true
-        weaponIV.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 5).isActive = true
-        weaponIV.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -5).isActive = true
-        weaponIV.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 6 / 9).isActive = true
-        
-        descriptionLabel.topAnchor.constraint(equalTo: weaponIV.bottomAnchor, constant: 1).isActive = true
-        descriptionLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: halfRadius).isActive = true
-        descriptionLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -halfRadius).isActive = true
-        descriptionLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -halfRadius).isActive = true
+        beutifyLabelText(label: weaponNameLabel)
     }
+    
+    private func layoutImageView() {
+        weaponIV.contentMode = .scaleAspectFit
+        
+        weaponIV.topAnchor.constraint(equalTo: weaponNameLabel.bottomAnchor, constant: 5).isActive               = true
+        weaponIV.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10).isActive                    = true
+        weaponIV.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10).isActive                 = true
+        weaponIV.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 5 / 9).isActive                 = true
+    }
+    
+    
+    private func layoutDescriptionLabel(cornerOffset: CGFloat) {
+        descriptionLabel.topAnchor.constraint(equalTo: weaponIV.bottomAnchor, constant: 5).isActive                = true
+        descriptionLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: cornerOffset).isActive    = true
+        descriptionLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -cornerOffset).isActive = true
+        descriptionLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -cornerOffset).isActive     = true
+        
+        beutifyLabelText(label: descriptionLabel)
+    }
+}
+
+extension InventoryCollectionViewCell {
+    
+    static let standartBorderColor = #colorLiteral(red: 0.7453920841, green: 0.8645043969, blue: 1, alpha: 0.9995117188)
+    static let chooseBorderColor = UIColor.white.cgColor
+    
 }

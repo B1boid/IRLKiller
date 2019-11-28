@@ -21,8 +21,6 @@ class WeaponData {
         return values[index]
     }
     
-    var tagNeedReload: [Bool] = Array(repeating: false, count: 7)
-    
     var items: [String: [Weapon]] = [
         
         Weapons.gun.rawValue: [

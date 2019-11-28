@@ -97,9 +97,9 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
         
         switch indexPath.row {
         case 0:
-            cell.layer.borderColor = InventoryCollectionViewCell.chooseColor
+            cell.layer.borderColor = InventoryCollectionViewCell.chooseBorderColor
         default:
-            cell.layer.borderColor = InventoryCollectionViewCell.standartColor
+            cell.layer.borderColor = InventoryCollectionViewCell.standartBorderColor.cgColor
         }
         
         cell.backgroundColor = InventoryViewController.weaponCellColor

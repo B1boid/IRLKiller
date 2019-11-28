@@ -221,9 +221,7 @@ class DetailViewController: UIViewController {
         switch sender.state {
         case .ended:
             let pointOfTap = sender.location(in: view)
-            let xInsideCondition = (mainView.frame.minX...mainView.frame.maxX).contains(pointOfTap.x)
-            let yInsideCondition = (mainView.frame.minY...mainView.frame.maxY).contains(pointOfTap.y)
-            guard xInsideCondition && yInsideCondition else {
+            guard mainView.frame.contains(pointOfTap) else {
                 closeDetailViewControllerAction()
                 return
             }

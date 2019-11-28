@@ -221,12 +221,12 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                 self.annotationsPlayers[curLogin] = curPoint
             }
             
-        }else{
+        } else {
             let lstHealth = myHealth
             myHealth = curHealth
             
             //убили меня
-            if (lstHealth>0 && curHealth==0){
+            if (lstHealth > 0 && curHealth == 0){
                 timeOfDeath = timeDeath
                 checkRebirth()
             }
