@@ -15,14 +15,14 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     let pitch: CGFloat = 30
     let heading: CLLocationDirection = 180
     
-    var userID: String?
+    var userUID: String?
     var userLocation: CLLocationCoordinate2D {
         get { return mapView.userLocation?.coordinate ?? basicLocation }
     }
     var isNotAlreadyShown: Bool = true
     
     struct Player {
-        var login: String
+        let login: String
         var position: CLLocationCoordinate2D
         var isOnline: Bool
         var health: Int
@@ -112,8 +112,8 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         if Auth.auth().currentUser != nil && isNotAlreadyShown {
             
             isNotAlreadyShown = false
-            userID = Auth.auth().currentUser?.uid
-            let ref = Database.database().reference().child("users/\(userID!)")
+            userUID = Auth.auth().currentUser?.uid
+            let ref = Database.database().reference().child("users/\(userUID!)")
             
             let currentCamera = MGLMapCamera(
                 lookingAtCenter: self.basicLocation,
@@ -235,7 +235,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     @objc func updateDB() {
         DispatchQueue.global(qos: .utility).async {
-            let ref = Database.database().reference().child("users/\(self.userID!)")
+            guard let ref = DataBaseManager.shared.refToUser else { return }
             //Следующих двух строк не будет в продакшене,они нужны чтобы когда акк удалили не крашилось приложение на устройсвте где сохранен этот акк,при вызове readNewData get пустой login
             ref.observeSingleEvent(of: .value, with: { snapshot in
                 if snapshot.exists() {
@@ -243,10 +243,10 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                     if (location.latitude != -180 && location.longitude != -180){
 //                        print("Data Load to DB")
 //                        print("x = \(self.userLocation.latitude), y = \(self.userLocation.longitude)")
-                        ref.updateChildValues(
-                            ["time-online" : self.TC.getCurTimeUTC() ,
-                             "pos-x"  : location.latitude,
-                             "pos-y"  : location.longitude])
+                        let values: [String: Any] = ["time-online" : self.TC.getCurTimeUTC() ,
+                                                     "pos-x"       : location.latitude,
+                                                     "pos-y"       : location.longitude]
+                        DataBaseManager.shared.updateUserValues(for: self.userUID, with: values)
                     }
                 } else {
                     print("The account is deleted, please press test logout and rerun the app\nLOGOUT\nLOGOUT\nLOGOUT")
@@ -260,7 +260,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         if (myHealth == 0){
             isAlive = false
             if(TC.isMoreThenDiff(oldDate: timeOfDeath, diff: 5)){
-                let ref = Database.database().reference().child("users/\(self.userID!)")
+                guard let ref = DataBaseManager.shared.refToUser else { return }
                 ref.updateChildValues(["health" : 100])
                 mapView.showsUserLocation = true
                 isAlive = true
@@ -381,6 +381,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             }
         }
         
+        
         if let curPlayer = players[annotation.title!!]{
             
             // если хватает дистанции оружия
@@ -394,14 +395,14 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             
             let ref = Database.database().reference().child("usernames/\(players[annotation.title!!]!.login.lowercased())")
             ref.observeSingleEvent(of: .value, with: { (snapshot) in
-                if let curID = snapshot.value as? String {
-                    var curHealth = curPlayer.health - 20
-                    var Rating1 = self.myRating
-                    var Rating2 = curPlayer.rating
-                    if curHealth <= 0 {
-                        curHealth = 0
+                if let damagedUserUID = snapshot.value as? String {
+                    var damagedUserHealth = curPlayer.health - 20
+                    var rating = self.myRating
+                    var damagedUserRating = curPlayer.rating
+                    if damagedUserHealth <= 0 {
+                        damagedUserHealth = 0
                         self.mapView.removeAnnotation(self.annotationsPlayers[curPlayer.login]!)
-                        let delta: Double = Double(abs(Rating1 - Rating2))
+                        let delta: Double = Double(abs(rating - damagedUserRating))
                         var delta2: Double = 0
                         print(delta,"RatingsDelta")
                         switch delta {
@@ -413,23 +414,24 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                             delta2 = 1
                         }
                         print(delta2)
-                        if Rating1 < Rating2 {
+                        if rating < damagedUserRating {
                             delta2 = 50 - delta2
                         }
                         print(delta2,"Plus/Minus Delta")
-                        Rating2 -= Int(delta2)
-                        Rating1 += Int(delta2)
-                        self.myRating = Rating1
+                        damagedUserRating -= Int(delta2)
+                        rating += Int(delta2)
+                        self.myRating = rating
                         DispatchQueue.global(qos: .utility).async {
-                            let ref2 = Database.database().reference().child("users/\(self.userID!)")
-                            ref2.updateChildValues(["rating" : Rating1])
+                            DataBaseManager.shared.updateUserValues(for: self.userUID, with: ["rating" : rating])
                         }
-                        
                     }
                     
                     DispatchQueue.global(qos: .utility).async {
-                        let ref3 = Database.database().reference().child("users/\(curID)")
-                        ref3.updateChildValues(["health" : curHealth,"rating":Rating2,"time-death":self.TC.getCurTimeUTC()])
+                        let values: [String: Any] = ["health"     : damagedUserHealth,
+                                                     "rating"     : damagedUserRating,
+                                                     "time-death" : self.TC.getCurTimeUTC()]
+                        
+                        DataBaseManager.shared.updateUserValues(for: damagedUserUID, with: values)
                     }
                 }
             })

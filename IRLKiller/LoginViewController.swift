@@ -27,7 +27,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         textField.borderStyle = .roundedRect
         textField.backgroundColor  = .clear
         textField.maxLength = 14
-        textField.sizeToFit()
         textField.adjustsFontSizeToFitWidth = true
         return textField
     }()
@@ -80,7 +79,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         loginTextField.delegate = self
-
+        
         // Adding subviews
         subviews = [
             bgImageView, gameNameLabel, loginTextField, errorMsgLabel, entryButton
@@ -93,7 +92,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         w = view.frame.width
         h = view.frame.height
         let framesOfSubviews: [OffsetForView] =
-        [
+            [
                 (xOffset: w / 8, yOffset: h / 10, height: h / 6, view: gameNameLabel),
                 (xOffset: w / 8, yOffset: h / 5, height: h / 15, view: loginTextField),
                 (xOffset: w / 8, yOffset: h / 15, height: h / 10, view: errorMsgLabel),
@@ -131,7 +130,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         )
     }
     
-    func checkLoginValidity(login: String) -> Bool {
+    private func checkLoginValidity(login: String) -> Bool {
         
         guard login != "Enter your login:" else {
             showThenHideErrorMsg(duration: 5.0, error: "Please enter login")
@@ -151,16 +150,18 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         return true;
     }
     
-    func doLogin() {
+    private func doLogin() {
         
         // Проверяем валидность логина и выводим сообщение об этом
         let login = loginTextField.text!.trimmingCharacters(in: .whitespaces)
         
         guard checkLoginValidity(login: login) else { return }
-    
+        
         //Подключаемся к БД и ищем занят ли логин
-        let ref = Database.database().reference()
-        ref.child("usernames/\(login.lowercased())").observeSingleEvent(of: .value, with: { snapshot in
+        
+        let refToUser = DataBaseManager.Refs.databaseUserNames.child("/\(login.lowercased())")
+        
+        refToUser.observeSingleEvent(of: .value, with: { snapshot in
             guard !snapshot.exists() else {
                 self.showThenHideErrorMsg(duration: 5.0, error: "Login is used")
                 return
@@ -168,43 +169,23 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             
             self.loadingImageView.frame = self.view.frame
             self.view.addSubview(self.loadingImageView)
+    
+            let values: [String: Any] = [ "login"       : login,
+                                          "time-online" : self.TC.getCurTimeUTC(),
+                                          "time-death"  : self.TC.getCurTimeUTC(),
+                                          "pos-x"       : 40.74699,
+                                          "pos-y"       : -73.98742,
+                                          "health"      : 100,
+                                          "rating"      : 1200 ]
             
-            // Создаем связку почты и пароля для входа,она нужна только чтобы использовать возможность авторизации FirebaseAuth ,от пользователя понадобится только логин
-            
-            let email = login + "mail@mail.com"
-            let password = login + "pass"
-            
-            Auth.auth().createUser(withEmail: email, password: password) { (result, error) in
-                if error == nil && result != nil {
-                    print(result!.user.uid)
-                    
-                    //Создаем две ветки в БД
-                    // users в ней будут все данные пользователя и привязаны они к uid
-                    // usernames нужна для проверки уникальности логина, в ней связка логин:uid
-                    
-                    ref.child("users").updateChildValues(
-                        [ result!.user.uid : [ "login" : login,
-                                               "time-online" : self.TC.getCurTimeUTC(),
-                                               "time-death": self.TC.getCurTimeUTC(),
-                                               "pos-x" : 40.74699,
-                                               "pos-y" : -73.98742,
-                                               "health": 100,
-                                               "rating": 1200 ]
-                        ]
-                    )
-                    ref.child("usernames").updateChildValues(
-                        [ login.lowercased() : result!.user.uid ]
-                    )
-                    self.loadingImageView.removeFromSuperview()
-                    self.dismiss(animated: true, completion: nil)
-                } else {
-                    print(error!.localizedDescription)
-                }
+            DataBaseManager.shared.createUser(login: login, values: values) {
+                self.loadingImageView.removeFromSuperview()
+                self.dismiss(animated: true, completion: nil)
             }
         })
     }
     
-    func editGreetMsg(writeGreetIfEmpty: Bool) {
+    private func editGreetMsg(writeGreetIfEmpty: Bool) {
         if loginTextField.text == LoginViewController.greetingMsg {
             loginTextField.text = ""
         }
@@ -215,7 +196,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    func showThenHideErrorMsg(duration: TimeInterval, error: String) {
+    private func showThenHideErrorMsg(duration: TimeInterval, error: String) {
         errorMsgLabel.text = error
         self.errorMsgLabel.alpha = 1
         UIView.animate(withDuration: duration) {

@@ -29,6 +29,7 @@
 		F83686CE237DD99E0024B44C /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83686C6237DD99E0024B44C /* DetailViewController.swift */; };
 		F83686CF237DD99E0024B44C /* InventoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83686C7237DD99E0024B44C /* InventoryViewController.swift */; };
 		F83686D0237DD99E0024B44C /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83686C8237DD99E0024B44C /* ContainerViewController.swift */; };
+		F83E619A239062A40076076F /* DataBaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83E6199239062A40076076F /* DataBaseManager.swift */; };
 		F899ECCB23366475005A1A95 /* RegexExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F899ECCA23366475005A1A95 /* RegexExtension.swift */; };
 /* End PBXBuildFile section */
 
@@ -73,6 +74,7 @@
 		F83686C6237DD99E0024B44C /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		F83686C7237DD99E0024B44C /* InventoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InventoryViewController.swift; sourceTree = "<group>"; };
 		F83686C8237DD99E0024B44C /* ContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
+		F83E6199239062A40076076F /* DataBaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataBaseManager.swift; sourceTree = "<group>"; };
 		F899ECCA23366475005A1A95 /* RegexExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegexExtension.swift; sourceTree = "<group>"; };
 		FCCBBAB4FE8A6F07C8CA77A3 /* Pods-IRLKiller.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IRLKiller.release.xcconfig"; path = "Target Support Files/Pods-IRLKiller/Pods-IRLKiller.release.xcconfig"; sourceTree = "<group>"; };
 		FEAF83958D61A1AFC56BAD55 /* Pods-IRLKillerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IRLKillerTests.release.xcconfig"; path = "Target Support Files/Pods-IRLKillerTests/Pods-IRLKillerTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 				46E1E68123354B0500EBA2FC /* Info.plist */,
 				46E1E67C23354B0500EBA2FC /* Assets.xcassets */,
 				4645B848238041A100339315 /* TimeConverter.swift */,
+				F83E6199239062A40076076F /* DataBaseManager.swift */,
 			);
 			path = IRLKiller;
 			sourceTree = "<group>";
@@ -420,6 +423,7 @@
 				F829EFB6238DC2E300DA4CC1 /* DetailCollectionViewCell.swift in Sources */,
 				F829EFB5238DC2E300DA4CC1 /* InventoryCollectionViewCell.swift in Sources */,
 				46E1E6A423354BB800EBA2FC /* TextFieldExtension.swift in Sources */,
+				F83E619A239062A40076076F /* DataBaseManager.swift in Sources */,
 				F829EFB4238DC2E300DA4CC1 /* InventoryTableViewCell.swift in Sources */,
 				F83686CE237DD99E0024B44C /* DetailViewController.swift in Sources */,
 				4645B849238041A100339315 /* TimeConverter.swift in Sources */,
