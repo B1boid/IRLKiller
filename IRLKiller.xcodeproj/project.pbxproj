@@ -125,17 +125,15 @@
 			children = (
 				F83686BD237DD99E0024B44C /* Inventory */,
 				F899ECC923366443005A1A95 /* Extensions */,
-				46E1E6A523354CA900EBA2FC /* LoginViewController.swift */,
-				46E1E6AB23355EC100EBA2FC /* MainViewController.swift */,
-				46E5CC8D23414A7B004AF33D /* ProfileViewController.swift */,
+				F89644D82396C6F300C0D764 /* Utils */,
+				F89644D92396C72800C0D764 /* Map & Login Controllers */,
+				F89644DA2396C75100C0D764 /* Profile bar */,
 				466ED40D233F92E300EB8CE0 /* Main.storyboard */,
 				46E1E67523354B0400EBA2FC /* AppDelegate.swift */,
 				46E1E67E23354B0500EBA2FC /* LaunchScreen.storyboard */,
 				46E1E6A923355A4A00EBA2FC /* GoogleService-Info.plist */,
 				46E1E68123354B0500EBA2FC /* Info.plist */,
 				46E1E67C23354B0500EBA2FC /* Assets.xcassets */,
-				4645B848238041A100339315 /* TimeConverter.swift */,
-				F83E6199239062A40076076F /* DataBaseManager.swift */,
 			);
 			path = IRLKiller;
 			sourceTree = "<group>";
@@ -210,6 +208,32 @@
 				F83686C8237DD99E0024B44C /* ContainerViewController.swift */,
 			);
 			path = Controllers;
+			sourceTree = "<group>";
+		};
+		F89644D82396C6F300C0D764 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				F83E6199239062A40076076F /* DataBaseManager.swift */,
+				4645B848238041A100339315 /* TimeConverter.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		F89644D92396C72800C0D764 /* Map & Login Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				46E1E6AB23355EC100EBA2FC /* MainViewController.swift */,
+				46E1E6A523354CA900EBA2FC /* LoginViewController.swift */,
+			);
+			path = "Map & Login Controllers";
+			sourceTree = "<group>";
+		};
+		F89644DA2396C75100C0D764 /* Profile bar */ = {
+			isa = PBXGroup;
+			children = (
+				46E5CC8D23414A7B004AF33D /* ProfileViewController.swift */,
+			);
+			path = "Profile bar";
 			sourceTree = "<group>";
 		};
 		F899ECC923366443005A1A95 /* Extensions */ = {

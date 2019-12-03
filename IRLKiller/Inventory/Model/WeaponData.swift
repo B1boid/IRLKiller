@@ -2,10 +2,10 @@ enum Weapons: String, CaseIterable {
     case gun
     case grenade
     case rifle
-    case a
-    case b
-    case c
-    case d
+    case test1
+    case test2
+    case test3
+    case test4
 }
 
 class WeaponData {
@@ -44,19 +44,19 @@ class WeaponData {
             Weapon(name: "revolver", cost: 20, distance: 20, capacity: 7, reloadTime: 5, damage: 20)
         ],
         
-        Weapons.a.rawValue: [
+        Weapons.test1.rawValue: [
             Weapon(name: "knife", cost: 20, distance: 20, capacity: 7, reloadTime: 5, damage: 20),
         ],
         
-        Weapons.b.rawValue: [
+        Weapons.test2.rawValue: [
             Weapon(name: "knife", cost: 20, distance: 20, capacity: 7, reloadTime: 5, damage: 20),
         ],
         
-        Weapons.c.rawValue: [
+        Weapons.test3.rawValue: [
             Weapon(name: "knife", cost: 20, distance: 20, capacity: 7, reloadTime: 5, damage: 20),
         ],
         
-        Weapons.d.rawValue: [
+        Weapons.test4.rawValue: [
             Weapon(name: "knife", cost: 20, distance: 20, capacity: 7, reloadTime: 5, damage: 20),
         ],
     ]

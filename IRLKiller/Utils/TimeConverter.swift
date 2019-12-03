@@ -4,20 +4,20 @@ class TimeConverter: NSObject {
     
     func getCurTimeUTC() -> String{
         let date = Date()
-         let format = DateFormatter()
-         format.dateFormat = "yyyy-MM-dd HH:mm"
-         let formattedDate = format.string(from: date)
-         return localToUTC(date: formattedDate)
-         
+        let format = DateFormatter()
+        format.dateFormat = "yyyy-MM-dd HH:mm"
+        let formattedDate = format.string(from: date)
+        return localToUTC(date: formattedDate)
+        
     }
     
     func getCurTimeUTCWithSec() -> String{
         let date = Date()
-         let format = DateFormatter()
-         format.dateFormat = "yyyy-MM-dd HH:mm:ss"
-         let formattedDate = format.string(from: date)
-         return localToUTCWithSec(date: formattedDate)
-         
+        let format = DateFormatter()
+        format.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let formattedDate = format.string(from: date)
+        return localToUTCWithSec(date: formattedDate)
+        
     }
     
     func isMoreThenDiff(oldDate:String,diff:Int) -> Bool{
@@ -82,11 +82,11 @@ class TimeConverter: NSObject {
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
         dateFormatter.calendar = NSCalendar.current
         dateFormatter.timeZone = TimeZone.current
-
+        
         let dt = dateFormatter.date(from: date)
         dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
-
+        
         return dateFormatter.string(from: dt!)
     }
     
@@ -95,14 +95,11 @@ class TimeConverter: NSObject {
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         dateFormatter.calendar = NSCalendar.current
         dateFormatter.timeZone = TimeZone.current
-
+        
         let dt = dateFormatter.date(from: date)
         dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-
+        
         return dateFormatter.string(from: dt!)
     }
-    
-    
-
 }
