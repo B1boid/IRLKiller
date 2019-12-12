@@ -171,8 +171,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             self.view.addSubview(self.loadingImageView)
     
             let values: [String: Any] = [ "login"       : login,
-                                          "time-online" : self.TC.getCurTimeUTC(),
-                                          "time-death"  : self.TC.getCurTimeUTC(),
+                                          "time-online" : self.TC.convertToUTC(in: .minute),
+                                          "time-death"  : self.TC.convertToUTC(in: .minute),
                                           "pos-x"       : 40.74699,
                                           "pos-y"       : -73.98742,
                                           "health"      : 100,

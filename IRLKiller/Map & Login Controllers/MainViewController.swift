@@ -43,9 +43,10 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     var myLogin = ""
     var myRating = 0
     var myHealth = 100
-    var myKD = 4
+    var myKD: UInt = 4
     var timeOfDeath = ""
     var isAlive = true
+    
     let TC = TimeConverter()
     let defaults = UserDefaults.standard
     
@@ -186,7 +187,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         let curHealth = snapshot.childSnapshot(forPath: "health").value as! Int
         let curRating = snapshot.childSnapshot(forPath: "rating").value as! Int
         
-        let isOnline = !TC.isMoreThenDiff(oldDate: timeOnline, diff: 1)
+        let isOnline = !TC.isMoreThanDiff(oldDate: timeOnline, diff: 1, in: .minute)
         
         let curPlayer = Player(
             login: curLogin,
@@ -243,7 +244,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                     if (location.latitude != -180 && location.longitude != -180){
 //                        print("Data Load to DB")
 //                        print("x = \(self.userLocation.latitude), y = \(self.userLocation.longitude)")
-                        let values: [String: Any] = ["time-online" : self.TC.getCurTimeUTC() ,
+                        let values: [String: Any] = ["time-online" : self.TC.convertToUTC(in: .minute) ,
                                                      "pos-x"       : location.latitude,
                                                      "pos-y"       : location.longitude]
                         DataBaseManager.shared.updateUserValues(for: self.userUID, with: values)
@@ -259,14 +260,14 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     @objc func checkRebirth(){
         if (myHealth == 0){
             isAlive = false
-            if(TC.isMoreThenDiff(oldDate: timeOfDeath, diff: 5)){
+            if(TC.isMoreThanDiff(oldDate: timeOfDeath, diff: 5, in: .minute)){
                 guard let ref = DataBaseManager.shared.refToUser else { return }
                 ref.updateChildValues(["health" : 100])
                 mapView.showsUserLocation = true
                 isAlive = true
             }else{
                 mapView.showsUserLocation = false
-                print("left until rebirth ~\(5-TC.showDiff(oldDate: timeOfDeath))min")
+                print("left until rebirth ~\(5-TC.showDiff(oldDate: timeOfDeath, in: .minute))min")
                 let _ = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(checkRebirth), userInfo: nil, repeats: false)
             }
         }
@@ -373,14 +374,15 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         //если живой то можешь стрелять
         guard isAlive else { return }
         
-        //Если откатилась перезарядка
-        if defaults.string(forKey: "TimeOfLastShot") != nil {
-            guard TC.isMoreThenDiffInSeconds(oldDate: defaults.string(forKey: "TimeOfLastShot")!, diff: myKD)   else {
-                print("Kd remaining : sec  \(myKD-(TC.showDiffInSec(oldDate:defaults.string(forKey: "TimeOfLastShot")!)))")
-                return
-            }
+        guard let oldDate = defaults.string(forKey: "TimeOfLastShot") else {
+            print("No value for key: TimeOfLastShot in user defaults")
+            return
         }
         
+        guard TC.isMoreThanDiff(oldDate: oldDate, diff: myKD, in: .second) else {
+            print("Kd remaining : sec  \(self.myKD-(TC.showDiff(oldDate: oldDate, in: .second)))")
+            return
+        }
         
         if let curPlayer = players[annotation.title!!]{
             
@@ -429,13 +431,13 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                     DispatchQueue.global(qos: .utility).async {
                         let values: [String: Any] = ["health"     : damagedUserHealth,
                                                      "rating"     : damagedUserRating,
-                                                     "time-death" : self.TC.getCurTimeUTC()]
+                                                     "time-death" : self.TC.convertToUTC(in: .minute)]
                         
                         DataBaseManager.shared.updateUserValues(for: damagedUserUID, with: values)
                     }
                 }
             })
-            defaults.set(TC.getCurTimeUTCWithSec(), forKey: "TimeOfLastShot")
+            defaults.set(TC.convertToUTC(in: .second), forKey: "TimeOfLastShot")
             //можно не алерт будет сделать а всплывающее окно свое
             self.present(alert, animated: true, completion: nil)
         }

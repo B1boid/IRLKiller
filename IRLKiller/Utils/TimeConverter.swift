@@ -2,104 +2,90 @@ import UIKit
 
 class TimeConverter: NSObject {
     
-    func getCurTimeUTC() -> String{
+    private static let minuteFormatter = "yyyy-MM-dd HH:mm"
+    private static let secondFormatter = "yyyy-MM-dd HH:mm:ss"
+    
+    private let separatorSymbols: [Character] = ["-", " ", ":"]
+    
+    enum EvaluateTime {
+        case minute
+        case second
+        
+        func getFormatter() -> String {
+            switch self {
+            case .minute:
+                return minuteFormatter
+            case .second:
+                return secondFormatter
+            }
+        }
+    }
+    
+    private func parseTimeToVector(date: String) -> [UInt] {
+        let vector = date
+            .split { separatorSymbols.contains($0) }
+            .map   { UInt($0.trimmingCharacters(in: .whitespaces))! }
+        
+        return vector
+    }
+    
+    func convertToUTC(in timeValue: EvaluateTime) -> String {
         let date = Date()
         let format = DateFormatter()
-        format.dateFormat = "yyyy-MM-dd HH:mm"
+        format.dateFormat = timeValue.getFormatter()
         let formattedDate = format.string(from: date)
-        return localToUTC(date: formattedDate)
-        
+        return localToUTC(date: formattedDate, in: timeValue)
     }
     
-    func getCurTimeUTCWithSec() -> String{
-        let date = Date()
-        let format = DateFormatter()
-        format.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        let formattedDate = format.string(from: date)
-        return localToUTCWithSec(date: formattedDate)
-        
+    func isMoreThanDiff(oldDate: String, diff: UInt, in timeValue: EvaluateTime) -> Bool {
+        return showDiff(oldDate: oldDate, in: timeValue) > diff
     }
     
-    func isMoreThenDiff(oldDate:String,diff:Int) -> Bool{
-        let curDate = getCurTimeUTC()
-        let splitted = curDate.split { ["-", " ", ":"].contains(String($0)) }
-        let curVec = splitted.map { Int(String($0).trimmingCharacters(in: .whitespaces)) }
+    private func reduceVector(date: String, in timeValue: EvaluateTime) -> UInt {
+        let vector = parseTimeToVector(date: date)
+        let calculated =
+            (vector[0] - Date.releaseYear) * Date.minsInYear +
+             vector[1] * Date.minsInMonth +
+             vector[2] * Date.minsInDay +
+             vector[3] * Date.minsInHour +
+             vector[4]
         
-        let splitted2 = oldDate.split { ["-", " ", ":"].contains(String($0)) }
-        let oldVec = splitted2.map { Int(String($0).trimmingCharacters(in: .whitespaces)) }
-        
-        let allCur = 525600*(curVec[0]!-2019) + 43800*curVec[1]! + 1440*curVec[2]! + 60*curVec[3]! + curVec[4]!
-        let allOld = 525600*(oldVec[0]!-2019) + 43800*oldVec[1]! + 1440*oldVec[2]! + 60*oldVec[3]! + oldVec[4]!
-        return allCur-allOld > diff
-        
+        switch timeValue {
+        case .minute:
+            return calculated
+        case .second:
+            return 60 * calculated + vector.last!
+        }
     }
     
-    func isMoreThenDiffInSeconds(oldDate:String,diff:Int) -> Bool{
-        let curDate = getCurTimeUTCWithSec()
-        let splitted = curDate.split { ["-", " ", ":"].contains(String($0)) }
-        let curVec = splitted.map { Int(String($0).trimmingCharacters(in: .whitespaces)) }
-        
-        let splitted2 = oldDate.split { ["-", " ", ":"].contains(String($0)) }
-        let oldVec = splitted2.map { Int(String($0).trimmingCharacters(in: .whitespaces)) }
-        
-        let allCur = 525600*60*(curVec[0]!-2019) + 43800*60*curVec[1]! + 1440*60*curVec[2]! + 60*60*curVec[3]! + 60*curVec[4]! + curVec[5]!
-        let allOld = 525600*60*(oldVec[0]!-2019) + 43800*60*oldVec[1]! + 1440*60*oldVec[2]! + 60*60*oldVec[3]! + 60*oldVec[4]!+oldVec[5]!
-        return allCur-allOld > diff
-        
+    func showDiff(oldDate: String, in timeValue: EvaluateTime) -> UInt {
+        let curDate = convertToUTC(in: timeValue)
+        let newVector = reduceVector(date: curDate, in: timeValue)
+        let oldVector = reduceVector(date: oldDate, in: timeValue)
+        return newVector - oldVector
     }
     
-    func showDiff(oldDate:String) -> Int{
-        let curDate = getCurTimeUTC()
-        let splitted = curDate.split { ["-", " ", ":"].contains(String($0)) }
-        let curVec = splitted.map { Int(String($0).trimmingCharacters(in: .whitespaces)) }
-        
-        let splitted2 = oldDate.split { ["-", " ", ":"].contains(String($0)) }
-        let oldVec = splitted2.map { Int(String($0).trimmingCharacters(in: .whitespaces)) }
-        
-        let allCur = 525600*(curVec[0]!-2019) + 43800*curVec[1]! + 1440*curVec[2]! + 60*curVec[3]! + curVec[4]!
-        let allOld = 525600*(oldVec[0]!-2019) + 43800*oldVec[1]! + 1440*oldVec[2]! + 60*oldVec[3]! + oldVec[4]!
-        
-        return allCur-allOld
-    }
-    
-    func showDiffInSec(oldDate:String) -> Int{
-        let curDate = getCurTimeUTCWithSec()
-        let splitted = curDate.split { ["-", " ", ":"].contains(String($0)) }
-        let curVec = splitted.map { Int(String($0).trimmingCharacters(in: .whitespaces)) }
-        
-        let splitted2 = oldDate.split { ["-", " ", ":"].contains(String($0)) }
-        let oldVec = splitted2.map { Int(String($0).trimmingCharacters(in: .whitespaces)) }
-        
-        let allCur = 525600*60*(curVec[0]!-2019) + 43800*60*curVec[1]! + 1440*60*curVec[2]! + 60*60*curVec[3]! + 60*curVec[4]! + curVec[5]!
-        let allOld = 525600*60*(oldVec[0]!-2019) + 43800*60*oldVec[1]! + 1440*60*oldVec[2]! + 60*60*oldVec[3]! + 60*oldVec[4]!+oldVec[5]!
-        return allCur-allOld
-    }
-    
-    
-    
-    func localToUTC(date:String) -> String {
+    func localToUTC(date: String, in timeValue: EvaluateTime) -> String {
+        let formatter = timeValue.getFormatter()
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
+        dateFormatter.dateFormat = formatter
         dateFormatter.calendar = NSCalendar.current
         dateFormatter.timeZone = TimeZone.current
         
         let dt = dateFormatter.date(from: date)
         dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
+        dateFormatter.dateFormat = formatter
         
         return dateFormatter.string(from: dt!)
     }
+}
+
+extension Date {
     
-    func localToUTCWithSec(date:String) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        dateFormatter.calendar = NSCalendar.current
-        dateFormatter.timeZone = TimeZone.current
-        
-        let dt = dateFormatter.date(from: date)
-        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        
-        return dateFormatter.string(from: dt!)
-    }
+    static let minsInHour: UInt = 60
+    static let minsInDay = 24 * Date.minsInHour
+    static let minsInMonth = 30 * Date.minsInDay
+    static let minsInYear = 12 * Date.minsInMonth
+    static let releaseYear: UInt = 2019
+    
 }
