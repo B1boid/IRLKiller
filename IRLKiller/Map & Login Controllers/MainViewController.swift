@@ -49,6 +49,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     let TC = TimeConverter()
     let defaults = UserDefaults.standard
+    var hasConnection = true
     
     // View and buttons
     @IBOutlet weak var loginText: UILabel!
@@ -70,6 +71,20 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         // add an action (button)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: { (action: UIAlertAction!) in
             self.checkLocationServices()
+        }))
+        
+        
+        // show the alert
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func showInternetAlert(){
+        hasConnection = false
+        let alert = UIAlertController(title: "No internet connection",message: "Please connect your device to the internet.", preferredStyle: UIAlertController.Style.alert)
+        
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: { (action: UIAlertAction!) in
+            self.hasConnection = true
+            self.checkInternetConnection()
         }))
         
         // show the alert
@@ -102,6 +117,10 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
     }
     
+   
+       
+    
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(false)
         checkLocationServices()
@@ -109,7 +128,12 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     override func viewWillAppear(_ animated: Bool) {
         // isNotAlreadyShown = становится false когда карта appear первый раз чтобы когда карта appear при переключении на tabbar вкладках не делалось viewDidAppear второй раз
-        
+        NotificationCenter.default
+                          .addObserver(self,
+                                       selector: #selector(statusManager),
+                                       name: .none,
+                                       object: nil)
+        checkInternetConnection()
         if Auth.auth().currentUser != nil && isNotAlreadyShown {
             
             isNotAlreadyShown = false
@@ -271,6 +295,17 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                 let _ = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(checkRebirth), userInfo: nil, repeats: false)
             }
         }
+    }
+    
+    func checkInternetConnection(){
+        if !Reachability.isConnectedToNetwork() && hasConnection{
+            showInternetAlert()
+            //print("Internet Connection not Available!")
+        }
+    }
+    
+    @objc func statusManager(_ notification: Notification) {
+        checkInternetConnection()
     }
     
     

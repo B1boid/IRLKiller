@@ -8,14 +8,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.0) {
-            if Auth.auth().currentUser == nil {
-                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let loginVC = storyboard.instantiateViewController(withIdentifier: "login")
-                loginVC.modalPresentationStyle = .fullScreen
-                self.window?.rootViewController?.present(loginVC, animated: true, completion: nil)
+        if !Reachability.isConnectedToNetwork(){
+             DispatchQueue.main.asyncAfter(deadline: .now() + 0.0) {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                           let loginVC = storyboard.instantiateViewController(withIdentifier: "load")
+                           loginVC.modalPresentationStyle = .fullScreen
+                           self.window?.rootViewController?.present(loginVC, animated: true, completion: nil)
             }
         }
+        
+        
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.0) {
+                if Auth.auth().currentUser == nil {
+                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                    let loginVC = storyboard.instantiateViewController(withIdentifier: "login")
+                    loginVC.modalPresentationStyle = .fullScreen
+                    self.window?.rootViewController?.present(loginVC, animated: true, completion: nil)
+                }
+            }
+        
         return true
     }
     
