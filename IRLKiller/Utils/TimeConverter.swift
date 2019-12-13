@@ -5,7 +5,7 @@ class TimeConverter: NSObject {
     private static let minuteFormatter = "yyyy-MM-dd HH:mm"
     private static let secondFormatter = "yyyy-MM-dd HH:mm:ss"
     
-    private let separatorSymbols: [Character] = ["-", " ", ":"]
+    private static let separatorSymbols: [Character] = ["-", " ", ":"]
     
     enum EvaluateTime {
         case minute
@@ -21,7 +21,7 @@ class TimeConverter: NSObject {
         }
     }
     
-    private func parseTimeToVector(date: String) -> [UInt] {
+    class private func parseTimeToVector(date: String) -> [UInt] {
         let vector = date
             .split { separatorSymbols.contains($0) }
             .map   { UInt($0.trimmingCharacters(in: .whitespaces))! }
@@ -29,7 +29,7 @@ class TimeConverter: NSObject {
         return vector
     }
     
-    func convertToUTC(in timeValue: EvaluateTime) -> String {
+    class func convertToUTC(in timeValue: EvaluateTime) -> String {
         let date = Date()
         let format = DateFormatter()
         format.dateFormat = timeValue.getFormatter()
@@ -37,11 +37,11 @@ class TimeConverter: NSObject {
         return localToUTC(date: formattedDate, in: timeValue)
     }
     
-    func isMoreThanDiff(oldDate: String, diff: UInt, in timeValue: EvaluateTime) -> Bool {
+    class func isMoreThanDiff(oldDate: String, diff: UInt, in timeValue: EvaluateTime) -> Bool {
         return showDiff(oldDate: oldDate, in: timeValue) > diff
     }
     
-    private func reduceVector(date: String, in timeValue: EvaluateTime) -> UInt {
+    class private func reduceVector(date: String, in timeValue: EvaluateTime) -> UInt {
         let vector = parseTimeToVector(date: date)
         let calculated =
             (vector[0] - Date.releaseYear) * Date.minsInYear +
@@ -58,14 +58,14 @@ class TimeConverter: NSObject {
         }
     }
     
-    func showDiff(oldDate: String, in timeValue: EvaluateTime) -> UInt {
+    class func showDiff(oldDate: String, in timeValue: EvaluateTime) -> UInt {
         let curDate = convertToUTC(in: timeValue)
         let newVector = reduceVector(date: curDate, in: timeValue)
         let oldVector = reduceVector(date: oldDate, in: timeValue)
         return newVector - oldVector
     }
     
-    func localToUTC(date: String, in timeValue: EvaluateTime) -> String {
+    class func localToUTC(date: String, in timeValue: EvaluateTime) -> String {
         let formatter = timeValue.getFormatter()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = formatter

@@ -21,13 +21,15 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     // Окно для ввода логина
     let loginTextField: UITextField = {
         let textField = UITextField()
+        
         textField.text = greetingMsg
         textField.textColor = .white
         textField.textAlignment = .center
         textField.borderStyle = .roundedRect
         textField.backgroundColor  = .clear
-        textField.maxLength = 14
+        textField.autocorrectionType = .no
         textField.adjustsFontSizeToFitWidth = true
+        textField.maxLength = 14
         return textField
     }()
     
@@ -171,8 +173,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             self.view.addSubview(self.loadingImageView)
     
             let values: [String: Any] = [ "login"       : login,
-                                          "time-online" : self.TC.convertToUTC(in: .minute),
-                                          "time-death"  : self.TC.convertToUTC(in: .minute),
+                                          "time-online" : TimeConverter.convertToUTC(in: .minute),
+                                          "time-death"  : TimeConverter.convertToUTC(in: .minute),
                                           "pos-x"       : 40.74699,
                                           "pos-y"       : -73.98742,
                                           "health"      : 100,
