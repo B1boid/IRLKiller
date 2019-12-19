@@ -51,11 +51,12 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     let defaults = UserDefaults.standard
     let lastShotKey = "TimeOfLastShot"
+    var hasConnection = true
     
     // View and buttons
     @IBOutlet weak var loginText: UILabel!
     @IBOutlet weak var mapView: MGLMapView!
-    private var downloadView: DonwloadView!
+    private var pulsatingView: PulsatingView!
     
     // Functions which connected to actions
     @IBAction func clickMyLocation(_ sender: Any) {
@@ -105,31 +106,30 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
     }
     
+    private func setupDownloadView() {
+        pulsatingView = PulsatingView(frame: view.bounds,
+                                    radius: view.bounds.midX / 2,
+                                    circleCenter: CGPoint(x: view.bounds.midX, y: view.bounds.midY),
+                                    strokeColor:  UIColor.outlineStrokeColor.cgColor,
+                                    pulseColor: UIColor.pulsatingFillColor.cgColor)
+        
+        pulsatingView.backgroundColor = UIColor.downloadViewBackgroundColor
+        view.insertSubview(pulsatingView, at: Int.max)
+        pulsatingView.startPulseAnimation(onePulseDuration: 1)
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(false)
         checkLocationServices()
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupDownloadView()
-    }
-    
-    private func setupDownloadView() {
-        downloadView = DonwloadView(frame: view.bounds)
-        downloadView.backgroundColor = .black
-        downloadView.createDownloadCircle(center: downloadView.center,
-                                          radius: 100,
-                                          mainColor: UIColor.red.cgColor,
-                                          trackColor: UIColor.lightGray.cgColor)
-        
-        
-        view.insertSubview(downloadView, at: Int.max)
-        downloadView.animateDownload(with: 5)
-    }
     
     override func viewWillAppear(_ animated: Bool) {
         // screenIsAlredyShown = становится true когда карта appear первый раз чтобы когда карта appear при переключении на tabbar вкладках не делалось viewDidAppear второй раз
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(statusManager), name: .none, object: nil)
+        
+        checkInternetConnection()
         
         guard let user = Auth.auth().currentUser else {
             print("User not created")
@@ -141,18 +141,11 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             return
         }
         
+        setupDownloadView()
+        
         screenIsAlredyShown = true
         userUID = user.uid
         guard let ref = DataBaseManager.shared.refToUser else { print("User not created"); return }
-        
-        let currentCamera = MGLMapCamera(
-            lookingAtCenter: self.basicLocation,
-            altitude: self.altitude, pitch: self.pitch, heading: self.heading
-        )
-        
-        self.mapView.alpha = 0
-        self.mapView.setCamera(currentCamera, animated: false)
-        
         
         //чтение логина из БД
         ref.observeSingleEvent(of: .value, with: { (snapshot) in
@@ -173,16 +166,14 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                     longitude: offlinePosY
                 )
                 
-                let currentCamera0 = MGLMapCamera(
+                let camera = MGLMapCamera(
                     lookingAtCenter: self.userLocation,
                     altitude: self.altitude, pitch: self.pitch, heading: self.heading
                 )
-                self.mapView.setCamera(currentCamera0, animated: false)
-                self.mapView.alpha = 1
-//                self.mapView.fly(to: currentCamera0, withDuration: 1, completionHandler: nil)
-//                UIView.animate(withDuration: 2, animations: {
-//                    self.mapView.alpha = 1
-//                })
+                self.mapView.setCamera(camera, animated: false)
+//                UIView.animate(withDuration: 0.4, delay: 2.0, options: .beginFromCurrentState,
+//                               animations: { self.pulsatingView.transform = CGAffineTransform(scaleX: 0.01, y: 0.01) },
+//                               completion: { (succes) in self.pulsatingView.removeFromSuperview() })
             }})
         
         setupMapView()
@@ -208,7 +199,6 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     }
     
     func readNewData(snapshot: DataSnapshot, isAdding: Bool) {
-        
         guard let timeOnline = snapshot.childSnapshot(forPath: "time-online").value as? String else { return }
         guard let timeDeath = snapshot.childSnapshot(forPath: "time-death").value as? String   else { return }
         guard let curLogin = snapshot.childSnapshot(forPath: "login").value as? String         else { return }
@@ -253,7 +243,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             }
             self.mapView.addAnnotation(curPoint)
             self.annotationsPlayers[curLogin] = curPoint
-           
+            
         } else {
             let lstHealth = myHealth
             myHealth = curHealth
@@ -266,6 +256,34 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
     }
     
+    // MARK: - function tcheckInternetConnection
+    func checkInternetConnection(){
+        if !Reachability.isConnectedToNetwork() && hasConnection {
+            showInternetAlert()
+            //print("Internet Connection not Available!")
+        }
+    }
+    
+    @objc func statusManager(_ notification: Notification) {
+        checkInternetConnection()
+    }
+    
+    
+    func showInternetAlert(){
+        hasConnection = false
+        let alert = UIAlertController(title: "No internet connection",message: "Please connect your device to the internet.", preferredStyle: UIAlertController.Style.alert)
+        
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: { (action: UIAlertAction!) in
+            self.hasConnection = true
+            self.checkInternetConnection()
+        }))
+        
+        // show the alert
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    
+    // MARK: - Data base work
     @objc func updateDB() {
         DispatchQueue.global(qos: .utility).async {
             guard let ref = DataBaseManager.shared.refToUser else { return }
@@ -322,11 +340,6 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     
     // This delegate method is where you tell the map to load an image for a specific annotation based on the willUseImage property of the custom subclass.
-    func mapViewDidFinishLoadingMap(_ mapView: MGLMapView) {
-        UIView.animate(withDuration: 0.4, delay: 0.0, options: .beginFromCurrentState,
-                       animations: { self.downloadView.transform = CGAffineTransform(scaleX: 0.01, y: 0.01) },
-                       completion: { (succes) in self.downloadView.removeFromSuperview() })
-    }
     
     func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
         
@@ -412,15 +425,14 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         //если живой то можешь стрелять
         guard isAlive else { return }
         
-        guard let oldDate = defaults.string(forKey: lastShotKey) else {
-            print("No value for key: \(lastShotKey) in user defaults")
-            return
+        
+        if let oldDate = defaults.string(forKey: "TimeOfLastShot") {
+            guard TimeConverter.isMoreThanDiff(oldDate: oldDate, diff: myKD, in: .second) else {
+                print("Kd remaining : sec  \(self.myKD-(TimeConverter.showDiff(oldDate: oldDate, in: .second)))")
+                return
+            }
         }
         
-        guard TimeConverter.isMoreThanDiff(oldDate: oldDate, diff: myKD, in: .second) else {
-            print("Kd remaining : sec  \(self.myKD-(TimeConverter.showDiff(oldDate: oldDate, in: .second)))")
-            return
-        }
         
         if let curPlayer = players[annotation.title!!]{
             

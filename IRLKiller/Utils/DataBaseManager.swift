@@ -53,6 +53,14 @@ class DataBaseManager {
         }
     }
     
+    func readDataFromDataBase(comletion: () -> Void) {
+        
+    }
+    
+    func startTranslation() {
+        
+    }
+    
     // MARK:- Update value (attributes for users)
     func updateUserValues(for uid: String?, with values: [String: Any]) {
         guard let UID = uid  else { return }
