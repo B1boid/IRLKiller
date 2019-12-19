@@ -21,14 +21,6 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     }
     var screenIsAlredyShown = false
     
-    struct Player {
-        let login: String
-        var position: CLLocationCoordinate2D
-        var isOnline: Bool
-        var health: Int
-        var rating: Int
-    }
-    
     class MyCustomPointAnnotation: MGLPointAnnotation {
         var typeOfImage: String = "online"
     }
@@ -171,9 +163,9 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                     altitude: self.altitude, pitch: self.pitch, heading: self.heading
                 )
                 self.mapView.setCamera(camera, animated: false)
-//                UIView.animate(withDuration: 0.4, delay: 2.0, options: .beginFromCurrentState,
-//                               animations: { self.pulsatingView.transform = CGAffineTransform(scaleX: 0.01, y: 0.01) },
-//                               completion: { (succes) in self.pulsatingView.removeFromSuperview() })
+                UIView.animate(withDuration: 0.4, delay: 2.0, options: .beginFromCurrentState,
+                               animations: { self.pulsatingView.transform = CGAffineTransform(scaleX: 0.01, y: 0.01) },
+                               completion: { (succes) in self.pulsatingView.removeFromSuperview() })
             }})
         
         setupMapView()
@@ -257,7 +249,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     }
     
     // MARK: - function tcheckInternetConnection
-    func checkInternetConnection(){
+    func checkInternetConnection() {
         if !Reachability.isConnectedToNetwork() && hasConnection {
             showInternetAlert()
             //print("Internet Connection not Available!")
