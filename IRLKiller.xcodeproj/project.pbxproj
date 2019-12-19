@@ -18,6 +18,7 @@
 		46E1E6AA23355A4A00EBA2FC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 46E1E6A923355A4A00EBA2FC /* GoogleService-Info.plist */; };
 		46E5CC8E23414A7B004AF33D /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E5CC8D23414A7B004AF33D /* ProfileViewController.swift */; };
 		85298B718FA6D115B852C1B9 /* Pods_IRLKiller.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 239D32A7EF405E587B26F857 /* Pods_IRLKiller.framework */; };
+		F819E91423A4196100E6C255 /* PulseAnimationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F819E91323A4196100E6C255 /* PulseAnimationViewController.swift */; };
 		F829EFB4238DC2E300DA4CC1 /* InventoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F829EFB1238DC2E300DA4CC1 /* InventoryTableViewCell.swift */; };
 		F829EFB5238DC2E300DA4CC1 /* InventoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F829EFB2238DC2E300DA4CC1 /* InventoryCollectionViewCell.swift */; };
 		F829EFB6238DC2E300DA4CC1 /* DetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F829EFB3238DC2E300DA4CC1 /* DetailCollectionViewCell.swift */; };
@@ -28,7 +29,8 @@
 		F83686CF237DD99E0024B44C /* InventoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83686C7237DD99E0024B44C /* InventoryViewController.swift */; };
 		F83686D0237DD99E0024B44C /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83686C8237DD99E0024B44C /* ContainerViewController.swift */; };
 		F83E619A239062A40076076F /* DataBaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83E6199239062A40076076F /* DataBaseManager.swift */; };
-		F892B29D23A2B25B0031C333 /* DonwloadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F892B29C23A2B25B0031C333 /* DonwloadView.swift */; };
+		F861F0DB23A370E10049CD02 /* Reachabilty.swift in Sources */ = {isa = PBXBuildFile; fileRef = F861F0DA23A370E10049CD02 /* Reachabilty.swift */; };
+		F892B29D23A2B25B0031C333 /* PulsatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F892B29C23A2B25B0031C333 /* PulsatingView.swift */; };
 		F892B2A123A2B4830031C333 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F892B2A023A2B4830031C333 /* MainViewController.swift */; };
 		F892B2A323A2B4A10031C333 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F892B2A223A2B4A10031C333 /* LoginViewController.swift */; };
 		F899ECCB23366475005A1A95 /* RegexExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F899ECCA23366475005A1A95 /* RegexExtension.swift */; };
@@ -64,6 +66,7 @@
 		BD49BAB0E9AF2D8A4075C710 /* Pods-IRLKillerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IRLKillerUITests.release.xcconfig"; path = "Target Support Files/Pods-IRLKillerUITests/Pods-IRLKillerUITests.release.xcconfig"; sourceTree = "<group>"; };
 		DB279AA8633EC8855BA70875 /* Pods-IRLKiller.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IRLKiller.debug.xcconfig"; path = "Target Support Files/Pods-IRLKiller/Pods-IRLKiller.debug.xcconfig"; sourceTree = "<group>"; };
 		DE081DB13F73E49A16327B3F /* Pods_IRLKillerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IRLKillerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F819E91323A4196100E6C255 /* PulseAnimationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulseAnimationViewController.swift; sourceTree = "<group>"; };
 		F829EFB1238DC2E300DA4CC1 /* InventoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InventoryTableViewCell.swift; sourceTree = "<group>"; };
 		F829EFB2238DC2E300DA4CC1 /* InventoryCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InventoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		F829EFB3238DC2E300DA4CC1 /* DetailCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -74,7 +77,8 @@
 		F83686C7237DD99E0024B44C /* InventoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InventoryViewController.swift; sourceTree = "<group>"; };
 		F83686C8237DD99E0024B44C /* ContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		F83E6199239062A40076076F /* DataBaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataBaseManager.swift; sourceTree = "<group>"; };
-		F892B29C23A2B25B0031C333 /* DonwloadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonwloadView.swift; sourceTree = "<group>"; };
+		F861F0DA23A370E10049CD02 /* Reachabilty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachabilty.swift; sourceTree = "<group>"; };
+		F892B29C23A2B25B0031C333 /* PulsatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulsatingView.swift; sourceTree = "<group>"; };
 		F892B2A023A2B4830031C333 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		F892B2A223A2B4A10031C333 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		F899ECCA23366475005A1A95 /* RegexExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegexExtension.swift; sourceTree = "<group>"; };
@@ -136,6 +140,8 @@
 				46E1E6A923355A4A00EBA2FC /* GoogleService-Info.plist */,
 				46E1E68123354B0500EBA2FC /* Info.plist */,
 				46E1E67C23354B0500EBA2FC /* Assets.xcassets */,
+				F861F0DA23A370E10049CD02 /* Reachabilty.swift */,
+				F819E91323A4196100E6C255 /* PulseAnimationViewController.swift */,
 			);
 			path = IRLKiller;
 			sourceTree = "<group>";
@@ -215,7 +221,7 @@
 		F892B29B23A2B23E0031C333 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				F892B29C23A2B25B0031C333 /* DonwloadView.swift */,
+				F892B29C23A2B25B0031C333 /* PulsatingView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -454,7 +460,8 @@
 			files = (
 				F892B2A323A2B4A10031C333 /* LoginViewController.swift in Sources */,
 				F83686CD237DD99E0024B44C /* InventoryConstants.swift in Sources */,
-				F892B29D23A2B25B0031C333 /* DonwloadView.swift in Sources */,
+				F892B29D23A2B25B0031C333 /* PulsatingView.swift in Sources */,
+				F861F0DB23A370E10049CD02 /* Reachabilty.swift in Sources */,
 				F83686D0237DD99E0024B44C /* ContainerViewController.swift in Sources */,
 				F829EFB6238DC2E300DA4CC1 /* DetailCollectionViewCell.swift in Sources */,
 				F829EFB5238DC2E300DA4CC1 /* InventoryCollectionViewCell.swift in Sources */,
@@ -464,6 +471,7 @@
 				F83686CE237DD99E0024B44C /* DetailViewController.swift in Sources */,
 				4645B849238041A100339315 /* TimeConverter.swift in Sources */,
 				F83686CF237DD99E0024B44C /* InventoryViewController.swift in Sources */,
+				F819E91423A4196100E6C255 /* PulseAnimationViewController.swift in Sources */,
 				F899ECCB23366475005A1A95 /* RegexExtension.swift in Sources */,
 				F83686CC237DD99E0024B44C /* WeaponData.swift in Sources */,
 				F83686CB237DD99E0024B44C /* WeaponModel.swift in Sources */,
