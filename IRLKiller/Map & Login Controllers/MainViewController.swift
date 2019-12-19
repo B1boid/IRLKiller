@@ -19,7 +19,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     var userLocation: CLLocationCoordinate2D {
         get { return mapView.userLocation?.coordinate ?? basicLocation }
     }
-    var isNotAlreadyShown: Bool = true
+    var screenIsAlredyShown = false
     
     struct Player {
         let login: String
@@ -48,12 +48,14 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     var isAlive = true
     
     let TC = TimeConverter()
+    
     let defaults = UserDefaults.standard
-    var hasConnection = true
+    let lastShotKey = "TimeOfLastShot"
     
     // View and buttons
     @IBOutlet weak var loginText: UILabel!
     @IBOutlet weak var mapView: MGLMapView!
+    private var downloadView: DonwloadView!
     
     // Functions which connected to actions
     @IBAction func clickMyLocation(_ sender: Any) {
@@ -71,20 +73,6 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         // add an action (button)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: { (action: UIAlertAction!) in
             self.checkLocationServices()
-        }))
-        
-        
-        // show the alert
-        self.present(alert, animated: true, completion: nil)
-    }
-    
-    func showInternetAlert(){
-        hasConnection = false
-        let alert = UIAlertController(title: "No internet connection",message: "Please connect your device to the internet.", preferredStyle: UIAlertController.Style.alert)
-        
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: { (action: UIAlertAction!) in
-            self.hasConnection = true
-            self.checkInternetConnection()
         }))
         
         // show the alert
@@ -117,70 +105,88 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
     }
     
-   
-       
-    
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(false)
         checkLocationServices()
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupDownloadView()
+    }
+    
+    private func setupDownloadView() {
+        downloadView = DonwloadView(frame: view.bounds)
+        downloadView.backgroundColor = .black
+        downloadView.createDownloadCircle(center: downloadView.center,
+                                          radius: 100,
+                                          mainColor: UIColor.red.cgColor,
+                                          trackColor: UIColor.lightGray.cgColor)
+        
+        
+        view.insertSubview(downloadView, at: Int.max)
+        downloadView.animateDownload(with: 5)
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
-        // isNotAlreadyShown = становится false когда карта appear первый раз чтобы когда карта appear при переключении на tabbar вкладках не делалось viewDidAppear второй раз
-        NotificationCenter.default
-                          .addObserver(self,
-                                       selector: #selector(statusManager),
-                                       name: .none,
-                                       object: nil)
-        checkInternetConnection()
-        if Auth.auth().currentUser != nil && isNotAlreadyShown {
-            
-            isNotAlreadyShown = false
-            userUID = Auth.auth().currentUser?.uid
-            let ref = Database.database().reference().child("users/\(userUID!)")
-            
-            let currentCamera = MGLMapCamera(
-                lookingAtCenter: self.basicLocation,
-                altitude: self.altitude, pitch: self.pitch, heading: self.heading
-            )
-            self.mapView.alpha = 0
-            self.mapView.setCamera(currentCamera, animated: false)
-            
-            
-            //чтение логина из БД
-            ref.observeSingleEvent(of: .value, with: { (snapshot) in
-                if let user = snapshot.value as? [String : AnyObject] {
-                    self.myLogin = user["login"] as! String
-                    self.myRating = user["rating"] as! Int
-                    self.myHealth = user["health"] as! Int
-                    print(self.myLogin)
-                    self.loginText.text = self.myLogin
-                    let offlinePosX = user["pos-x"] as! Double
-                    let offlinePosY = user["pos-y"] as! Double
-                    
-                    self.timeOfDeath = user["time-death"] as! String
-                    self.checkRebirth()
-                    
-                    self.basicLocation = CLLocationCoordinate2D(
-                        latitude: offlinePosX,
-                        longitude: offlinePosY
-                    )
-                    
-                    let currentCamera0 = MGLMapCamera(
-                        lookingAtCenter: self.userLocation,
-                        altitude: self.altitude, pitch: self.pitch, heading: self.heading
-                    )
-                    self.mapView.fly(to: currentCamera0, withDuration: 1, completionHandler: nil)
-                    UIView.animate(withDuration: 2, animations: {
-                        self.mapView.alpha = 1
-                    })
-                }
-            })
-            
-            setupMapView()
-            setupDataBaseTranslation()
+        // screenIsAlredyShown = становится true когда карта appear первый раз чтобы когда карта appear при переключении на tabbar вкладках не делалось viewDidAppear второй раз
+        
+        guard let user = Auth.auth().currentUser else {
+            print("User not created")
+            return
         }
+        
+        if screenIsAlredyShown {
+            print("Screen is shown")
+            return
+        }
+        
+        screenIsAlredyShown = true
+        userUID = user.uid
+        guard let ref = DataBaseManager.shared.refToUser else { print("User not created"); return }
+        
+        let currentCamera = MGLMapCamera(
+            lookingAtCenter: self.basicLocation,
+            altitude: self.altitude, pitch: self.pitch, heading: self.heading
+        )
+        
+        self.mapView.alpha = 0
+        self.mapView.setCamera(currentCamera, animated: false)
+        
+        
+        //чтение логина из БД
+        ref.observeSingleEvent(of: .value, with: { (snapshot) in
+            if let user = snapshot.value as? [String : AnyObject] {
+                self.myLogin = user["login"] as! String
+                self.myRating = user["rating"] as! Int
+                self.myHealth = user["health"] as! Int
+                print(self.myLogin)
+                self.loginText.text = self.myLogin
+                let offlinePosX = user["pos-x"] as! Double
+                let offlinePosY = user["pos-y"] as! Double
+                
+                self.timeOfDeath = user["time-death"] as! String
+                self.checkRebirth()
+                
+                self.basicLocation = CLLocationCoordinate2D(
+                    latitude: offlinePosX,
+                    longitude: offlinePosY
+                )
+                
+                let currentCamera0 = MGLMapCamera(
+                    lookingAtCenter: self.userLocation,
+                    altitude: self.altitude, pitch: self.pitch, heading: self.heading
+                )
+                self.mapView.setCamera(currentCamera0, animated: false)
+                self.mapView.alpha = 1
+//                self.mapView.fly(to: currentCamera0, withDuration: 1, completionHandler: nil)
+//                UIView.animate(withDuration: 2, animations: {
+//                    self.mapView.alpha = 1
+//                })
+            }})
+        
+        setupMapView()
+        setupDataBaseTranslation()
     }
     
     func setupDataBaseTranslation() {
@@ -188,7 +194,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         // Ставим обновление базы данных каждые 5 секунд
         let _ = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(updateDB), userInfo: nil, repeats: true)
         
-        let refToUsers = Database.database().reference().child("users")
+        let refToUsers = DataBaseManager.Refs.databaseUsers
         
         // Вызывается автоматически, когда изменяется какое либо значение у чела и отрисовывает его местопложение
         refToUsers.observe(.childChanged) { (snapshot) in
@@ -203,15 +209,17 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     func readNewData(snapshot: DataSnapshot, isAdding: Bool) {
         
-        let timeOnline = snapshot.childSnapshot(forPath: "time-online").value as! String
-        let timeDeath = snapshot.childSnapshot(forPath: "time-death").value as! String
-        let curLogin = snapshot.childSnapshot(forPath: "login").value as! String
-        let posx = snapshot.childSnapshot(forPath: "pos-x").value as! Double
-        let posy = snapshot.childSnapshot(forPath: "pos-y").value as! Double
-        let curHealth = snapshot.childSnapshot(forPath: "health").value as! Int
-        let curRating = snapshot.childSnapshot(forPath: "rating").value as! Int
+        guard let timeOnline = snapshot.childSnapshot(forPath: "time-online").value as? String else { return }
+        guard let timeDeath = snapshot.childSnapshot(forPath: "time-death").value as? String   else { return }
+        guard let curLogin = snapshot.childSnapshot(forPath: "login").value as? String         else { return }
         
-        let isOnline = !TC.isMoreThanDiff(oldDate: timeOnline, diff: 1, in: .minute)
+        guard let posx = snapshot.childSnapshot(forPath: "pos-x").value as? Double             else { return }
+        guard let posy = snapshot.childSnapshot(forPath: "pos-y").value as? Double             else { return }
+        
+        guard let curHealth = snapshot.childSnapshot(forPath: "health").value as? Int          else { return }
+        guard let curRating = snapshot.childSnapshot(forPath: "rating").value as? Int          else { return }
+        
+        let isOnline = !TimeConverter.isMoreThanDiff(oldDate: timeOnline, diff: 1, in: .minute)
         
         let curPlayer = Player(
             login: curLogin,
@@ -223,8 +231,8 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         
         self.players[curLogin] = curPlayer
         
-//        print("show: \(curLogin)")
-//        print("x: \(posx), y: \(posy)")
+        //        print("show: \(curLogin)")
+        //        print("x: \(posx), y: \(posy)")
         
         // тут отрисовываем чела на карте
         if curLogin != myLogin {
@@ -236,22 +244,22 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                 annotation.typeOfImage = isOnline ? "online" : "offline"
                 return annotation
             }()
-            if curHealth > 0 {
-                if !isAdding {
-                    if let currentPoint = self.annotationsPlayers[curLogin] {
-                        self.mapView.removeAnnotation(currentPoint)
-                    }
-                }
-                self.mapView.addAnnotation(curPoint)
-                self.annotationsPlayers[curLogin] = curPoint
-            }
             
+            guard curHealth > 0 else { return }
+            if !isAdding {
+                if let currentPoint = self.annotationsPlayers[curLogin] {
+                    self.mapView.removeAnnotation(currentPoint)
+                }
+            }
+            self.mapView.addAnnotation(curPoint)
+            self.annotationsPlayers[curLogin] = curPoint
+           
         } else {
             let lstHealth = myHealth
             myHealth = curHealth
             
             //убили меня
-            if (lstHealth > 0 && curHealth == 0){
+            if (lstHealth > 0 && curHealth == 0) {
                 timeOfDeath = timeDeath
                 checkRebirth()
             }
@@ -266,9 +274,9 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                 if snapshot.exists() {
                     let location = self.userLocation
                     if (location.latitude != -180 && location.longitude != -180){
-//                        print("Data Load to DB")
-//                        print("x = \(self.userLocation.latitude), y = \(self.userLocation.longitude)")
-                        let values: [String: Any] = ["time-online" : self.TC.convertToUTC(in: .minute) ,
+                        //                        print("Data Load to DB")
+                        //                        print("x = \(self.userLocation.latitude), y = \(self.userLocation.longitude)")
+                        let values: [String: Any] = ["time-online" : TimeConverter.convertToUTC(in: .minute) ,
                                                      "pos-x"       : location.latitude,
                                                      "pos-y"       : location.longitude]
                         DataBaseManager.shared.updateUserValues(for: self.userUID, with: values)
@@ -284,28 +292,17 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     @objc func checkRebirth(){
         if (myHealth == 0){
             isAlive = false
-            if(TC.isMoreThanDiff(oldDate: timeOfDeath, diff: 5, in: .minute)){
+            if (TimeConverter.isMoreThanDiff(oldDate: timeOfDeath, diff: 5, in: .minute)) {
                 guard let ref = DataBaseManager.shared.refToUser else { return }
                 ref.updateChildValues(["health" : 100])
                 mapView.showsUserLocation = true
                 isAlive = true
             }else{
                 mapView.showsUserLocation = false
-                print("left until rebirth ~\(5-TC.showDiff(oldDate: timeOfDeath, in: .minute))min")
+                print("left until rebirth ~\(5-TimeConverter.showDiff(oldDate: timeOfDeath, in: .minute))min")
                 let _ = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(checkRebirth), userInfo: nil, repeats: false)
             }
         }
-    }
-    
-    func checkInternetConnection(){
-        if !Reachability.isConnectedToNetwork() && hasConnection{
-            showInternetAlert()
-            //print("Internet Connection not Available!")
-        }
-    }
-    
-    @objc func statusManager(_ notification: Notification) {
-        checkInternetConnection()
     }
     
     
@@ -325,6 +322,12 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     
     // This delegate method is where you tell the map to load an image for a specific annotation based on the willUseImage property of the custom subclass.
+    func mapViewDidFinishLoadingMap(_ mapView: MGLMapView) {
+        UIView.animate(withDuration: 0.4, delay: 0.0, options: .beginFromCurrentState,
+                       animations: { self.downloadView.transform = CGAffineTransform(scaleX: 0.01, y: 0.01) },
+                       completion: { (succes) in self.downloadView.removeFromSuperview() })
+    }
+    
     func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
         
         var curType = "online"
@@ -409,13 +412,13 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         //если живой то можешь стрелять
         guard isAlive else { return }
         
-        guard let oldDate = defaults.string(forKey: "TimeOfLastShot") else {
-            print("No value for key: TimeOfLastShot in user defaults")
+        guard let oldDate = defaults.string(forKey: lastShotKey) else {
+            print("No value for key: \(lastShotKey) in user defaults")
             return
         }
         
-        guard TC.isMoreThanDiff(oldDate: oldDate, diff: myKD, in: .second) else {
-            print("Kd remaining : sec  \(self.myKD-(TC.showDiff(oldDate: oldDate, in: .second)))")
+        guard TimeConverter.isMoreThanDiff(oldDate: oldDate, diff: myKD, in: .second) else {
+            print("Kd remaining : sec  \(self.myKD-(TimeConverter.showDiff(oldDate: oldDate, in: .second)))")
             return
         }
         
@@ -425,10 +428,10 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             guard sqrt(pow(curPlayer.position.latitude - self.userLocation.latitude,2)+pow(curPlayer.position.longitude - self.userLocation.longitude,2))<0.0005 else {
                 return
             }
-           
+            
             mapView.deselectAnnotation(annotation, animated: false)
             let alert = UIAlertController(title: "Nice shot", message: "-20 HP", preferredStyle: .alert)
-                      alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             
             let ref = Database.database().reference().child("usernames/\(players[annotation.title!!]!.login.lowercased())")
             ref.observeSingleEvent(of: .value, with: { (snapshot) in
@@ -466,17 +469,15 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                     DispatchQueue.global(qos: .utility).async {
                         let values: [String: Any] = ["health"     : damagedUserHealth,
                                                      "rating"     : damagedUserRating,
-                                                     "time-death" : self.TC.convertToUTC(in: .minute)]
+                                                     "time-death" : TimeConverter.convertToUTC(in: .minute)]
                         
                         DataBaseManager.shared.updateUserValues(for: damagedUserUID, with: values)
                     }
                 }
             })
-            defaults.set(TC.convertToUTC(in: .second), forKey: "TimeOfLastShot")
+            defaults.set(TimeConverter.convertToUTC(in: .second), forKey: lastShotKey)
             //можно не алерт будет сделать а всплывающее окно свое
             self.present(alert, animated: true, completion: nil)
         }
-        
-        
     }
 }
