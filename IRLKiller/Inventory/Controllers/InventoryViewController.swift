@@ -37,7 +37,7 @@ class InventoryViewController: UITableViewController {
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return Weapons.allCases.count
+        return WeaponTypes.allCases.count
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -64,7 +64,7 @@ class InventoryViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return Weapons.allCases[section].rawValue.capitalized
+        return WeaponTypes.allCases[section].rawValue.capitalized
     }
     
     // MARK:- Change header colors
@@ -85,7 +85,7 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
     
     // MARK:- collectionView methods
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let key = Weapons.allCases[collectionView.tag].rawValue
+        let key = WeaponTypes.allCases[collectionView.tag].rawValue
         guard let values = weaponData.items[key] else { return 1 }
         return values.count
     }
@@ -104,7 +104,7 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
         
         cell.backgroundColor = InventoryViewController.weaponCellColor
         
-        let weaponType = Weapons.allCases[collectionView.tag].rawValue
+        let weaponType = WeaponTypes.allCases[collectionView.tag].rawValue
         guard let data = weaponData.getWeapon(for: weaponType, index: indexPath.row) else { return cell }
         cell.weaponName = data.name
         cell.descriptionText = "Nice gun"

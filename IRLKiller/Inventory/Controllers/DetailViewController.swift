@@ -190,7 +190,7 @@ class DetailViewController: UIViewController {
     func setIndexPath(weaponSection: Int, weaponIndex: Int) {
         self.weaponSection = weaponSection
         self.weaponIndex = weaponIndex
-        weaponKey = Weapons.allCases[weaponSection].rawValue
+        weaponKey = WeaponTypes.allCases[weaponSection].rawValue
         
         setWeaponAttributes()
     }
@@ -212,7 +212,7 @@ class DetailViewController: UIViewController {
         
         let indexPath = IndexPath(row: 0, section: weaponSection)
         
-        UserDefaults.standard.set(indexPath, forKey: Weapon.currentWeaponKey)
+       // UserDefaults.standard.set(indexPath, forKey: Weapon.currentWeaponKey)
         delegate?.reloadDataInCollectionView(for: indexPath)
         closeDetailViewControllerAction()
     }

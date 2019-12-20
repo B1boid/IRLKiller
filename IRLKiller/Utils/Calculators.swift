@@ -59,3 +59,10 @@ class WeaponCalculator {
     }
 }
 
+extension UserDefaults {
+    func saveWeapon(for indexPath: IndexPath) {
+        let path = "\(indexPath.row) \(indexPath.section)"
+        self.set(path, forKey: Weapon.currentWeaponKey)
+    }
+}
+
