@@ -133,7 +133,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             return
         }
         
-        setupDownloadView()
+        //setupDownloadView()
         
         screenIsAlredyShown = true
         userUID = user.uid
@@ -147,10 +147,10 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                 self.myHealth = user["health"] as! Int
                 print(self.myLogin)
                 self.loginText.text = self.myLogin
-                let offlinePosX = user["pos-x"] as! Double
-                let offlinePosY = user["pos-y"] as! Double
+                let offlinePosX = user["latitude"] as! Double
+                let offlinePosY = user["longitude"] as! Double
                 
-                self.timeOfDeath = user["time-death"] as! String
+                self.timeOfDeath = user[DatabaseKeys.time_death.rawValue] as! String
                 self.checkRebirth()
                 
                 self.basicLocation = CLLocationCoordinate2D(
@@ -163,9 +163,9 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                     altitude: self.altitude, pitch: self.pitch, heading: self.heading
                 )
                 self.mapView.setCamera(camera, animated: false)
-                UIView.animate(withDuration: 0.4, delay: 2.0, options: .beginFromCurrentState,
-                               animations: { self.pulsatingView.transform = CGAffineTransform(scaleX: 0.01, y: 0.01) },
-                               completion: { (succes) in self.pulsatingView.removeFromSuperview() })
+//                UIView.animate(withDuration: 0.4, delay: 2.0, options: .beginFromCurrentState,
+//                               animations: { self.pulsatingView.transform = CGAffineTransform(scaleX: 0.01, y: 0.01) },
+//                               completion: { (succes) in self.pulsatingView.removeFromSuperview() })
             }})
         
         setupMapView()
@@ -191,12 +191,13 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     }
     
     func readNewData(snapshot: DataSnapshot, isAdding: Bool) {
-        guard let timeOnline = snapshot.childSnapshot(forPath: "time-online").value as? String else { return }
-        guard let timeDeath = snapshot.childSnapshot(forPath: "time-death").value as? String   else { return }
+        print(snapshot.value as! [String: Any])
+        guard let timeOnline = snapshot.childSnapshot(forPath: "time_online").value as? String else { return }
+        guard let timeDeath = snapshot.childSnapshot(forPath: "time_death").value as? String   else { return }
         guard let curLogin = snapshot.childSnapshot(forPath: "login").value as? String         else { return }
         
-        guard let posx = snapshot.childSnapshot(forPath: "pos-x").value as? Double             else { return }
-        guard let posy = snapshot.childSnapshot(forPath: "pos-y").value as? Double             else { return }
+        guard let posx = snapshot.childSnapshot(forPath: "latitude").value as? Double          else { return }
+        guard let posy = snapshot.childSnapshot(forPath: "longitude").value as? Double         else { return }
         
         guard let curHealth = snapshot.childSnapshot(forPath: "health").value as? Int          else { return }
         guard let curRating = snapshot.childSnapshot(forPath: "rating").value as? Int          else { return }
@@ -261,11 +262,15 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     }
     
     
-    func showInternetAlert(){
+    func showInternetAlert() {
         hasConnection = false
-        let alert = UIAlertController(title: "No internet connection",message: "Please connect your device to the internet.", preferredStyle: UIAlertController.Style.alert)
+        let alert = UIAlertController(title: "No internet connection",
+                                      message: "Please connect your device to the internet.",
+                                      preferredStyle: UIAlertController.Style.alert)
         
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: { (action: UIAlertAction!) in
+        alert.addAction(UIAlertAction(title: "OK",
+                                      style: UIAlertAction.Style.default,
+                                      handler: { (action: UIAlertAction!) in
             self.hasConnection = true
             self.checkInternetConnection()
         }))
@@ -286,9 +291,9 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                     if (location.latitude != -180 && location.longitude != -180){
                         //                        print("Data Load to DB")
                         //                        print("x = \(self.userLocation.latitude), y = \(self.userLocation.longitude)")
-                        let values: [String: Any] = ["time-online" : TimeConverter.convertToUTC(in: .minute) ,
-                                                     "pos-x"       : location.latitude,
-                                                     "pos-y"       : location.longitude]
+                        let values: [DatabaseKeys: Any] = [.time_online : TimeConverter.convertToUTC(in: .minute),
+                                                       .latitude        : location.latitude,
+                                                       .longitude       : location.longitude]
                         DataBaseManager.shared.updateUserValues(for: self.userUID, with: values)
                     }
                 } else {
@@ -300,7 +305,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     }
     
     @objc func checkRebirth(){
-        if (myHealth == 0){
+        if (myHealth == 0) {
             isAlive = false
             if (TimeConverter.isMoreThanDiff(oldDate: timeOfDeath, diff: 5, in: .minute)) {
                 guard let ref = DataBaseManager.shared.refToUser else { return }
@@ -376,20 +381,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             let label = UILabel(frame: CGRect(x: 0, y: 0, width: 42, height: 20))
             if let curPlayer = players[annotation.title!!]{
                 let curRating = curPlayer.rating
-                switch curRating {
-                case 2000...:
-                    label.textColor = UIColor(red: 1, green: 0.7, blue: 0, alpha: 1)
-                case 1800..<2000:
-                    label.textColor = UIColor(red: 1, green: 0, blue: 1, alpha: 1)
-                case 1600..<1800:
-                    label.textColor = UIColor(red: 0, green: 0, blue: 1, alpha: 1)
-                case 1400..<1600:
-                    label.textColor = UIColor(red: 0, green: 1, blue: 1, alpha: 1)
-                case 1000..<1400:
-                    label.textColor = UIColor(red: 0, green: 1, blue: 0, alpha: 1)
-                default:
-                    label.textColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)
-                }
+                label.textColor = UIColor.getRatingColor(for: curRating)
                 label.text = String(curPlayer.rating)
                 return label
             }
@@ -425,11 +417,10 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             }
         }
         
-        
         if let curPlayer = players[annotation.title!!]{
-            
             // если хватает дистанции оружия
-            guard sqrt(pow(curPlayer.position.latitude - self.userLocation.latitude,2)+pow(curPlayer.position.longitude - self.userLocation.longitude,2))<0.0005 else {
+            let distance = DistanceCalculator.distance(from: curPlayer.position, to: userLocation)
+            guard distance < 0.0005 else {
                 return
             }
             
@@ -437,7 +428,8 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             let alert = UIAlertController(title: "Nice shot", message: "-20 HP", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             
-            let ref = Database.database().reference().child("usernames/\(players[annotation.title!!]!.login.lowercased())")
+            let playerLogin = players[annotation.title!!]!.login.lowercased()
+            let ref = DataBaseManager.Refs.databaseUserNames.child("/\(playerLogin)")
             ref.observeSingleEvent(of: .value, with: { (snapshot) in
                 if let damagedUserUID = snapshot.value as? String {
                     var damagedUserHealth = curPlayer.health - 20
@@ -466,14 +458,14 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                         rating += Int(delta2)
                         self.myRating = rating
                         DispatchQueue.global(qos: .utility).async {
-                            DataBaseManager.shared.updateUserValues(for: self.userUID, with: ["rating" : rating])
+                            DataBaseManager.shared.updateUserValues(for: self.userUID, with: [.rating : rating])
                         }
                     }
                     
                     DispatchQueue.global(qos: .utility).async {
-                        let values: [String: Any] = ["health"     : damagedUserHealth,
-                                                     "rating"     : damagedUserRating,
-                                                     "time-death" : TimeConverter.convertToUTC(in: .minute)]
+                        let values: [DatabaseKeys: Any] = [.health     : damagedUserHealth,
+                                                           .rating     : damagedUserRating,
+                                                           .time_death : TimeConverter.convertToUTC(in: .minute)]
                         
                         DataBaseManager.shared.updateUserValues(for: damagedUserUID, with: values)
                     }

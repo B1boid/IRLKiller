@@ -3,6 +3,15 @@ import Firebase
 import FirebaseDatabase
 import FirebaseUI
 
+enum DatabaseKeys: String {
+    case health
+    case latitude
+    case longitude
+    case rating
+    case login
+    case time_death
+    case time_online
+}
 
 class DataBaseManager {
     
@@ -28,7 +37,7 @@ class DataBaseManager {
     
     
     // MARK:- Create users function
-    func createUser(login: String, values: [String: Any], completion: @escaping () -> Void) {
+    func createUser(login: String, values: [DatabaseKeys: Any], completion: @escaping () -> Void) {
         
         // Создаем связку почты и пароля для входа,она нужна только чтобы использовать возможность авторизации FirebaseAuth ,от пользователя понадобится только логин
         
@@ -54,7 +63,7 @@ class DataBaseManager {
     }
     
     func readDataFromDataBase(comletion: () -> Void) {
-        
+    
     }
     
     func startTranslation() {
@@ -62,9 +71,11 @@ class DataBaseManager {
     }
     
     // MARK:- Update value (attributes for users)
-    func updateUserValues(for uid: String?, with values: [String: Any]) {
+    func updateUserValues(for uid: String?, with values: [DatabaseKeys: Any]) {
         guard let UID = uid  else { return }
         let reference = Refs.databaseUsers.child("/\(UID)")
-        reference.updateChildValues(values)
+        let stringKeys = values.map( { (key, _) in key.rawValue } )
+        let keyStringValues = Dictionary(uniqueKeysWithValues: zip(stringKeys, values.map({ $0.value })))
+        reference.updateChildValues(keyStringValues)
     }
 }

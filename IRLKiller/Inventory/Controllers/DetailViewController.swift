@@ -212,6 +212,7 @@ class DetailViewController: UIViewController {
         
         let indexPath = IndexPath(row: 0, section: weaponSection)
         
+        UserDefaults.standard.set(indexPath, forKey: Weapon.currentWeaponKey)
         delegate?.reloadDataInCollectionView(for: indexPath)
         closeDetailViewControllerAction()
     }

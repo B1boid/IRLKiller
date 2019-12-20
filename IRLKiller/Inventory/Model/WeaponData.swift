@@ -1,3 +1,5 @@
+import Foundation
+
 enum Weapons: String, CaseIterable {
     case gun
     case grenade
