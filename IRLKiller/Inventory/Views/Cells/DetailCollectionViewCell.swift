@@ -15,8 +15,6 @@ class DetailCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        print("INIT")
         self.addSubview(iv)
         self.addSubview(valueLabel)
         self.addSubview(descriptionLabel)

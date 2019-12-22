@@ -31,38 +31,48 @@ class ContainerViewController: UIViewController {
             detailVC.delegate = inventoryVC
         }
         
-        // Animating view appereance 
-        detailVC.view.transform = CGAffineTransform(scaleX: 0.8, y: 1.2)
-        view.insertSubview(detailVC.view, aboveSubview: inventoryVC.view)
-        UIView.animate(withDuration: 0.3,
-                       delay: 0,
-                       usingSpringWithDamping: 0.5,
-                       initialSpringVelocity: 0,
-                       options: [],
-                       animations: {
-                self.inventoryVC.view.alpha = 0.2
-                self.detailVC.view.transform = .identity
-        },
-                       completion: nil)
-
+        // Animating view appereance
+        UIView.animateViewAppereance(appearingView: detailVC.view, disappearingView: inventoryVC.view, mainView: self.view)
         detailVC.setIndexPath(weaponSection: weaponSection, weaponIndex: weaponIndex)
     }
     
     func hideDetailViewController() {
-        UIView.animate(withDuration: 0.2, animations: {
-            self.inventoryVC.view.alpha = 1
-            self.detailVC.view.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
-        }, completion: { (succes) in
-            self.detailVC.view.removeFromSuperview()
-        })
+        UIView.animateViewDisappearance(disappearingView: detailVC.view, appearingView: inventoryVC.view)
     }
 }
-
 
 extension ContainerViewController {
     
     func add(child: UIViewController) {
         self.addChild(child)
         child.didMove(toParent: self)
+    }
+}
+
+
+extension UIView {
+    
+    static func animateViewAppereance(appearingView: UIView, disappearingView: UIView, mainView: UIView) {
+        appearingView.transform = CGAffineTransform(scaleX: 0.8, y: 1.2)
+        mainView.insertSubview(appearingView, aboveSubview: disappearingView)
+        UIView.animate(withDuration: 0.3,
+                       delay: 0,
+                       usingSpringWithDamping: 0.5,
+                       initialSpringVelocity: 0,
+                       options: [],
+                       animations: {
+                        disappearingView.alpha = 0.2
+                        appearingView.transform = .identity
+        },
+                       completion: nil)
+    }
+    
+    static func animateViewDisappearance(disappearingView: UIView, appearingView: UIView) {
+        UIView.animate(withDuration: 0.2, animations: {
+            appearingView.alpha = 1
+            disappearingView.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
+        }, completion: { (succes) in
+            disappearingView.removeFromSuperview()
+        })
     }
 }

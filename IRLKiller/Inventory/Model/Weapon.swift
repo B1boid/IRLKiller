@@ -1,12 +1,12 @@
 struct Weapon {
-    let name: String
-    let cost: Float
-    let distance: Float
-    let capacity: Float
-    let reloadTime: Float
-    let damage: Float
+    let name      : String
+    let cost      : Int
+    let distance  : Int
+    let capacity  : Int
+    let reloadTime: Int
+    let damage    : Int
     
-    static let currentWeaponKey: String = "CurrentWeapon"
+    static let defaultWeapon: String = "CurrentWeapon"
 }
 
 enum WeaponTypes: String, CaseIterable {

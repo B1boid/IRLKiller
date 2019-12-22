@@ -3,7 +3,7 @@ import UIKit
 
 class DetailViewController: UIViewController {
     
-    private let weaponData = WeaponData.shared
+    private let weaponModel = WeaponModel.shared
     var delegate: CollectionViewReloadDataDelegate?
     
     private var curWeapon: Weapon!
@@ -37,7 +37,7 @@ class DetailViewController: UIViewController {
     
     // weapon image
     private lazy var weaponImage = UIImageView()
-        
+    
     // Constans
     private let cornerRadius: CGFloat = 10
     
@@ -94,8 +94,6 @@ class DetailViewController: UIViewController {
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        
-        print("Start layout")
         designMainView()
         
         layoutNameLabel()
@@ -117,22 +115,20 @@ class DetailViewController: UIViewController {
     
     // MARK:- Layout functions
     private func layoutNameLabel() {
-        print("layout name label")
-        let xOffset = cornerRadius
+        let xOffset = cornerRadius + mainView.bounds.width / 10
         let yOffset = cornerRadius
-        
+
         nameLabel.frame = CGRect(x: xOffset,
                                  y: yOffset,
                                  width: mainView.bounds.width - 2 * xOffset,
-                                 height: mainView.bounds.height / 7)
+                                 height: mainView.bounds.height / 5)
         
+        nameLabel.font = UIFont.boldSystemFont(ofSize: 100)
+    
         nameLabel.textColor = .white
-        nameLabel.clipsToBounds = true
-        print(nameLabel.frame)
-        print(nameLabel.text!)
-        nameLabel.font = UIFont.boldSystemFont(ofSize: 50)
-        nameLabel.textAlignment = .center
+        nameLabel.baselineAdjustment = .alignCenters
         nameLabel.adjustsFontSizeToFitWidth = true
+        nameLabel.textAlignment = .center
     }
     
     private func layoutWeaponImage() {
@@ -147,8 +143,6 @@ class DetailViewController: UIViewController {
                                    y: yOffset,
                                    width: mainView.bounds.width - 2 * xOffset,
                                    height: mainView.bounds.height * (2 / 5))
-        
-        print(weaponImage.frame)
     }
     
     private func layoutDetailCollectionView() {
@@ -197,26 +191,29 @@ class DetailViewController: UIViewController {
     
     // MARK:- Set attributes
     private func setWeaponAttributes() {
-        guard let values = weaponData.items[weaponKey] else { return }
+        guard let values = weaponModel.items[weaponKey] else { return }
         curWeapon = values[weaponIndex]
-        
-        nameLabel.text = curWeapon.name
-        weaponImage.image = UIImage.init(named: curWeapon.name)
+        detailCollectionView.reloadData()
+       
+        nameLabel.text = curWeapon.name.capitalized
+        weaponImage.image = UIImage.getWeaponImage(name: curWeapon.name)
     }
     
     
     // MARK:- Choose weapon action
     @objc private func chooseWeapon() {
+        
         // Set element to the first position //
-        weaponData.items[weaponKey]?.swapAt(0, weaponIndex)
+        weaponModel.items[weaponKey]?.swapAt(0, weaponIndex)
         
         let indexPath = IndexPath(row: 0, section: weaponSection)
+        UserDefaults.standard.saveWeapon(for: indexPath)
         
-       // UserDefaults.standard.set(indexPath, forKey: Weapon.currentWeaponKey)
+        // Call this method because we want collectiovView for special row to update
         delegate?.reloadDataInCollectionView(for: indexPath)
         closeDetailViewControllerAction()
     }
-        
+    
     // MARK:- TapGestrureRecognizer action
     @objc private func handleOutsideTap(_ sender: UITapGestureRecognizer) {
         switch sender.state {
@@ -259,14 +256,14 @@ extension DetailViewController: UICollectionViewDataSource, UICollectionViewDele
 
 
 // MARK:- Weapon attributes enum
-enum WeaponAttributes: String, CaseIterable {
+private enum WeaponAttributes: String, CaseIterable {
     // cases shoud be written with underscore if they have more than one word -> than names converted by splitted with "_"
     case damage
     case reload_time
     case distance
     case capacity
     
-    func getValue(weapon: Weapon) -> Float {
+    func getValue(weapon: Weapon) -> Int {
         switch self {
         case .damage:
             return weapon.damage
@@ -282,12 +279,12 @@ enum WeaponAttributes: String, CaseIterable {
 
 
 // MARK:- AttributeCellConstants
-struct AttributeCellConstants {
+private struct AttributeCellConstants {
     static let minInteritemSpacing: CGFloat = 10
     static let itemsPerRow: CGFloat = 4
     static let inset: CGFloat = 10
     
-    static func calcWidth(collectionViewWidth: CGFloat) -> CGFloat {
+    static func calculateWidth(collectionViewWidth: CGFloat) -> CGFloat {
         return (collectionViewWidth - (AttributeCellConstants.itemsPerRow - 1) * AttributeCellConstants.minInteritemSpacing
             - 2 * AttributeCellConstants.inset) / AttributeCellConstants.itemsPerRow
     }
@@ -298,7 +295,7 @@ struct AttributeCellConstants {
 extension DetailViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let nWidth = AttributeCellConstants.calcWidth(collectionViewWidth: collectionView.bounds.width)
+        let nWidth = AttributeCellConstants.calculateWidth(collectionViewWidth: collectionView.bounds.width)
         let nHeight = collectionView.bounds.height
         return CGSize(width: nWidth, height: nHeight)
     }
@@ -307,8 +304,24 @@ extension DetailViewController: UICollectionViewDelegateFlowLayout {
 
 
 extension UIImage {
-    static let shootgun = UIImage(named: "shotgun")
-    static let revolver = UIImage(named: "revolver")
-    static let knife = UIImage(named: "knife")
-    static let basic = UIImage(named: "basic")
+    
+    static let shootgun = UIImage(named: "shootgun")!
+    static let revolver = UIImage(named: "revolver")!
+    static let knife = UIImage(named: "knife")!
+    static let basic = UIImage(named: "basic")!
+    
+    static func getWeaponImage(name: String) -> UIImage {
+        switch name {
+        case "shootgun":
+            return UIImage.shootgun
+        case "revolver":
+            return UIImage.revolver
+        case "knife":
+            return UIImage.knife
+        case "basic":
+            return UIImage.basic
+        default:
+            return UIImage.basic
+        }
+    }
 }

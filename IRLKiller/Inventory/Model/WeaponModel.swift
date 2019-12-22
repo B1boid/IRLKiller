@@ -1,8 +1,8 @@
 import Foundation
 
-class WeaponData {
+class WeaponModel {
     
-    static let shared = WeaponData()
+    static let shared = WeaponModel()
     
     fileprivate init() {
         
@@ -16,19 +16,19 @@ class WeaponData {
     var items: [String: [Weapon]] = [
         
         WeaponTypes.gun.rawValue: [
-            Weapon(name: "shotgun", cost: 10, distance: 10, capacity: 10, reloadTime: 6, damage: 50),
+            Weapon(name: "shootgun", cost: 10, distance: 10, capacity: 10, reloadTime: 6, damage: 50),
             Weapon(name: "revolver", cost: 20, distance: 20, capacity: 7, reloadTime: 5, damage: 20)
         ],
         
         WeaponTypes.grenade.rawValue: [
-            Weapon(name: "shotgun", cost: 10, distance: 10, capacity: 10, reloadTime: 6, damage: 50),
+            Weapon(name: "shootgun", cost: 10, distance: 10, capacity: 10, reloadTime: 6, damage: 50),
             Weapon(name: "knife", cost: 20, distance: 20, capacity: 7, reloadTime: 5, damage: 20),
             Weapon(name: "basic", cost: 10, distance: 10, capacity: 10, reloadTime: 6, damage: 50),
             Weapon(name: "revolver", cost: 20, distance: 20, capacity: 7, reloadTime: 5, damage: 20),
         ],
         
         WeaponTypes.rifle.rawValue: [
-            Weapon(name: "shotgun", cost: 10, distance: 10, capacity: 10, reloadTime: 6, damage: 50),
+            Weapon(name: "shootgun", cost: 10, distance: 10, capacity: 10, reloadTime: 6, damage: 50),
             Weapon(name: "knife", cost: 20, distance: 20, capacity: 7, reloadTime: 5, damage: 20),
             Weapon(name: "basic", cost: 10, distance: 10, capacity: 10, reloadTime: 6, damage: 50),
             Weapon(name: "revolver", cost: 20, distance: 20, capacity: 7, reloadTime: 5, damage: 20),

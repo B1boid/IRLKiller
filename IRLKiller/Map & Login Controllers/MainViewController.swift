@@ -35,14 +35,14 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     var myLogin = ""
     var myRating = 0
     var myHealth = 100
-    var myKD: UInt = 4
+    var myKD: UInt = 10
     var timeOfDeath = ""
     var isAlive = true
     
     let TC = TimeConverter()
     
     let defaults = UserDefaults.standard
-    let lastShotKey = "TimeOfLastShot"
+    let lastShotTime = "TimeOfLastShot"
     var hasConnection = true
     
     // View and buttons
@@ -100,10 +100,10 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     
     private func setupDownloadView() {
         pulsatingView = PulsatingView(frame: view.bounds,
-                                    radius: view.bounds.midX / 2,
-                                    circleCenter: CGPoint(x: view.bounds.midX, y: view.bounds.midY),
-                                    strokeColor:  UIColor.outlineStrokeColor.cgColor,
-                                    pulseColor: UIColor.pulsatingFillColor.cgColor)
+                                      radius: view.bounds.midX / 2,
+                                      circleCenter: CGPoint(x: view.bounds.midX, y: view.bounds.midY),
+                                      strokeColor:  UIColor.outlineStrokeColor.cgColor,
+                                      pulseColor: UIColor.pulsatingFillColor.cgColor)
         
         pulsatingView.backgroundColor = UIColor.downloadViewBackgroundColor
         view.insertSubview(pulsatingView, at: Int.max)
@@ -163,9 +163,9 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                     altitude: self.altitude, pitch: self.pitch, heading: self.heading
                 )
                 self.mapView.setCamera(camera, animated: false)
-//                UIView.animate(withDuration: 0.4, delay: 2.0, options: .beginFromCurrentState,
-//                               animations: { self.pulsatingView.transform = CGAffineTransform(scaleX: 0.01, y: 0.01) },
-//                               completion: { (succes) in self.pulsatingView.removeFromSuperview() })
+                //                UIView.animate(withDuration: 0.4, delay: 2.0, options: .beginFromCurrentState,
+                //                               animations: { self.pulsatingView.transform = CGAffineTransform(scaleX: 0.01, y: 0.01) },
+                //                               completion: { (succes) in self.pulsatingView.removeFromSuperview() })
             }})
         
         setupMapView()
@@ -191,7 +191,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     }
     
     func readNewData(snapshot: DataSnapshot, isAdding: Bool) {
-        print(snapshot.value as! [String: Any])
+      //  print(snapshot.value as! [String: Any])
         guard let timeOnline = snapshot.childSnapshot(forPath: "time_online").value as? String else { return }
         guard let timeDeath = snapshot.childSnapshot(forPath: "time_death").value as? String   else { return }
         guard let curLogin = snapshot.childSnapshot(forPath: "login").value as? String         else { return }
@@ -271,8 +271,8 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         alert.addAction(UIAlertAction(title: "OK",
                                       style: UIAlertAction.Style.default,
                                       handler: { (action: UIAlertAction!) in
-            self.hasConnection = true
-            self.checkInternetConnection()
+                                        self.hasConnection = true
+                                        self.checkInternetConnection()
         }))
         
         // show the alert
@@ -292,8 +292,8 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                         //                        print("Data Load to DB")
                         //                        print("x = \(self.userLocation.latitude), y = \(self.userLocation.longitude)")
                         let values: [DatabaseKeys: Any] = [.time_online : TimeConverter.convertToUTC(in: .minute),
-                                                       .latitude        : location.latitude,
-                                                       .longitude       : location.longitude]
+                                                           .latitude        : location.latitude,
+                                                           .longitude       : location.longitude]
                         DataBaseManager.shared.updateUserValues(for: self.userUID, with: values)
                     }
                 } else {
@@ -309,12 +309,13 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             isAlive = false
             if (TimeConverter.isMoreThanDiff(oldDate: timeOfDeath, diff: 5, in: .minute)) {
                 guard let ref = DataBaseManager.shared.refToUser else { return }
-                ref.updateChildValues(["health" : 100])
+                ref.updateChildValues([ "health" : 100 ])
                 mapView.showsUserLocation = true
                 isAlive = true
-            }else{
+            } else {
                 mapView.showsUserLocation = false
-                print("left until rebirth ~\(5-TimeConverter.showDiff(oldDate: timeOfDeath, in: .minute))min")
+                let timeLeft = TimeConverter.showDiff(oldDate: timeOfDeath, in: .minute)
+                print("left until rebirth ~\(5 - timeLeft) min")
                 let _ = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(checkRebirth), userInfo: nil, repeats: false)
             }
         }
@@ -409,69 +410,56 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         //если живой то можешь стрелять
         guard isAlive else { return }
         
-        
         if let oldDate = defaults.string(forKey: "TimeOfLastShot") {
             guard TimeConverter.isMoreThanDiff(oldDate: oldDate, diff: myKD, in: .second) else {
-                print("Kd remaining : sec  \(self.myKD-(TimeConverter.showDiff(oldDate: oldDate, in: .second)))")
+                let delta = TimeConverter.showDiff(oldDate: oldDate, in: .second)
+                print("Kd remaining : sec  \(self.myKD - delta)")
                 return
             }
         }
         
-        if let curPlayer = players[annotation.title!!]{
+        if let victim = players[annotation.title!!]{
             // если хватает дистанции оружия
-            let distance = DistanceCalculator.distance(from: curPlayer.position, to: userLocation)
+            let distance = userLocation.distance(to: victim.position)
             guard distance < 0.0005 else {
                 return
             }
             
+            let currentWeaponDamage = UserDefaults.standard.getDefaultWeapon().damage
+            
             mapView.deselectAnnotation(annotation, animated: false)
-            let alert = UIAlertController(title: "Nice shot", message: "-20 HP", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Nice shot", message: "\(-currentWeaponDamage) HP", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             
-            let playerLogin = players[annotation.title!!]!.login.lowercased()
-            let ref = DataBaseManager.Refs.databaseUserNames.child("/\(playerLogin)")
-            ref.observeSingleEvent(of: .value, with: { (snapshot) in
-                if let damagedUserUID = snapshot.value as? String {
-                    var damagedUserHealth = curPlayer.health - 20
-                    var rating = self.myRating
-                    var damagedUserRating = curPlayer.rating
-                    if damagedUserHealth <= 0 {
-                        damagedUserHealth = 0
-                        self.mapView.removeAnnotation(self.annotationsPlayers[curPlayer.login]!)
-                        let delta: Double = Double(abs(rating - damagedUserRating))
-                        var delta2: Double = 0
-                        print(delta,"RatingsDelta")
-                        switch delta {
-                        case ..<100:
-                            delta2 = (25 - 5 * delta / 100).rounded()
-                        case 100..<1390:
-                            delta2 = (20 - 5 * log2(delta / 100)).rounded()
-                        default:
-                            delta2 = 1
+            let refToVictimUser = DataBaseManager.Refs.databaseUserNames.child("/\(victim.login.lowercased())")
+            
+            refToVictimUser.observeSingleEvent(of: .value, with: { (snapshot) in
+                if let victimUserUID = snapshot.value as? String {
+                    
+                    let changes = WeaponCalculator.getRatingAndHealthAfterShoot(killerRating: self.myRating,
+                                                                                victimRating: victim.rating,
+                                                                                victimHealth: victim.health,
+                                                                                weaponDamage: currentWeaponDamage)
+                    if (changes.victimHealth == 0) {
+                        if let anotation = self.annotationsPlayers[victim.login] {
+                            self.mapView.removeAnnotation(anotation)
                         }
-                        print(delta2)
-                        if rating < damagedUserRating {
-                            delta2 = 50 - delta2
-                        }
-                        print(delta2,"Plus/Minus Delta")
-                        damagedUserRating -= Int(delta2)
-                        rating += Int(delta2)
-                        self.myRating = rating
+                        self.myRating = changes.killerRating
                         DispatchQueue.global(qos: .utility).async {
-                            DataBaseManager.shared.updateUserValues(for: self.userUID, with: [.rating : rating])
+                            DataBaseManager.shared.updateUserValues(for: self.userUID, with: [.rating : self.myRating])
                         }
                     }
                     
                     DispatchQueue.global(qos: .utility).async {
-                        let values: [DatabaseKeys: Any] = [.health     : damagedUserHealth,
-                                                           .rating     : damagedUserRating,
+                        let values: [DatabaseKeys: Any] = [.health     : changes.victimHealth,
+                                                           .rating     : changes.victimRating,
                                                            .time_death : TimeConverter.convertToUTC(in: .minute)]
                         
-                        DataBaseManager.shared.updateUserValues(for: damagedUserUID, with: values)
+                        DataBaseManager.shared.updateUserValues(for: victimUserUID, with: values)
                     }
                 }
             })
-            defaults.set(TimeConverter.convertToUTC(in: .second), forKey: lastShotKey)
+            defaults.set(TimeConverter.convertToUTC(in: .second), forKey: lastShotTime)
             //можно не алерт будет сделать а всплывающее окно свое
             self.present(alert, animated: true, completion: nil)
         }
