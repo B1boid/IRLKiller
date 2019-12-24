@@ -8,20 +8,13 @@ protocol CollectionViewReloadDataDelegate {
 
 class InventoryViewController: UITableViewController {
     
-    private let weaponData = WeaponData.shared
+    private let weaponData = WeaponModel.shared
     private var statusBarColorChangeView: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupTableView()
-        setupBarView()
-    }
-    
-    private func setupBarView() {
-        statusBarColorChangeView = UIView()
-        statusBarColorChangeView.backgroundColor = InventoryViewController.bgColor
-        statusBarColorChangeView.frame = view.safeAreaLayoutGuide.layoutFrame
     }
     
     private func setupTableView() {
@@ -37,7 +30,7 @@ class InventoryViewController: UITableViewController {
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return Weapons.allCases.count
+        return WeaponTypes.allCases.count
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -52,10 +45,10 @@ class InventoryViewController: UITableViewController {
         return cell
     }
     
+    // MARK:- Set delegeta because of dequeueResuableCell (collection view doesn't update cells)
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        //        print("Table view will display \(Weapons.allCases[indexPath.section].rawValue) \n -------------------- \n")
         guard let tableViewCell = cell as? InventoryTableViewCell else { return }
-        tableViewCell.setCollectionViewDataSourceDelegate(self, forRow: indexPath.section)
+        tableViewCell.setCollectionViewDataSourceDelegate(self, forSection: indexPath.section)
     }
     
     // MARK:- tableView header attributes
@@ -64,7 +57,7 @@ class InventoryViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return Weapons.allCases[section].rawValue.capitalized
+        return WeaponTypes.allCases[section].rawValue.capitalized
     }
     
     // MARK:- Change header colors
@@ -85,7 +78,7 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
     
     // MARK:- collectionView methods
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let key = Weapons.allCases[collectionView.tag].rawValue
+        let key = WeaponTypes.allCases[collectionView.tag].rawValue
         guard let values = weaponData.items[key] else { return 1 }
         return values.count
     }
@@ -97,14 +90,14 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
         
         switch indexPath.row {
         case 0:
-            cell.layer.borderColor = InventoryCollectionViewCell.chooseBorderColor
+            cell.layer.borderColor = InventoryCollectionViewCell.chooseBorderColor.cgColor
         default:
             cell.layer.borderColor = InventoryCollectionViewCell.standartBorderColor.cgColor
         }
         
         cell.backgroundColor = InventoryViewController.weaponCellColor
         
-        let weaponType = Weapons.allCases[collectionView.tag].rawValue
+        let weaponType = WeaponTypes.allCases[collectionView.tag].rawValue
         guard let data = weaponData.getWeapon(for: weaponType, index: indexPath.row) else { return cell }
         cell.weaponName = data.name
         cell.descriptionText = "Nice gun"
@@ -118,12 +111,6 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
         let indexInSection = indexPath.row
         parentVC.showDetailViewController(weaponSection: section, weaponIndex: indexInSection)
     }
-    
-    //
-    //    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-    //        // Здесь происходит обновление после reloadData()
-    //        print("Collection view display: \(Weapons.allCases[collectionView.tag].rawValue) | \(indexPath.row + 1)")
-    //    }
 }
 
 extension InventoryViewController: UICollectionViewDelegateFlowLayout {
@@ -139,7 +126,6 @@ extension InventoryViewController: CollectionViewReloadDataDelegate {
     func reloadDataInCollectionView(for indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! InventoryTableViewCell
         cell.collectionView.reloadData()
-        print("reload data")
     }
     
     static let bgColor = #colorLiteral(red: 0.2092410028, green: 0.3064872622, blue: 0.4088295698, alpha: 1)

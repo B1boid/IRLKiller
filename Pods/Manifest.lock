@@ -73,6 +73,7 @@ PODS:
     - GoogleUtilities/Logger
   - GTMSessionFetcher/Core (1.2.2)
   - leveldb-library (1.20)
+  - lottie-ios (3.1.5)
   - Mapbox-iOS-SDK (5.4.0)
   - MapboxCoreNavigation (0.37.0):
     - MapboxDirections.swift (~> 0.30.0)
@@ -103,10 +104,11 @@ DEPENDENCIES:
   - Firebase/Database
   - Firebase/Storage
   - FirebaseUI/Auth
+  - lottie-ios
   - MapboxNavigation (~> 0.37.0)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  trunk:
     - Firebase
     - FirebaseAnalytics
     - FirebaseAuth
@@ -120,6 +122,7 @@ SPEC REPOS:
     - GoogleUtilities
     - GTMSessionFetcher
     - leveldb-library
+    - lottie-ios
     - Mapbox-iOS-SDK
     - MapboxCoreNavigation
     - MapboxDirections.swift
@@ -146,6 +149,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: d2b0e277a95962e09bb27f5cd42f5f0b6a506c7d
   GTMSessionFetcher: 61bb0f61a4cb560030f1222021178008a5727a23
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
+  lottie-ios: 32bf84389337d86fbc8b12266e88452e0abf1dee
   Mapbox-iOS-SDK: 2b58f752d94e57e95b8e54f3b52569199f6efdba
   MapboxCoreNavigation: d77f31673d8d00b56f37863322ea8c16e3b5492b
   MapboxDirections.swift: 1c6df988c24b753888ebd9976d7c98632501a413
@@ -158,6 +162,6 @@ SPEC CHECKSUMS:
   Solar: 2dc6e7cc39186cb0c8228fa08df76fb50c7d8f24
   Turf: c6bdf62d6a70c647874f295dd1cf4eefc0c3e9e6
 
-PODFILE CHECKSUM: 8948b7258602342e76be0d7b67738bbdb08ffcd9
+PODFILE CHECKSUM: 41800c474dd82d942326f2347716e5c2e64b7389
 
-COCOAPODS: 1.7.2
+COCOAPODS: 1.9.0.beta.2

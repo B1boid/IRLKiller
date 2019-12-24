@@ -3,11 +3,11 @@ import UIKit
 class DetailCollectionViewCell: UICollectionViewCell {
     
     // Subviews
-    var descriptionLabel = UILabel()
+    let descriptionLabel = UILabel()
     
-    var iv = UIImageView()
+    let iv = UIImageView()
     
-    var valueLabel = UILabel()
+    let valueLabel = UILabel()
     
     static let reuseId = "DetailCollectionViewCell"
     
@@ -15,11 +15,11 @@ class DetailCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        print("INIT")
         self.addSubview(iv)
         self.addSubview(valueLabel)
         self.addSubview(descriptionLabel)
+        self.layer.borderColor = UIColor.white.cgColor
+        self.layer.borderWidth = 3
     }
     
     override func layoutSubviews() {
@@ -31,10 +31,13 @@ class DetailCollectionViewCell: UICollectionViewCell {
         layoutValueLabel()
     }
     
-    private func beutifyLabel(label: UILabel) {
+    private func beutifyLabel(label: UILabel, textColor: UIColor, fixHeightToMax: Bool) {
+        if (fixHeightToMax) {
+            label.font = UIFont.boldSystemFont(ofSize: 40)
+        }
         label.adjustsFontSizeToFitWidth = true
         label.textAlignment = .center
-        label.textColor = .black
+        label.textColor = textColor
     }
     
     private func layoutDescriptionView() {
@@ -44,9 +47,9 @@ class DetailCollectionViewCell: UICollectionViewCell {
         descriptionLabel.frame = CGRect(x: xOffset,
                                         y: yOffset,
                                         width: self.bounds.width - 2 * xOffset,
-                                        height: self.bounds.height / 3)
+                                        height: self.bounds.height / 2)
         
-        beutifyLabel(label: descriptionLabel)
+        beutifyLabel(label: descriptionLabel, textColor: #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 1), fixHeightToMax: true)
     }
     
     private func layoutImageView() {
@@ -56,7 +59,7 @@ class DetailCollectionViewCell: UICollectionViewCell {
         iv.frame = CGRect(x: xOffset,
                           y: yOffset,
                           width: self.bounds.width - 2 * xOffset,
-                          height: self.bounds.height / 3)
+                          height: 0)
         
         iv.clipsToBounds = true
         iv.contentMode = .scaleAspectFit
@@ -69,9 +72,9 @@ class DetailCollectionViewCell: UICollectionViewCell {
         valueLabel.frame = CGRect(x: xOffset,
                                   y: yOffset,
                                   width: self.bounds.width - 2 * xOffset,
-                                  height: self.bounds.height / 3)
+                                  height: self.bounds.height / 2)
         
-        beutifyLabel(label: valueLabel)
+        beutifyLabel(label: valueLabel, textColor: #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 1), fixHeightToMax: false)
     }
     
     required init?(coder: NSCoder) {

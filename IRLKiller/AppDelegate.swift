@@ -22,6 +22,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        if UserDefaults.standard.value(forKey: Weapon.defaultWeaponKey) == nil {
+            UserDefaults.standard.saveWeapon(for: IndexPath(row: 0, section: 0))
+        }
         return true
     }
 

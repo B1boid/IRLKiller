@@ -12,7 +12,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     static let loadingImageName = "bg"
     static let bgImageName = "bg"
-    static let greetingMsg = "Enter your login:"
+    static let askEnterLoginMsg = "Enter your login:"
     
     var w: CGFloat!
     var h: CGFloat!
@@ -21,8 +21,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     // Окно для ввода логина
     let loginTextField: UITextField = {
         let textField = UITextField()
-        
-        textField.text = greetingMsg
+        textField.text = askEnterLoginMsg
         textField.textColor = .white
         textField.textAlignment = .center
         textField.borderStyle = .roundedRect
@@ -37,6 +36,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     let gameNameLabel: UILabel = {
         let label = UILabel()
         label.text = "IRLKiller"
+        label.adjustsFontSizeToFitWidth = true
         label.textColor = .white
         label.textAlignment = .center
         return label
@@ -46,6 +46,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     let entryButton: UIButton = {
         let button = UIButton(type: .roundedRect)
         button.setTitle("Entry", for: .normal)
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.layer.borderColor = UIColor.white.cgColor
         button.layer.cornerRadius = 10
         button.layer.borderWidth = 5
@@ -118,18 +119,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         bgImageView.layer.zPosition = -1
         
         // Меняем размеры которые зависят от размера view
-        entryButton.titleLabel?.font =  UIFont(name: "Marker Felt", size: entryButton.frame.height - 20)
+        entryButton.titleLabel?.font =  UIFont(name: "Marker Felt", size: 30)
+        gameNameLabel.font = UIFont(name: "Rockwell", size: 120)
+        loginTextField.font = UIFont(name: "Rockwell", size: 20)
         
-        gameNameLabel.font = UIFont(
-            name: "Rockwell",
-            size: min(gameNameLabel.frame.height,
-                      view.frame.width / CGFloat(gameNameLabel.text!.count))
-        )
-        
-        loginTextField.font = UIFont(
-            name: "Rockwell",
-            size: min(loginTextField.frame.height, loginTextField.frame.width / CGFloat(14))
-        )
+        gameNameLabel.baselineAdjustment           = .alignCenters
+        entryButton.titleLabel?.baselineAdjustment = .alignCenters
     }
     
     private func checkLoginValidity(login: String) -> Bool {
@@ -160,8 +155,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         guard checkLoginValidity(login: login) else { return }
         
         //Подключаемся к БД и ищем занят ли логин
-        
-        let refToUser = DataBaseManager.Refs.databaseUserNames.child("/\(login.lowercased())")
+        guard let refToUser = DataBaseManager.shared.refToUser else { print("Unable to get ref to user"); return }
+//        let refToUser = DataBaseManager.Refs.databaseUserNames.child("/\(login.lowercased())")
         
         refToUser.observeSingleEvent(of: .value, with: { snapshot in
             guard !snapshot.exists() else {
@@ -171,14 +166,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             
             self.loadingImageView.frame = self.view.frame
             self.view.addSubview(self.loadingImageView)
-    
-            let values: [String: Any] = [ "login"       : login,
-                                          "time-online" : TimeConverter.convertToUTC(in: .minute),
-                                          "time-death"  : TimeConverter.convertToUTC(in: .minute),
-                                          "pos-x"       : 40.74699,
-                                          "pos-y"       : -73.98742,
-                                          "health"      : 100,
-                                          "rating"      : 1200 ]
+            
+            let values: [DatabaseKeys: Any] = [ .login       : login,
+                                                .time_online : TimeConverter.convertToUTC(in: .minute),
+                                                .time_death  : TimeConverter.convertToUTC(in: .minute),
+                                                .latitude    : 40.74699,
+                                                .longitude   : -73.98742,
+                                                .health      : 100,
+                                                .rating      : 1200 ]
             
             DataBaseManager.shared.createUser(login: login, values: values) {
                 self.loadingImageView.removeFromSuperview()
@@ -188,13 +183,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     private func editGreetMsg(writeGreetIfEmpty: Bool) {
-        if loginTextField.text == LoginViewController.greetingMsg {
+        if loginTextField.text == LoginViewController.askEnterLoginMsg {
             loginTextField.text = ""
         }
-        
         // Если нажимаем вне клавиатуры и строка пуста то мы пишем сообщение о вводе пароля
-        if writeGreetIfEmpty && (loginTextField.text?.isEmpty)! {
-            loginTextField.text = LoginViewController.greetingMsg
+        if writeGreetIfEmpty && loginTextField.text!.isEmpty {
+            loginTextField.text = LoginViewController.askEnterLoginMsg
         }
     }
     
@@ -206,13 +200,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    
-    @objc func clearErrorMsg() {
+    @objc private func clearErrorMsg() {
         errorMsgLabel.text = ""
     }
     
     //По нажатию return на клавиатуре
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    private func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         loginTextField.resignFirstResponder() //Закрывает клавиатуру
         doLogin()
         return true

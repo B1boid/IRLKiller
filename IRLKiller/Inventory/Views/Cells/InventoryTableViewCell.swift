@@ -43,7 +43,7 @@ class InventoryTableViewCell: UITableViewCell {
 extension InventoryTableViewCell {
     
     func setCollectionViewDataSourceDelegate<D: UICollectionViewDataSource & UICollectionViewDelegate>
-        (_ dataSourceDelegate: D, forRow row: Int) {
+        (_ dataSourceDelegate: D, forSection row: Int) {
         
         collectionView.delegate = dataSourceDelegate
         collectionView.dataSource = dataSourceDelegate
