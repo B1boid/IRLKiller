@@ -50,7 +50,6 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     let TC = TimeConverter()
     
     let defaults = UserDefaults.standard
-    let lastShotKey = "TimeOfLastShot"
     var hasConnection = true
     
     // View and buttons
@@ -127,9 +126,9 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     override func viewWillAppear(_ animated: Bool) {
         // screenIsAlredyShown = становится true когда карта appear первый раз чтобы когда карта appear при переключении на tabbar вкладках не делалось viewDidAppear второй раз
         
-        NotificationCenter.default.addObserver(self, selector: #selector(statusManager), name: .none, object: nil)
-        
-        checkInternetConnection()
+//        NotificationCenter.default.addObserver(self, selector: #selector(statusManager), name: .none, object: nil)
+//
+//        checkInternetConnection()
         
         guard let user = Auth.auth().currentUser else {
             print("User not created")
@@ -171,10 +170,13 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                     altitude: self.altitude, pitch: self.pitch, heading: self.heading
                 )
                 self.mapView.setCamera(camera, animated: false)
-//                UIView.animate(withDuration: 0.4, delay: 2.0, options: .beginFromCurrentState,
-//                               animations: { self.pulsatingView.transform = CGAffineTransform(scaleX: 0.01, y: 0.01) },
-//                               completion: { (succes) in self.pulsatingView.removeFromSuperview() })
-            }})
+                UIView.animate(withDuration: 0.4, delay: 2.0, options: .beginFromCurrentState,
+                               animations: { self.pulsatingView.transform = CGAffineTransform(scaleX: 0.01, y: 0.01) },
+                               completion: { (succes) in self.pulsatingView.removeFromSuperview() })
+            }}){ (error) in
+                print(error.localizedDescription)
+                self.checkInternetConnection()
+            }
         
         setupMapView()
         setupDataBaseTranslation()
@@ -189,13 +191,15 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         
         // Вызывается автоматически, когда изменяется какое либо значение у чела и отрисовывает его местопложение
         refToUsers.observe(.childChanged) { (snapshot) in
-            self.readNewData(snapshot: snapshot, isAdding: false)
+                self.readNewData(snapshot: snapshot, isAdding: false)
         }
         
         //вызывается в самом начале и отрисовывает всех челов, а также когда новый чел зарегистрировался тоже вызовется автоматичеки и его отрисует
         refToUsers.observe(.childAdded) { (snapshot) in
             self.readNewData(snapshot: snapshot, isAdding: true)
+
         }
+        
     }
     
     func readNewData(snapshot: DataSnapshot, isAdding: Bool) {
@@ -256,18 +260,18 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
     }
     
-    // MARK: - function tcheckInternetConnection
+    // MARK: -checkInternetConnection
     func checkInternetConnection(){
         if !Reachability.isConnectedToNetwork() && hasConnection {
             showInternetAlert()
             //print("Internet Connection not Available!")
         }
     }
-    
-    @objc func statusManager(_ notification: Notification) {
-        checkInternetConnection()
-    }
-    
+//
+//    @objc func statusManager(_ notification: Notification) {
+//        checkInternetConnection()
+//    }
+//
     
     func showInternetAlert(){
         hasConnection = false
@@ -302,7 +306,10 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                 } else {
                     print("The account is deleted, please press test logout and rerun the app\nLOGOUT\nLOGOUT\nLOGOUT")
                 }
-            })
+            }){ (error) in
+                print(error.localizedDescription)
+                self.checkInternetConnection()
+            }
         }
         
     }
@@ -487,7 +494,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                     }
                 }
             })
-            defaults.set(TimeConverter.convertToUTC(in: .second), forKey: lastShotKey)
+            defaults.set(TimeConverter.convertToUTC(in: .second), forKey: "TimeOfLastShot")
             //можно не алерт будет сделать а всплывающее окно свое
             self.present(alert, animated: true, completion: nil)
         }
