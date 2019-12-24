@@ -21,6 +21,7 @@ class DetailViewController: UIViewController {
     private lazy var closeButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(named: "closeButton"), for: .normal)
         button.addTarget(self, action: #selector(closeDetailViewControllerAction), for: .touchUpInside)
         return button
     }()
@@ -28,6 +29,9 @@ class DetailViewController: UIViewController {
     private lazy var chooseButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Set this weapon by default", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = #colorLiteral(red: 0.4193970859, green: 0.6569570899, blue: 0.6623717546, alpha: 1)
         button.addTarget(self, action: #selector(chooseWeapon), for: .touchUpInside)
         return button
     }()
@@ -108,8 +112,8 @@ class DetailViewController: UIViewController {
     private func designMainView() {
         mainView.layer.cornerRadius = cornerRadius
         mainView.backgroundColor = #colorLiteral(red: 0.1165478751, green: 0.301977098, blue: 0.3084881604, alpha: 1)
-        mainView.layer.borderWidth = 4
         mainView.layer.borderColor = #colorLiteral(red: 0.4340616167, green: 0.727235496, blue: 0.5600054264, alpha: 1)
+        mainView.layer.borderWidth = 4
         detailCollectionView.backgroundColor = mainView.backgroundColor
     }
     
@@ -121,14 +125,13 @@ class DetailViewController: UIViewController {
         nameLabel.frame = CGRect(x: xOffset,
                                  y: yOffset,
                                  width: mainView.bounds.width - 2 * xOffset,
-                                 height: mainView.bounds.height / 5)
+                                 height: mainView.bounds.height * (15 / 100))
         
-        nameLabel.font = UIFont.boldSystemFont(ofSize: 100)
-    
+        nameLabel.font = UIFont.boldSystemFont(ofSize: 60)
         nameLabel.textColor = .white
         nameLabel.baselineAdjustment = .alignCenters
-        nameLabel.adjustsFontSizeToFitWidth = true
         nameLabel.textAlignment = .center
+        nameLabel.adjustsFontSizeToFitWidth = true
     }
     
     private func layoutWeaponImage() {
@@ -136,13 +139,13 @@ class DetailViewController: UIViewController {
         weaponImage.layer.cornerRadius = 10
         weaponImage.contentMode = .scaleAspectFit
         
-        let xOffset: CGFloat = 20
+        let xOffset: CGFloat = 2 * cornerRadius
         let yOffset = nameLabel.frame.maxY + 2
         
         weaponImage.frame = CGRect(x: xOffset,
                                    y: yOffset,
                                    width: mainView.bounds.width - 2 * xOffset,
-                                   height: mainView.bounds.height * (2 / 5))
+                                   height: mainView.bounds.height * (37 / 100))
     }
     
     private func layoutDetailCollectionView() {
@@ -152,13 +155,11 @@ class DetailViewController: UIViewController {
         detailCollectionView.frame = CGRect(x: xOffset,
                                             y: yOffset,
                                             width: mainView.bounds.width - 2 * xOffset,
-                                            height: mainView.bounds.height * (7 / 35))
+                                            height: mainView.bounds.height * (20 / 100))
     }
     
     private func layoutCloseButton() {
-        closeButton.setImage(UIImage(named: "closeButton"), for: .normal)
         closeButton.imageView?.contentMode = .scaleAspectFit
-        
         closeButton.trailingAnchor.constraint(equalTo: mainView.trailingAnchor, constant: -cornerRadius).isActive = true
         closeButton.topAnchor.constraint(equalTo: mainView.topAnchor, constant: cornerRadius).isActive            = true
         closeButton.heightAnchor.constraint(equalTo: mainView.heightAnchor, multiplier: 1 / 10).isActive          = true
@@ -166,9 +167,6 @@ class DetailViewController: UIViewController {
     }
     
     private func layoutChooseButton() {
-        chooseButton.backgroundColor = #colorLiteral(red: 0.4193970859, green: 0.6569570899, blue: 0.6623717546, alpha: 1)
-        chooseButton.setTitle("Choose this weapon", for: .normal)
-        chooseButton.setTitleColor(.white, for: .normal)
         chooseButton.titleLabel?.adjustsFontSizeToFitWidth = true
         chooseButton.layer.cornerRadius = 10
         
@@ -245,10 +243,10 @@ extension DetailViewController: UICollectionViewDataSource, UICollectionViewDele
         
         cell.backgroundColor = #colorLiteral(red: 0.2044287026, green: 0.4524510503, blue: 0.4624926448, alpha: 1)
         let attribute = WeaponAttributes.allCases[indexPath.row]
-        let attributeName = attribute.rawValue.split(separator: "_").joined(separator: " ")
-        let atrributeValue = String(attribute.getValue(weapon: curWeapon))
+        // Look enum down here (cases in enum is properties to display)
+        let atrributeValue = attribute.getValue(weapon: curWeapon)
         
-        cell.descriptionLabel.text = attributeName
+        cell.descriptionLabel.text = attribute.rawValue.capitalized
         cell.valueLabel.text = atrributeValue
         return cell
     }
@@ -259,20 +257,20 @@ extension DetailViewController: UICollectionViewDataSource, UICollectionViewDele
 private enum WeaponAttributes: String, CaseIterable {
     // cases shoud be written with underscore if they have more than one word -> than names converted by splitted with "_"
     case damage
-    case reload_time
+    case reload
     case distance
     case capacity
     
-    func getValue(weapon: Weapon) -> Int {
+    func getValue(weapon: Weapon) -> String {
         switch self {
         case .damage:
-            return weapon.damage
-        case .reload_time:
-            return weapon.reloadTime
+            return "\(weapon.damage) points"
+        case .reload:
+            return "\(weapon.reloadTime) sec"
         case .distance:
-            return weapon.distance
+            return "\(weapon.distance) m"
         case .capacity:
-            return weapon.capacity
+            return "\(weapon.capacity) shoots"
         }
     }
 }

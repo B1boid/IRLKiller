@@ -6,7 +6,7 @@ struct Weapon {
     let reloadTime: Int
     let damage    : Int
     
-    static let defaultWeapon: String = "CurrentWeapon"
+    static let defaultWeaponKey: String = "CurrentWeapon"
 }
 
 enum WeaponTypes: String, CaseIterable {
