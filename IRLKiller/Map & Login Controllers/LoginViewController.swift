@@ -20,12 +20,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     // Окно для ввода логина
     let loginTextField: UITextField = {
         let textField = UITextField()
-        textField.textColor = .white
+        textField.textColor = .black
         textField.textAlignment = .center
         textField.borderStyle = .roundedRect
-        textField.layer.borderWidth = 4
-        textField.layer.cornerRadius = 10
-        textField.backgroundColor  = .clear
+        textField.layer.borderWidth = 2
+        textField.layer.borderColor = UIColor.white.cgColor
+        textField.layer.cornerRadius = 8
+        textField.backgroundColor  = #colorLiteral(red: 0.8656491637, green: 0.2913296521, blue: 0.3646270633, alpha: 1)
         textField.autocorrectionType = .no
         textField.adjustsFontSizeToFitWidth = true
         textField.maxLength = 18
@@ -60,9 +61,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     let errorMsgLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.textColor = .white
-        label.alpha = 0.5
+        label.textColor = .black
+        label.alpha = 0.0
         label.numberOfLines = 2
+        label.backgroundColor = #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 1)
+        label.layer.cornerRadius = 10
+        label.layer.masksToBounds = true
+        label.font = UIFont.boldSystemFont(ofSize: 20)
         label.adjustsFontSizeToFitWidth = true
         return label
     }()
@@ -115,7 +120,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         }
         
         // Фон лежит ниже всех //
-        bgImageView.frame = self.view.frame
+        bgImageView.frame = self.view.bounds
         bgImageView.layer.zPosition = -1
         
         // Меняем размеры которые зависят от размера view
@@ -128,12 +133,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     private func checkLoginValidity(login: String) -> Bool {
-        
-        guard login != "Enter your login:" else {
-            showThenHideErrorMsg(duration: 5.0, error: "Please enter login")
-            return false;
-        }
-        
+    
         guard login.count > 3 else {
             showThenHideErrorMsg(duration: 5.0, error: "Login must have at least 4 symbols")
             return false;
