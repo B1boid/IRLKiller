@@ -41,7 +41,7 @@ class ContainerViewController: UIViewController {
     }
 }
 
-extension ContainerViewController {
+extension UIViewController {
     
     func add(child: UIViewController) {
         self.addChild(child)

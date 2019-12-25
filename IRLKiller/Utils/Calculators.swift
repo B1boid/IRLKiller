@@ -74,7 +74,7 @@ extension UIColor {
 
 extension UserDefaults {
     
-    func saveWeapon(for indexPath: IndexPath) {
+    func saveWeaponSection(for indexPath: IndexPath) {
         self.set(indexPath.section, forKey: Weapon.defaultWeaponKey)
     }
     

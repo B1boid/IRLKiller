@@ -48,7 +48,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     // View and buttons
     @IBOutlet weak var loginText: UILabel!
     @IBOutlet weak var mapView: MGLMapView!
-    private var pulsatingView: PulsatingView!
+    private var loadingAnimationController: LoadingAnimationViewController!
     
     // Functions which connected to actions
     @IBAction func clickMyLocation(_ sender: Any) {
@@ -97,17 +97,14 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             break
         }
     }
-    
-    private func setupDownloadView() {
-        pulsatingView = PulsatingView(frame: view.bounds,
-                                      radius: view.bounds.midX / 2,
-                                      circleCenter: CGPoint(x: view.bounds.midX, y: view.bounds.midY),
-                                      strokeColor:  UIColor.outlineStrokeColor.cgColor,
-                                      pulseColor: UIColor.pulsatingFillColor.cgColor)
         
-        pulsatingView.backgroundColor = UIColor.downloadViewBackgroundColor
-        view.insertSubview(pulsatingView, at: Int.max)
-        pulsatingView.startPulseAnimation(onePulseDuration: 1)
+    private func setupLoadingAnimationController() {
+        if (loadingAnimationController == nil) {
+            loadingAnimationController = LoadingAnimationViewController()
+            self.addChild(loadingAnimationController)
+        }
+        self.view.addSubview(loadingAnimationController.view)
+        loadingAnimationController.modalPresentationStyle = .overFullScreen
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -133,7 +130,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             return
         }
         
-        //setupDownloadView()
+       // setupLoadingAnimationController()
         
         screenIsAlredyShown = true
         userUID = user.uid
@@ -163,9 +160,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                     altitude: self.altitude, pitch: self.pitch, heading: self.heading
                 )
                 self.mapView.setCamera(camera, animated: false)
-                //                UIView.animate(withDuration: 0.4, delay: 2.0, options: .beginFromCurrentState,
-                //                               animations: { self.pulsatingView.transform = CGAffineTransform(scaleX: 0.01, y: 0.01) },
-                //                               completion: { (succes) in self.pulsatingView.removeFromSuperview() })
+               // self.loadingAnimationController.dismiss(animated: true, completion: nil)
             }})
         
         setupMapView()
@@ -433,7 +428,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         if let victim = players[annotation.title!!]{
             // если хватает дистанции оружия
             let distance = userLocation.distance(to: victim.position)
-            let defaultWeapon = UserDefaults.standard.getDefaultWeapon()
+            let defaultWeapon: Weapon! = WeaponModel.defaultWeapon
             
             guard distance < CLLocationDistance(defaultWeapon.distance) else {
                 print("NOT ENOUGH DISTANCE")

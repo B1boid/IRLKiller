@@ -12,7 +12,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     static let loadingImageName = "bg"
     static let bgImageName = "bg"
-    static let askEnterLoginMsg = "Enter your login:"
     
     var w: CGFloat!
     var h: CGFloat!
@@ -21,14 +20,16 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     // Окно для ввода логина
     let loginTextField: UITextField = {
         let textField = UITextField()
-        textField.text = askEnterLoginMsg
         textField.textColor = .white
         textField.textAlignment = .center
         textField.borderStyle = .roundedRect
+        textField.layer.borderWidth = 4
+        textField.layer.cornerRadius = 10
         textField.backgroundColor  = .clear
         textField.autocorrectionType = .no
         textField.adjustsFontSizeToFitWidth = true
-        textField.maxLength = 14
+        textField.maxLength = 18
+        textField.placeholder = "Enter your login"
         return textField
     }()
     
@@ -59,11 +60,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     let errorMsgLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.textColor = .red
+        label.textColor = .white
         label.alpha = 0.5
         label.numberOfLines = 2
         label.adjustsFontSizeToFitWidth = true
-        label.sizeToFit()
         return label
     }()
     
@@ -96,10 +96,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         h = view.frame.height
         let framesOfSubviews: [OffsetForView] =
             [
-                (xOffset: w / 8, yOffset: h / 10, height: h / 6, view: gameNameLabel),
+                (xOffset: w / 8, yOffset: h / 15, height: h / 6, view: gameNameLabel),
                 (xOffset: w / 8, yOffset: h / 5, height: h / 15, view: loginTextField),
-                (xOffset: w / 8, yOffset: h / 15, height: h / 10, view: errorMsgLabel),
-                (xOffset: (5 * w) / 16, yOffset: h / 10, height: h / 15, view: entryButton)
+                (xOffset: w / 8, yOffset: h / 20, height: h / 10, view: errorMsgLabel),
+                (xOffset: (5 * w) / 16, yOffset: h / 5, height: h / 15, view: entryButton)
         ]
         
         // Располагаем атрибуты относительно друг друга
@@ -181,16 +181,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         })
     }
     
-    private func editGreetMsg(writeGreetIfEmpty: Bool) {
-        if loginTextField.text == LoginViewController.askEnterLoginMsg {
-            loginTextField.text = ""
-        }
-        // Если нажимаем вне клавиатуры и строка пуста то мы пишем сообщение о вводе пароля
-        if writeGreetIfEmpty && loginTextField.text!.isEmpty {
-            loginTextField.text = LoginViewController.askEnterLoginMsg
-        }
-    }
-    
     private func showThenHideErrorMsg(duration: TimeInterval, error: String) {
         errorMsgLabel.text = error
         self.errorMsgLabel.alpha = 1
@@ -210,15 +200,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         return true
     }
     
-    /* Когда начинаем печатать пропадает надпись что логин неправильный
-     в случае неправильно введеного логина в первый раз */
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        editGreetMsg(writeGreetIfEmpty: false)
-    }
-    
     //Закрывание клавиатуры по нажатию на другую область экрана
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        editGreetMsg(writeGreetIfEmpty: true)
         clearErrorMsg()
         self.view.endEditing(true)
     }
