@@ -32,7 +32,6 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     var myLogin = ""
     var myRating = 0
     var myHealth = 100
-    var myKD: UInt = 10
     var timeOfDeath = ""
     var isAlive = true
     var userUID: String?
@@ -295,7 +294,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         
     }
     
-    @objc func checkRebirth(){
+    @objc func checkRebirth() {
         if (myHealth == 0) {
             isAlive = false
             if (TimeConverter.isMoreThanInterval(oldDate: timeOfDeath, interval: 5, in: .minute)) {
@@ -399,28 +398,31 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     }
     
     
+    private func createCoolDownView(timeLeft: UInt) -> CoolDownNotificationView {
+        let w = view.bounds.width
+        let h = view.bounds.height - (self.tabBarController?.tabBar.frame.height ?? 0)
+        let xOffset: CGFloat = 10
+        let actualHeight = h / 3
+        let view = CoolDownNotificationView(frame: CGRect(origin: CGPoint(x: xOffset, y: h - actualHeight - 10),
+                                                          size: CGSize(width: w - 2 * xOffset, height: actualHeight)),
+                                            timeLeft: timeLeft)
+        return view
+    }
+    
     
     //Нажатие на Shoot в аннотации
     func mapView(_ mapView: MGLMapView, annotation: MGLAnnotation, calloutAccessoryControlTapped control: UIControl) {
-        // Hide the callout view.
-        
-        //если живой то можешь стрелять
         guard isAlive else { return }
         
         if let oldDate = defaults.string(forKey: lastShotTimeKey) {
-            guard TimeConverter.isMoreThanInterval(oldDate: oldDate, interval: myKD, in: .second) else {
-                let w = view.bounds.width
-                let h = view.bounds.height
-                let kdView = CoolDownNotificationView(frame:
-                    CGRect(origin: CGPoint(x: 0, y: h - h / 3),
-                           size: CGSize(width: w, height: h / 3)
-                    ))
-                view.addSubview(kdView)
-                Timer.scheduledTimer(withTimeInterval: TimeInterval(min(3, myKD - 1)), repeats: false) { (time) in
-                    kdView.removeFromSuperview()
-                }
-                let delta = TimeConverter.showInterval(oldDate: oldDate, in: .second)
-                print("Kd remaining : sec  \(self.myKD - delta)")
+            let difference = TimeConverter.showInterval(oldDate: oldDate, in: .second)
+            let reloadTime = WeaponModel.defaultWeapon.reloadTime
+            guard difference >= reloadTime else {
+                let timeLeft = reloadTime - difference
+                let coolDownView = createCoolDownView(timeLeft: timeLeft)
+                view.addSubview(coolDownView)
+                let interval = TimeInterval(min(2, timeLeft))
+                Timer.scheduledTimer(withTimeInterval: interval, repeats: false, block: { _ in coolDownView.removeFromSuperview() })
                 return
             }
         }

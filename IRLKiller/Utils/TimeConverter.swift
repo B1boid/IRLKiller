@@ -62,7 +62,7 @@ class TimeConverter: NSObject {
         let curDate = convertToUTC(in: timeValue)
         let newVector = reduceVector(date: curDate, in: timeValue)
         let oldVector = reduceVector(date: oldDate, in: timeValue)
-        return newVector - oldVector
+        return oldVector > newVector ? 0 : newVector - oldVector
     }
     
     class func localToUTC(date: String, in timeValue: EvaluateTime) -> String {
