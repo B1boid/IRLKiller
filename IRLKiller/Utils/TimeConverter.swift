@@ -37,8 +37,8 @@ class TimeConverter: NSObject {
         return localToUTC(date: formattedDate, in: timeValue)
     }
     
-    class func isMoreThanDiff(oldDate: String, diff: UInt, in timeValue: EvaluateTime) -> Bool {
-        return showDiff(oldDate: oldDate, in: timeValue) > diff
+    class func isMoreThanInterval(oldDate: String, interval: UInt, in timeValue: EvaluateTime) -> Bool {
+        return showInterval(oldDate: oldDate, in: timeValue) > interval
     }
     
     class private func reduceVector(date: String, in timeValue: EvaluateTime) -> UInt {
@@ -58,7 +58,7 @@ class TimeConverter: NSObject {
         }
     }
     
-    class func showDiff(oldDate: String, in timeValue: EvaluateTime) -> UInt {
+    class func showInterval(oldDate: String, in timeValue: EvaluateTime) -> UInt {
         let curDate = convertToUTC(in: timeValue)
         let newVector = reduceVector(date: curDate, in: timeValue)
         let oldVector = reduceVector(date: oldDate, in: timeValue)
