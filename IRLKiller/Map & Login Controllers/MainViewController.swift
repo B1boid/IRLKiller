@@ -48,7 +48,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     // View and buttons
     @IBOutlet weak var loginText: UILabel!
     @IBOutlet weak var mapView: MGLMapView!
-    private var loadingAnimationController: LoadingAnimationViewController!
+    private var loadingAnimationView: LoadingAnimationView!
     
     // Functions which connected to actions
     @IBAction func clickMyLocation(_ sender: Any) {
@@ -98,27 +98,16 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
     }
     
-    private func setupLoadingAnimationController() {
-        //        if (loadingAnimationController == nil) {
-        //            loadingAnimationController = LoadingAnimationViewController()
-        ////            self.addChild(loadingAnimationController)
-        //        }
-        //        guard let tabBarController = self.parent as? TabBarViewController else { return }
-        //        tabBarController.present(loadingAnimationController, animated: true, completion: nil)
-        
-        //        self.tabBarController?.present(loadingAnimationController, animated: true, completion: nil)
-        //        self.show(loadingAnimationController, sender: nil)
-        //        self.present(loadingAnimationController, animated: true, completion: nil)
+    private func setupLoadingAnimationView() {
+        if (loadingAnimationView == nil) {
+            loadingAnimationView = LoadingAnimationView(frame: view.bounds)
+        }
+        view.addSubview(loadingAnimationView)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(false)
         checkLocationServices()
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        setupLoadingAnimationController()
     }
     
     
@@ -139,10 +128,10 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             return
         }
         
-        let tabBar = self.parent as? TabBarViewController
-        tabBar?.showLoadingViewController(animated: true)
-        
         screenIsAlredyShown = true
+        setupLoadingAnimationView()
+        
+        
         userUID = user.uid
         guard let ref = DataBaseManager.shared.refToUser else { print("User not created"); return }
         
@@ -170,7 +159,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                     altitude: self.altitude, pitch: self.pitch, heading: self.heading
                 )
                 self.mapView.setCamera(camera, animated: false)
-                //                self.loadingAnimationController.dismiss(animated: true, completion: nil)
+                Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false, block: { _ in self.loadingAnimationView.removeFromSuperview() } )
             }})
         
         setupMapView()
