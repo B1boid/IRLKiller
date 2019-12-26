@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="RIQ-4v-6rk">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="RIQ-4v-6rk">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -21,7 +21,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-271" y="-205"/>
+            <point key="canvasLocation" x="-276" y="-219"/>
         </scene>
         <!--Map-->
         <scene sceneID="XuY-xW-zVL">
@@ -32,19 +32,59 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V7x-1G-krY" customClass="MGLMapView">
-                                <rect key="frame" x="0.0" y="28" width="375" height="698"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="726"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Udo-QB-RjT">
+                                        <rect key="frame" x="187.5" y="10" width="0.0" height="0.0"/>
+                                        <fontDescription key="fontDescription" name="ArialRoundedMTBold" family="Arial Rounded MT Bold" pointSize="18"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                        <variation key="widthClass=regular">
+                                            <fontDescription key="fontDescription" name="ArialRoundedMTBold" family="Arial Rounded MT Bold" pointSize="50"/>
+                                        </variation>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ack-7U-r0s">
+                                        <rect key="frame" x="8" y="582" width="81" height="30"/>
+                                        <state key="normal" title="Test Logout"/>
+                                        <connections>
+                                            <action selector="logoutPressed:" destination="gEl-Ix-SCQ" eventType="touchUpInside" id="Cig-Go-5Mf"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1aE-dH-RP6">
+                                        <rect key="frame" x="187.5" y="18" width="0.0" height="0.0"/>
+                                        <fontDescription key="fontDescription" name="ArialRoundedMTBold" family="Arial Rounded MT Bold" pointSize="18"/>
+                                        <color key="textColor" systemColor="systemPinkColor" red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                        <variation key="widthClass=regular">
+                                            <fontDescription key="fontDescription" name="ArialRoundedMTBold" family="Arial Rounded MT Bold" pointSize="50"/>
+                                        </variation>
+                                    </label>
+                                    <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="1" translatesAutoresizingMaskIntoConstraints="NO" id="3qq-JS-nJo">
+                                        <rect key="frame" x="112" y="20" width="151" height="2"/>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="151" id="a0A-4Q-ja3"/>
+                                        </constraints>
+                                        <color key="progressTintColor" systemColor="systemPinkColor" red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="trackTintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </progressView>
+                                </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="ack-7U-r0s" firstAttribute="leading" secondItem="V7x-1G-krY" secondAttribute="leading" constant="8" id="1OF-aF-a9m"/>
+                                    <constraint firstItem="1aE-dH-RP6" firstAttribute="centerX" secondItem="V7x-1G-krY" secondAttribute="centerX" id="6bt-vy-KFI"/>
+                                    <constraint firstItem="Udo-QB-RjT" firstAttribute="centerX" secondItem="V7x-1G-krY" secondAttribute="centerX" id="9Dw-j4-DIp"/>
+                                    <constraint firstAttribute="bottom" secondItem="ack-7U-r0s" secondAttribute="bottom" constant="114" id="CbB-9R-fwd"/>
+                                    <constraint firstItem="3qq-JS-nJo" firstAttribute="centerX" secondItem="1aE-dH-RP6" secondAttribute="centerX" id="OzL-H0-RuU"/>
+                                    <constraint firstItem="Udo-QB-RjT" firstAttribute="top" secondItem="V7x-1G-krY" secondAttribute="top" constant="10" id="X1C-Ml-gup"/>
+                                    <constraint firstItem="1aE-dH-RP6" firstAttribute="top" secondItem="Udo-QB-RjT" secondAttribute="bottom" constant="8" id="jHh-oh-Kd2"/>
+                                    <constraint firstItem="3qq-JS-nJo" firstAttribute="top" secondItem="1aE-dH-RP6" secondAttribute="bottom" constant="2" id="xnk-xp-deZ"/>
+                                </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="styleURL__" value="mapbox://styles/b1boid/ck12egt7e02ax1cp52uginkky"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ack-7U-r0s">
-                                <rect key="frame" x="0.0" y="-4" width="81" height="30"/>
-                                <state key="normal" title="Test Logout"/>
-                                <connections>
-                                    <action selector="logoutPressed:" destination="gEl-Ix-SCQ" eventType="touchUpInside" id="Cig-Go-5Mf"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eC9-Rp-PzN">
                                 <rect key="frame" x="330" y="100" width="30" height="30"/>
                                 <constraints>
@@ -56,25 +96,14 @@
                                     <action selector="clickMyLocation:" destination="gEl-Ix-SCQ" eventType="touchUpInside" id="wK3-xl-faQ"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hi" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GRe-rU-dMW">
-                                <rect key="frame" x="178.5" y="1" width="18.5" height="20"/>
-                                <fontDescription key="fontDescription" name="Rockwell-Regular" family="Rockwell" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="eC9-Rp-PzN" firstAttribute="top" secondItem="6Gy-Eh-l9e" secondAttribute="top" constant="100" id="2bu-Fp-W1a"/>
-                            <constraint firstItem="GRe-rU-dMW" firstAttribute="top" secondItem="ack-7U-r0s" secondAttribute="bottom" constant="-25" id="2gq-fk-jKA"/>
-                            <constraint firstItem="ack-7U-r0s" firstAttribute="leading" secondItem="6Gy-Eh-l9e" secondAttribute="leading" id="4Cu-kF-Fsh"/>
-                            <constraint firstItem="ack-7U-r0s" firstAttribute="top" secondItem="6Gy-Eh-l9e" secondAttribute="top" constant="-4" id="A1c-8j-AxS"/>
-                            <constraint firstItem="V7x-1G-krY" firstAttribute="top" secondItem="ack-7U-r0s" secondAttribute="bottom" constant="2" id="QF6-2c-7RM"/>
-                            <constraint firstItem="V7x-1G-krY" firstAttribute="top" secondItem="GRe-rU-dMW" secondAttribute="bottom" constant="7" id="UiD-qJ-gSe"/>
+                            <constraint firstItem="V7x-1G-krY" firstAttribute="top" secondItem="6Gy-Eh-l9e" secondAttribute="top" id="Uko-uY-bVK"/>
                             <constraint firstItem="V7x-1G-krY" firstAttribute="trailing" secondItem="6Gy-Eh-l9e" secondAttribute="trailing" id="cBK-FW-6YE"/>
                             <constraint firstAttribute="trailing" secondItem="eC9-Rp-PzN" secondAttribute="trailing" constant="15" id="gZN-T8-F5M"/>
                             <constraint firstAttribute="bottom" secondItem="V7x-1G-krY" secondAttribute="bottom" constant="-59" id="tVz-ke-khb"/>
-                            <constraint firstItem="GRe-rU-dMW" firstAttribute="centerX" secondItem="vhS-EM-lLH" secondAttribute="centerX" id="ted-mq-Cvl"/>
                             <constraint firstItem="V7x-1G-krY" firstAttribute="leading" secondItem="6Gy-Eh-l9e" secondAttribute="leading" id="yzd-qf-vN5"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Gy-Eh-l9e"/>
@@ -82,7 +111,9 @@
                     <tabBarItem key="tabBarItem" title="Map" image="map-icon" id="GX2-vf-TZg"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="loginText" destination="GRe-rU-dMW" id="mov-vV-wl7"/>
+                        <outlet property="healthProgress" destination="3qq-JS-nJo" id="9kP-1K-mOt"/>
+                        <outlet property="healthText" destination="1aE-dH-RP6" id="rbD-SM-4bQ"/>
+                        <outlet property="loginText" destination="Udo-QB-RjT" id="UqP-uA-raS"/>
                         <outlet property="mapView" destination="V7x-1G-krY" id="y26-Og-doJ"/>
                     </connections>
                 </viewController>

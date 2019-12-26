@@ -152,7 +152,6 @@
 				46E1E6A923355A4A00EBA2FC /* GoogleService-Info.plist */,
 				46E1E68123354B0500EBA2FC /* Info.plist */,
 				46E1E67C23354B0500EBA2FC /* Assets.xcassets */,
-				F861F0DA23A370E10049CD02 /* Reachabilty.swift */,
 			);
 			path = IRLKiller;
 			sourceTree = "<group>";
@@ -249,6 +248,7 @@
 		F89644D82396C6F300C0D764 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				F861F0DA23A370E10049CD02 /* Reachabilty.swift */,
 				F83E6199239062A40076076F /* DataBaseManager.swift */,
 				4645B848238041A100339315 /* TimeConverter.swift */,
 				F8CF7FCE23ACB0C100BB0AB5 /* Calculators.swift */,

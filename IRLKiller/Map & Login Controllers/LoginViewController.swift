@@ -29,7 +29,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         textField.backgroundColor  = #colorLiteral(red: 0.8656491637, green: 0.2913296521, blue: 0.3646270633, alpha: 1)
         textField.autocorrectionType = .no
         textField.adjustsFontSizeToFitWidth = true
-        textField.maxLength = 18
+        textField.maxLength = 14
         textField.placeholder = "Enter your login"
         return textField
     }()
