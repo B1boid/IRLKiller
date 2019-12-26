@@ -18,6 +18,10 @@
 		46E1E6AA23355A4A00EBA2FC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 46E1E6A923355A4A00EBA2FC /* GoogleService-Info.plist */; };
 		46E5CC8E23414A7B004AF33D /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E5CC8D23414A7B004AF33D /* ProfileViewController.swift */; };
 		85298B718FA6D115B852C1B9 /* Pods_IRLKiller.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 239D32A7EF405E587B26F857 /* Pods_IRLKiller.framework */; };
+		F80AA1E823B3F0D200C75523 /* UserDefaultsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80AA1E723B3F0D200C75523 /* UserDefaultsExtension.swift */; };
+		F80AA1EE23B4AB4100C75523 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80AA1ED23B4AB4100C75523 /* TabBarViewController.swift */; };
+		F80AA1F023B4B20A00C75523 /* DeathView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80AA1EF23B4B20A00C75523 /* DeathView.swift */; };
+		F80AA1F223B4B30700C75523 /* death.json in Resources */ = {isa = PBXBuildFile; fileRef = F80AA1F123B4B30700C75523 /* death.json */; };
 		F829EFB4238DC2E300DA4CC1 /* InventoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F829EFB1238DC2E300DA4CC1 /* InventoryTableViewCell.swift */; };
 		F829EFB5238DC2E300DA4CC1 /* InventoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F829EFB2238DC2E300DA4CC1 /* InventoryCollectionViewCell.swift */; };
 		F829EFB6238DC2E300DA4CC1 /* DetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F829EFB3238DC2E300DA4CC1 /* DetailCollectionViewCell.swift */; };
@@ -28,6 +32,10 @@
 		F83686CF237DD99E0024B44C /* InventoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83686C7237DD99E0024B44C /* InventoryViewController.swift */; };
 		F83686D0237DD99E0024B44C /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83686C8237DD99E0024B44C /* ContainerViewController.swift */; };
 		F83E619A239062A40076076F /* DataBaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83E6199239062A40076076F /* DataBaseManager.swift */; };
+		F85EA91E23B4CA440032ADC5 /* RewardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85EA91D23B4CA440032ADC5 /* RewardView.swift */; };
+		F85EA92023B4CAEE0032ADC5 /* SinglePlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85EA91F23B4CAEE0032ADC5 /* SinglePlayerView.swift */; };
+		F85EA92223B4D69B0032ADC5 /* reward.json in Resources */ = {isa = PBXBuildFile; fileRef = F85EA92123B4D69B0032ADC5 /* reward.json */; };
+		F85EA92423B4E1060032ADC5 /* AfterShotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85EA92323B4E1060032ADC5 /* AfterShotView.swift */; };
 		F861F0DB23A370E10049CD02 /* Reachabilty.swift in Sources */ = {isa = PBXBuildFile; fileRef = F861F0DA23A370E10049CD02 /* Reachabilty.swift */; };
 		F8719C7623B3A21C002EC600 /* LoadingAnimationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8719C7523B3A21C002EC600 /* LoadingAnimationViewController.swift */; };
 		F892B29D23A2B25B0031C333 /* PulsatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F892B29C23A2B25B0031C333 /* PulsatingView.swift */; };
@@ -71,6 +79,10 @@
 		BD49BAB0E9AF2D8A4075C710 /* Pods-IRLKillerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IRLKillerUITests.release.xcconfig"; path = "Target Support Files/Pods-IRLKillerUITests/Pods-IRLKillerUITests.release.xcconfig"; sourceTree = "<group>"; };
 		DB279AA8633EC8855BA70875 /* Pods-IRLKiller.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IRLKiller.debug.xcconfig"; path = "Target Support Files/Pods-IRLKiller/Pods-IRLKiller.debug.xcconfig"; sourceTree = "<group>"; };
 		DE081DB13F73E49A16327B3F /* Pods_IRLKillerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IRLKillerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F80AA1E723B3F0D200C75523 /* UserDefaultsExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsExtension.swift; sourceTree = "<group>"; };
+		F80AA1ED23B4AB4100C75523 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
+		F80AA1EF23B4B20A00C75523 /* DeathView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeathView.swift; sourceTree = "<group>"; };
+		F80AA1F123B4B30700C75523 /* death.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = death.json; path = ../../../../../Downloads/death.json; sourceTree = "<group>"; };
 		F829EFB1238DC2E300DA4CC1 /* InventoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InventoryTableViewCell.swift; sourceTree = "<group>"; };
 		F829EFB2238DC2E300DA4CC1 /* InventoryCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InventoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		F829EFB3238DC2E300DA4CC1 /* DetailCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -81,6 +93,10 @@
 		F83686C7237DD99E0024B44C /* InventoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InventoryViewController.swift; sourceTree = "<group>"; };
 		F83686C8237DD99E0024B44C /* ContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		F83E6199239062A40076076F /* DataBaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataBaseManager.swift; sourceTree = "<group>"; };
+		F85EA91D23B4CA440032ADC5 /* RewardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardView.swift; sourceTree = "<group>"; };
+		F85EA91F23B4CAEE0032ADC5 /* SinglePlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinglePlayerView.swift; sourceTree = "<group>"; };
+		F85EA92123B4D69B0032ADC5 /* reward.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = reward.json; sourceTree = "<group>"; };
+		F85EA92323B4E1060032ADC5 /* AfterShotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AfterShotView.swift; sourceTree = "<group>"; };
 		F861F0DA23A370E10049CD02 /* Reachabilty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachabilty.swift; sourceTree = "<group>"; };
 		F8719C7523B3A21C002EC600 /* LoadingAnimationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingAnimationViewController.swift; sourceTree = "<group>"; };
 		F892B29C23A2B25B0031C333 /* PulsatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulsatingView.swift; sourceTree = "<group>"; };
@@ -153,6 +169,7 @@
 				46E1E68123354B0500EBA2FC /* Info.plist */,
 				46E1E67C23354B0500EBA2FC /* Assets.xcassets */,
 				F861F0DA23A370E10049CD02 /* Reachabilty.swift */,
+				F80AA1ED23B4AB4100C75523 /* TabBarViewController.swift */,
 			);
 			path = IRLKiller;
 			sourceTree = "<group>";
@@ -186,6 +203,14 @@
 				DE081DB13F73E49A16327B3F /* Pods_IRLKillerTests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F80AA1DF23B3EF1100C75523 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				F8719C7523B3A21C002EC600 /* LoadingAnimationViewController.swift */,
+			);
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 		F829EFB0238DC2E300DA4CC1 /* Cells */ = {
@@ -229,19 +254,15 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
-		F8719C7423B3A1E0002EC600 /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				F8719C7523B3A21C002EC600 /* LoadingAnimationViewController.swift */,
-			);
-			path = Controllers;
-			sourceTree = "<group>";
-		};
 		F892B29B23A2B23E0031C333 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				F892B29C23A2B25B0031C333 /* PulsatingView.swift */,
 				F8F8110B23AFFE03001614D1 /* CoolDownNotificationView.swift */,
+				F80AA1EF23B4B20A00C75523 /* DeathView.swift */,
+				F85EA91D23B4CA440032ADC5 /* RewardView.swift */,
+				F85EA91F23B4CAEE0032ADC5 /* SinglePlayerView.swift */,
+				F85EA92323B4E1060032ADC5 /* AfterShotView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -261,8 +282,8 @@
 			children = (
 				F892B2A223A2B4A10031C333 /* LoginViewController.swift */,
 				F892B2A023A2B4830031C333 /* MainViewController.swift */,
+				F80AA1DF23B3EF1100C75523 /* Controllers */,
 				F892B29B23A2B23E0031C333 /* Views */,
-				F8719C7423B3A1E0002EC600 /* Controllers */,
 			);
 			path = "Map & Login Controllers";
 			sourceTree = "<group>";
@@ -278,6 +299,7 @@
 		F899ECC923366443005A1A95 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				F80AA1E723B3F0D200C75523 /* UserDefaultsExtension.swift */,
 				46E1E6A323354BB800EBA2FC /* TextFieldExtension.swift */,
 				F899ECCA23366475005A1A95 /* RegexExtension.swift */,
 			);
@@ -304,6 +326,8 @@
 		F8E9533223B2993000CC6002 /* JSON animation */ = {
 			isa = PBXGroup;
 			children = (
+				F85EA92123B4D69B0032ADC5 /* reward.json */,
+				F80AA1F123B4B30700C75523 /* death.json */,
 				F8E9533323B2995400CC6002 /* cooldown.json */,
 				F8E9533023B2991000CC6002 /* loading-map.json */,
 			);
@@ -395,6 +419,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F85EA92223B4D69B0032ADC5 /* reward.json in Resources */,
+				F80AA1F223B4B30700C75523 /* death.json in Resources */,
 				46E1E68023354B0500EBA2FC /* LaunchScreen.storyboard in Resources */,
 				46E1E6AA23355A4A00EBA2FC /* GoogleService-Info.plist in Resources */,
 				F8E9533423B2995400CC6002 /* cooldown.json in Resources */,
@@ -502,15 +528,20 @@
 				F892B2A323A2B4A10031C333 /* LoginViewController.swift in Sources */,
 				F83686CD237DD99E0024B44C /* InventoryConstants.swift in Sources */,
 				F892B29D23A2B25B0031C333 /* PulsatingView.swift in Sources */,
+				F80AA1F023B4B20A00C75523 /* DeathView.swift in Sources */,
 				F861F0DB23A370E10049CD02 /* Reachabilty.swift in Sources */,
 				F8B96C1923ABBC1600A44678 /* Player.swift in Sources */,
+				F85EA92423B4E1060032ADC5 /* AfterShotView.swift in Sources */,
 				F83686D0237DD99E0024B44C /* ContainerViewController.swift in Sources */,
 				F829EFB6238DC2E300DA4CC1 /* DetailCollectionViewCell.swift in Sources */,
 				F8CF7FCF23ACB0C100BB0AB5 /* Calculators.swift in Sources */,
 				F8F8110C23AFFE03001614D1 /* CoolDownNotificationView.swift in Sources */,
 				F829EFB5238DC2E300DA4CC1 /* InventoryCollectionViewCell.swift in Sources */,
+				F80AA1E823B3F0D200C75523 /* UserDefaultsExtension.swift in Sources */,
+				F85EA92023B4CAEE0032ADC5 /* SinglePlayerView.swift in Sources */,
 				46E1E6A423354BB800EBA2FC /* TextFieldExtension.swift in Sources */,
 				F83E619A239062A40076076F /* DataBaseManager.swift in Sources */,
+				F80AA1EE23B4AB4100C75523 /* TabBarViewController.swift in Sources */,
 				F829EFB4238DC2E300DA4CC1 /* InventoryTableViewCell.swift in Sources */,
 				F8719C7623B3A21C002EC600 /* LoadingAnimationViewController.swift in Sources */,
 				F83686CE237DD99E0024B44C /* DetailViewController.swift in Sources */,
@@ -518,6 +549,7 @@
 				F83686CF237DD99E0024B44C /* InventoryViewController.swift in Sources */,
 				F899ECCB23366475005A1A95 /* RegexExtension.swift in Sources */,
 				F83686CC237DD99E0024B44C /* WeaponModel.swift in Sources */,
+				F85EA91E23B4CA440032ADC5 /* RewardView.swift in Sources */,
 				F83686CB237DD99E0024B44C /* Weapon.swift in Sources */,
 				F892B2A123A2B4830031C333 /* MainViewController.swift in Sources */,
 				46E5CC8E23414A7B004AF33D /* ProfileViewController.swift in Sources */,

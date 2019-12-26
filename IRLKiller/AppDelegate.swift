@@ -14,10 +14,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 let loginVC = storyboard.instantiateViewController(withIdentifier: "login")
                 loginVC.modalPresentationStyle = .fullScreen
-                loginVC.modalTransitionStyle = .crossDissolve
+                loginVC.modalTransitionStyle = .coverVertical
                 self.window?.rootViewController?.present(loginVC, animated: true, completion: nil)
             }
-            
         }
         return true
     }

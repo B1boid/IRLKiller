@@ -13,7 +13,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     let altitude: CLLocationDistance = 500
     let pitch: CGFloat = 30
     let heading: CLLocationDirection = 180
-
+    
     // Managers
     let locationManager = CLLocationManager()
     let TC = TimeConverter()
@@ -43,6 +43,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     let lastShotTimeKey = "TimeOfLastShot"
     var hasConnection = true
     var screenIsAlredyShown = false
+    var rebornScreenIsShown = false
     
     // View and buttons
     @IBOutlet weak var loginText: UILabel!
@@ -96,19 +97,28 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             break
         }
     }
-        
+    
     private func setupLoadingAnimationController() {
-        if (loadingAnimationController == nil) {
-            loadingAnimationController = LoadingAnimationViewController()
-            self.addChild(loadingAnimationController)
-        }
-        self.view.addSubview(loadingAnimationController.view)
-        loadingAnimationController.modalPresentationStyle = .overFullScreen
+        //        if (loadingAnimationController == nil) {
+        //            loadingAnimationController = LoadingAnimationViewController()
+        ////            self.addChild(loadingAnimationController)
+        //        }
+        //        guard let tabBarController = self.parent as? TabBarViewController else { return }
+        //        tabBarController.present(loadingAnimationController, animated: true, completion: nil)
+        
+        //        self.tabBarController?.present(loadingAnimationController, animated: true, completion: nil)
+        //        self.show(loadingAnimationController, sender: nil)
+        //        self.present(loadingAnimationController, animated: true, completion: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(false)
         checkLocationServices()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        setupLoadingAnimationController()
     }
     
     
@@ -129,7 +139,8 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             return
         }
         
-       // setupLoadingAnimationController()
+        let tabBar = self.parent as? TabBarViewController
+        tabBar?.showLoadingViewController(animated: true)
         
         screenIsAlredyShown = true
         userUID = user.uid
@@ -159,7 +170,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                     altitude: self.altitude, pitch: self.pitch, heading: self.heading
                 )
                 self.mapView.setCamera(camera, animated: false)
-               // self.loadingAnimationController.dismiss(animated: true, completion: nil)
+                //                self.loadingAnimationController.dismiss(animated: true, completion: nil)
             }})
         
         setupMapView()
@@ -274,41 +285,59 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     @objc func updateDB() {
         DispatchQueue.global(qos: .utility).async {
             guard let ref = DataBaseManager.shared.refToUser else { return }
-            //Следующих двух строк не будет в продакшене,они нужны чтобы когда акк удалили не крашилось приложение на устройсвте где сохранен этот акк,при вызове readNewData get пустой login
+            //Следующих двух строк не будет в продакшене,они нужны чтобы когда акк удалили не крашилось приложение на устройстве где сохранен этот акк,при вызове readNewData get пустой login
             ref.observeSingleEvent(of: .value, with: { snapshot in
                 if snapshot.exists() {
                     let location = self.userLocation
-                    if (location.latitude != -180 && location.longitude != -180){
-                        //                        print("Data Load to DB")
-                        //                        print("x = \(self.userLocation.latitude), y = \(self.userLocation.longitude)")
+                    if (location.latitude != -180 && location.longitude != -180) {
                         let values: [DatabaseKeys: Any] = [.time_online : TimeConverter.convertToUTC(in: .minute),
                                                            .latitude        : location.latitude,
                                                            .longitude       : location.longitude]
                         DataBaseManager.shared.updateUserValues(for: self.userUID, with: values)
                     }
                 } else {
+                    print("ONLY IN TEST")
                     print("The account is deleted, please press test logout and rerun the app\nLOGOUT\nLOGOUT\nLOGOUT")
                 }
             })
         }
-        
     }
     
     @objc func checkRebirth() {
         if (myHealth == 0) {
             isAlive = false
-            if (TimeConverter.isMoreThanInterval(oldDate: timeOfDeath, interval: 5, in: .minute)) {
+            let rebornTime: UInt = 5 * 60
+            if (TimeConverter.isMoreThanInterval(oldDate: timeOfDeath, interval: rebornTime, in: .second)) {
                 guard let ref = DataBaseManager.shared.refToUser else { return }
                 ref.updateChildValues([ "health" : 100 ])
                 mapView.showsUserLocation = true
                 isAlive = true
             } else {
-                mapView.showsUserLocation = false
-                let timeLeft = TimeConverter.showInterval(oldDate: timeOfDeath, in: .minute)
-                print("left until rebirth ~\(5 - timeLeft) min")
-                let _ = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(checkRebirth), userInfo: nil, repeats: false)
+                let timeLeft = TimeConverter.showInterval(oldDate: timeOfDeath, in: .second)
+                if (rebornScreenIsShown == false) {
+                    view.addSubview(createDeathView(timeToReborn: rebornTime - timeLeft))
+                    mapView.showsUserLocation = false
+                    rebornScreenIsShown = true
+                }
+                print("left until rebirth ~\(rebornTime - timeLeft) sec")
+                Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(checkRebirth), userInfo: nil, repeats: false)
             }
         }
+    }
+    
+    // MARK:- Create death view
+    private func createDeathView(timeToReborn: UInt) -> DeathView {
+        let w = view.bounds.width
+        let h = view.bounds.height - (self.tabBarController?.tabBar.frame.height ?? 0)
+        let actualHeight = h / 5
+        let xOffset: CGFloat = 10
+        let yOffset: CGFloat = 10
+        let deathView = DeathView(frame: CGRect(x: xOffset,
+                                                y: h - actualHeight - 2 * yOffset,
+                                                width: w - 2 * xOffset,
+                                                height: actualHeight),
+                                  timeToReborn: timeToReborn)
+        return deathView
     }
     
     
@@ -397,7 +426,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         return button
     }
     
-    
+    // MARK:- Create cool downn view
     private func createCoolDownView(timeLeft: UInt) -> CoolDownNotificationView {
         let w = view.bounds.width
         let h = view.bounds.height - (self.tabBarController?.tabBar.frame.height ?? 0)
@@ -409,8 +438,63 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         return view
     }
     
+    // MARK:- Create reward view
+    private func createRewardView(killerPreviousRating: Int,
+                                  killerCurrentRating: Int,
+                                  killerLogin: String,
+                                  victimPreviousRating: Int,
+                                  victimCurrentRating: Int,
+                                  victimLogin: String
+    ) -> RewardView {
+        let w = view.bounds.width
+        let h = view.bounds.height - (self.tabBarController?.tabBar.frame.height ?? 0)
+        let actualHeight = h / 2
+        let xOffset: CGFloat = 10
+        let rewardView = RewardView(frame: CGRect(x: xOffset,
+                                                  y: h / 3,
+                                                  width: w - 2 * xOffset,
+                                                  height: h - actualHeight))
+        
+        rewardView.killerView.ratingChangeLabel.text = "Rating: \(killerPreviousRating) -> \(killerCurrentRating)"
+        rewardView.victimView.ratingChangeLabel.text = "Rating: \(victimPreviousRating) -> \(victimCurrentRating)"
+        rewardView.killerView.ratingChangeLabel.textColor = #colorLiteral(red: 0.1960784346, green: 0.3411764801, blue: 0.1019607857, alpha: 1)
+        rewardView.victimView.ratingChangeLabel.textColor = .red
+        
+        rewardView.killerView.playerNameLabel.text = killerLogin
+        rewardView.victimView.playerNameLabel.text = victimLogin
+        
+        return rewardView
+    }
     
-    //Нажатие на Shoot в аннотации
+    // MARK:- Animate reward view
+    private func animateViewAppearing(appearingView: UIView, mainView: UIView) {
+        appearingView.transform = CGAffineTransform(scaleX: 0.8, y: 1.2)
+        mainView.insertSubview(appearingView, aboveSubview: mainView)
+        UIView.animate(withDuration: 0.3,
+                       delay: 0,
+                       usingSpringWithDamping: 0.5,
+                       initialSpringVelocity: 0,
+                       options: [],
+                       animations: { appearingView.transform = .identity },
+                       completion: nil)
+    }
+    
+    private func createAfterShotView(damage: Int) -> AfterShotView {
+        let w = view.bounds.width
+        let h = view.bounds.height - (self.tabBarController?.tabBar.frame.height ?? 0)
+        let actualHeight = h / 5
+        let xOffset: CGFloat = 10
+        let yOffset: CGFloat = 10
+        let afterShotView = AfterShotView(frame: CGRect(x: xOffset,
+                                                        y: h - actualHeight - 2 * yOffset,
+                                                        width: w - 2 * xOffset,
+                                                        height: actualHeight),
+                                          damage: damage)
+        return afterShotView
+    }
+    
+    
+    // Нажатие на Shoot в аннотации
     func mapView(_ mapView: MGLMapView, annotation: MGLAnnotation, calloutAccessoryControlTapped control: UIControl) {
         guard isAlive else { return }
         
@@ -438,14 +522,8 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             }
             
             mapView.deselectAnnotation(annotation, animated: false)
-            
-            let alert = UIAlertController(title: "Nice shot",
-                                          message: "\(-defaultWeapon.damage) HP",
-                preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            
+
             let refToVictimUser = DataBaseManager.Refs.databaseUserNames.child("/\(victim.login.lowercased())")
-            
             refToVictimUser.observeSingleEvent(of: .value, with: { (snapshot) in
                 if let victimUserUID = snapshot.value as? String {
                     
@@ -453,7 +531,17 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                                                                                 victimRating: victim.rating,
                                                                                 victimHealth: victim.health,
                                                                                 weaponDamage: defaultWeapon.damage)
+                    
                     if (changes.victimHealth == 0) {
+                        let rewardView = self.createRewardView(killerPreviousRating: self.myRating,
+                                                               killerCurrentRating: changes.killerRating,
+                                                               killerLogin: self.myLogin,
+                                                               victimPreviousRating: victim.rating,
+                                                               victimCurrentRating: changes.victimRating,
+                                                               victimLogin: victim.login)
+                        
+                        self.animateViewAppearing(appearingView: rewardView, mainView: self.view)
+                        
                         if let anotation = self.annotationsPlayers[victim.login] {
                             self.mapView.removeAnnotation(anotation)
                         }
@@ -473,8 +561,9 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                 }
             })
             defaults.set(TimeConverter.convertToUTC(in: .second), forKey: lastShotTimeKey)
-            //можно не алерт будет сделать а всплывающее окно свое
-            self.present(alert, animated: true, completion: nil)
+            let afterShotView = self.createAfterShotView(damage: defaultWeapon.damage)
+            self.view.addSubview(afterShotView)
+            Timer.scheduledTimer(withTimeInterval: 3, repeats: false, block: { _ in afterShotView.removeFromSuperview() })
         }
     }
 }

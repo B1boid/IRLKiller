@@ -133,7 +133,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     private func checkLoginValidity(login: String) -> Bool {
-    
+        
         guard login.count > 3 else {
             showThenHideErrorMsg(duration: 5.0, error: "Login must have at least 4 symbols")
             return false;
@@ -150,12 +150,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     private func doLogin() {
         
         // Проверяем валидность логина и выводим сообщение об этом
-        let login = loginTextField.text!.trimmingCharacters(in: .whitespaces)
+        let login = loginTextField.text!.trimmingCharacters(in: .whitespaces).lowercased()
         
         guard checkLoginValidity(login: login) else { return }
         
         //Подключаемся к БД и ищем занят ли логин
-        let refToUser = DataBaseManager.Refs.databaseUserNames.child("/\(login.lowercased())")
+        let refToUser = DataBaseManager.Refs.databaseUserNames.child("/\(login)")
         
         refToUser.observeSingleEvent(of: .value, with: { snapshot in
             guard !snapshot.exists() else {
@@ -189,12 +189,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    @objc private func clearErrorMsg() {
-        errorMsgLabel.text = ""
-    }
-    
     //По нажатию return на клавиатуре
-    private func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         loginTextField.resignFirstResponder() //Закрывает клавиатуру
         doLogin()
         return true
@@ -202,7 +198,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     //Закрывание клавиатуры по нажатию на другую область экрана
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        clearErrorMsg()
+        errorMsgLabel.text = ""
         self.view.endEditing(true)
     }
 }

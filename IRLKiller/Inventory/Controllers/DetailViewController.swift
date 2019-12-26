@@ -32,8 +32,8 @@ class DetailViewController: UIViewController {
         button.setTitle("Set this weapon by default", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.numberOfLines = 2
-        button.layer.borderColor = UIColor.white.cgColor
-        button.layer.borderWidth = 4
+        button.layer.borderColor = #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 1)
+        button.layer.borderWidth = 2
         button.titleEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 40)
         button.titleLabel?.textAlignment = .center
