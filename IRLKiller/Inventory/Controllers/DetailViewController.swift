@@ -277,7 +277,7 @@ private enum WeaponAttributes: String, CaseIterable {
         case .reload:
             return "\(weapon.reloadTime) sec"
         case .distance:
-            return "\(weapon.distance) m"
+            return "\(weapon.distance*100) km"
         case .capacity:
             return "\(weapon.capacity) shoots"
         }
@@ -316,17 +316,26 @@ extension UIImage {
     static let revolver = UIImage(named: "revolver")!
     static let knife = UIImage(named: "knife")!
     static let basic = UIImage(named: "basic")!
+    static let ak = UIImage(named: "ak-47")!
+    static let sniper = UIImage(named: "sniper-rifle")!
+    static let bazooka = UIImage(named: "bazooka")!
     
     static func getWeaponImage(name: String) -> UIImage {
         switch name {
-        case "shootgun":
-            return UIImage.shootgun
+        case "basic":
+            return UIImage.basic
         case "revolver":
             return UIImage.revolver
         case "knife":
             return UIImage.knife
-        case "basic":
-            return UIImage.basic
+        case "ak-47":
+            return UIImage.ak
+        case "sniper-rifle":
+            return UIImage.sniper
+        case "shootgun":
+            return UIImage.shootgun
+        case "bazooka":
+            return UIImage.bazooka
         default:
             return UIImage.basic
         }

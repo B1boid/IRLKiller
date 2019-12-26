@@ -114,7 +114,7 @@ class InventoryCollectionViewCell: UICollectionViewCell {
 
 extension InventoryCollectionViewCell {
     
-    static let standartBorderColor = #colorLiteral(red: 0.7453920841, green: 0.8645043969, blue: 1, alpha: 0.9995117188)
+    static let standartBorderColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     static let chooseBorderColor = UIColor.white
     
 }

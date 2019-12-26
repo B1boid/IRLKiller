@@ -1,7 +1,7 @@
 struct Weapon {
     let name      : String
     let cost      : UInt
-    let distance  : UInt
+    let distance  : Double
     let capacity  : UInt
     let reloadTime: UInt
     let damage    : Int
@@ -10,11 +10,8 @@ struct Weapon {
 }
 
 enum WeaponTypes: String, CaseIterable {
-    case gun
-    case grenade
-    case rifle
-    case test1
-    case test2
-    case test3
-    case test4
+    case weapons
+    case pistols
+    case rifles
+    case bigguns
 }

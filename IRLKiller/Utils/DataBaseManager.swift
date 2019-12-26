@@ -35,6 +35,10 @@ class DataBaseManager {
         }
     }
     
+    static var myLogin:String?
+    static var myRating:Int?
+    static var players = [String : Player]()
+    
     
     // MARK:- Create users function
     func createUser(login: String, values: [DatabaseKeys: Any], completion: @escaping () -> Void) {

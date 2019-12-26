@@ -28,7 +28,6 @@ class SinglePlayerView: UIView {
     }
     
     private func setupMainView() {
-        print("SINGLE")
         self.backgroundColor = .white
         self.layer.cornerRadius = 10
         self.layer.borderWidth = 3

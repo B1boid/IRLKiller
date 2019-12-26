@@ -17,42 +17,33 @@ class WeaponModel {
     
     var items: [String: [Weapon]] = [
         
-        WeaponTypes.gun.rawValue: [
-            Weapon(name: "shootgun", cost: 10, distance: 10, capacity: 10, reloadTime: 6, damage: 50),
-            Weapon(name: "revolver", cost: 20, distance: 20, capacity: 7, reloadTime: 5, damage: 20)
+        WeaponTypes.weapons.rawValue: [
+            Weapon(name: "basic", cost: 10, distance: 0.001, capacity: 10, reloadTime: 6, damage: 20),
+            Weapon(name: "revolver", cost: 20, distance: 0.001, capacity: 7, reloadTime: 5, damage: 25),
+            Weapon(name: "knife", cost: 30, distance: 0.001, capacity: 7, reloadTime: 5, damage: 30),
+            Weapon(name: "ak-47", cost: 30, distance: 0.002, capacity: 10, reloadTime: 6, damage: 40),
+            Weapon(name: "sniper-rifle", cost: 40, distance: 0.004, capacity: 7, reloadTime: 12, damage: 80),
+            Weapon(name: "shootgun", cost: 40, distance: 0.001, capacity: 10, reloadTime: 6, damage: 70),
+            Weapon(name: "bazooka", cost: 50, distance: 0.002, capacity: 1, reloadTime: 15, damage: 100)
         ],
         
-        WeaponTypes.grenade.rawValue: [
-            Weapon(name: "shootgun", cost: 10, distance: 10, capacity: 10, reloadTime: 6, damage: 50),
-            Weapon(name: "knife", cost: 20, distance: 20, capacity: 7, reloadTime: 5, damage: 20),
-            Weapon(name: "basic", cost: 10, distance: 10, capacity: 10, reloadTime: 6, damage: 50),
-            Weapon(name: "revolver", cost: 20, distance: 20, capacity: 7, reloadTime: 5, damage: 20),
+        WeaponTypes.pistols.rawValue: [
+            Weapon(name: "basic", cost: 10, distance: 0.001, capacity: 10, reloadTime: 6, damage: 20),
+            Weapon(name: "revolver", cost: 20, distance: 0.001, capacity: 7, reloadTime: 5, damage: 25),
+            Weapon(name: "knife", cost: 30, distance: 0.001, capacity: 7, reloadTime: 5, damage: 30)
         ],
         
-        WeaponTypes.rifle.rawValue: [
-            Weapon(name: "shootgun", cost: 10, distance: 10, capacity: 10, reloadTime: 6, damage: 50),
-            Weapon(name: "knife", cost: 20, distance: 20, capacity: 7, reloadTime: 5, damage: 20),
-            Weapon(name: "basic", cost: 10, distance: 10, capacity: 10, reloadTime: 6, damage: 50),
-            Weapon(name: "revolver", cost: 20, distance: 20, capacity: 7, reloadTime: 5, damage: 20),
-            Weapon(name: "basic", cost: 10, distance: 10, capacity: 10, reloadTime: 6, damage: 50),
-            Weapon(name: "revolver", cost: 20, distance: 20, capacity: 7, reloadTime: 5, damage: 20)
+        WeaponTypes.rifles.rawValue: [
+            Weapon(name: "ak-47", cost: 30, distance: 0.002, capacity: 10, reloadTime: 6, damage: 40),
+            Weapon(name: "sniper-rifle", cost: 40, distance: 0.004, capacity: 7, reloadTime: 12, damage: 80)
         ],
         
-        WeaponTypes.test1.rawValue: [
-            Weapon(name: "knife", cost: 20, distance: 20, capacity: 7, reloadTime: 5, damage: 20),
+        WeaponTypes.bigguns.rawValue: [
+            Weapon(name: "shootgun", cost: 40, distance: 0.001, capacity: 10, reloadTime: 6, damage: 70),
+            Weapon(name: "bazooka", cost: 50, distance: 0.002, capacity: 1, reloadTime: 15, damage: 100)
         ],
         
-        WeaponTypes.test2.rawValue: [
-            Weapon(name: "knife", cost: 20, distance: 20, capacity: 7, reloadTime: 5, damage: 20),
-        ],
         
-        WeaponTypes.test3.rawValue: [
-            Weapon(name: "knife", cost: 20, distance: 20, capacity: 7, reloadTime: 5, damage: 20),
-        ],
-        
-        WeaponTypes.test4.rawValue: [
-            Weapon(name: "knife", cost: 20, distance: 20, capacity: 7, reloadTime: 5, damage: 20),
-        ],
     ]
 }
 

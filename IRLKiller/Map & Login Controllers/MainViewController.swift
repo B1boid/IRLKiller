@@ -30,7 +30,11 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
 
     // Player attributes
     var myLogin = ""
-    var myRating = 0
+    var myRating = 0 {
+        didSet{
+             DataBaseManager.myRating = myRating
+        }
+    }
     var myHealth = 100 {
         didSet {
             if myHealth > 0 {
@@ -72,41 +76,6 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     @IBAction func logoutPressed(_ sender: Any) {
         try! Auth.auth().signOut()
     }
-
-    func prefersStatusBarHidden() -> Bool {
-        return true
-    }
-    typealias OffsetForView = (xOffset: CGFloat, yOffset: CGFloat, height: CGFloat, view: UIView)
-
-
-
-    var w: CGFloat!
-    var h: CGFloat!
-
-//    override func viewWillLayoutSubviews() {
-//        // В этот момент все фрэймы уже проставлены
-//        w = view.frame.width
-//        h = view.frame.height
-//        let framesOfSubviews: [OffsetForView] =
-//            [
-//                (xOffset: w / 8, yOffset: h / 15, height: h / 6, view: loginText)
-//
-//        ]
-//
-//        // Располагаем атрибуты относительно друг друга
-//        let _ = framesOfSubviews.reduce((xOffset: 0, yOffset: 0, height: 0, view: UIView()))
-//        { (previous, current) -> OffsetForView in
-//            current.view.frame = CGRect(
-//                x: current.xOffset,
-//                y: previous.view.frame.maxY + current.yOffset,
-//                width: w - 2 * current.xOffset,
-//                height: current.height
-//            )
-//            return current
-//        }
-//
-//
-//    }
 
     func showPrivacyAlert(){
         let alert = UIAlertController(title: "Please allow geolocation access to use the app", message: "Settings-> Privacy->Location Services-> IRLKiller-> While using the app. Then RESTART the app", preferredStyle: UIAlertController.Style.alert)
@@ -160,6 +129,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
 
         checkInternetConnection()
     }
+    
 
 
     override func viewWillAppear(_ animated: Bool) {
@@ -177,8 +147,9 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
 
         screenIsAlredyShown = true
+        let transform : CGAffineTransform = CGAffineTransform(scaleX: 1.0, y: 4.0)
+        healthProgress.transform = transform
         setupLoadingAnimationView()
-
 
         userUID = user.uid
         guard let ref = DataBaseManager.shared.refToUser else { print("User not created"); return }
@@ -187,7 +158,9 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         ref.observeSingleEvent(of: .value, with: { (snapshot) in
             if let user = snapshot.value as? [String : AnyObject] {
                 self.myLogin = user["login"] as! String
+                DataBaseManager.myLogin = self.myLogin
                 self.myRating = user["rating"] as! Int
+                DataBaseManager.myRating = self.myRating
                 self.myHealth = user["health"] as! Int
                 print(self.myLogin)
                 self.loginText.text = self.myLogin
@@ -257,6 +230,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         )
 
         self.players[curLogin] = curPlayer
+        DataBaseManager.players[curLogin] = curPlayer
 
         // Drawing player on the map
         guard curLogin != myLogin else {

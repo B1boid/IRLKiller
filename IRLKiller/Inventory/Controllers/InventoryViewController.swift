@@ -63,7 +63,7 @@ class InventoryViewController: UITableViewController {
     // MARK:- Change header colors
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         if let headerView = view as? UITableViewHeaderFooterView {
-            headerView.textLabel?.textColor = #colorLiteral(red: 0.07587141544, green: 0.1329714358, blue: 0.2183612585, alpha: 1)
+            headerView.textLabel?.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
             headerView.textLabel?.textAlignment = .center
             headerView.textLabel?.font = UIFont(name: "Kefa", size: headerView.bounds.height / 1.25)
             
@@ -120,9 +120,9 @@ extension InventoryViewController: CollectionViewReloadDataDelegate {
         cell.collectionView.reloadData()
     }
     
-    static let bgColor = #colorLiteral(red: 0.2092410028, green: 0.3064872622, blue: 0.4088295698, alpha: 1)
-    static let weaponCellColor = #colorLiteral(red: 0.5943054557, green: 0.8013091683, blue: 0.8286970258, alpha: 1)
-    static let headerColor = #colorLiteral(red: 0.9223738313, green: 0.9414827228, blue: 0.9628887773, alpha: 1)
+    static let bgColor = #colorLiteral(red: 0.8673296571, green: 0.2857989967, blue: 0.3648305535, alpha: 1)
+    static let weaponCellColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+    static let headerColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
 }
 
 extension UITableView {

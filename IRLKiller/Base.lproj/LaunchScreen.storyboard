@@ -16,21 +16,27 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ndv-po-NAk">
-                                <rect key="frame" x="8" y="598.66666666666663" width="359" height="179.33333333333337"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="ndv-po-NAk" secondAttribute="height" multiplier="2:1" id="Nfe-6u-yvb"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="MarkerFelt-Wide" family="Marker Felt" pointSize="45"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bg" translatesAutoresizingMaskIntoConstraints="NO" id="CLM-bE-wX4">
+                                <rect key="frame" x="0.0" y="44" width="375" height="734"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="IRLKiller" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pyy-NY-9Jo">
+                                <rect key="frame" x="63" y="117" width="249" height="77"/>
+                                <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="70"/>
+                                <color key="textColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <nil key="highlightedColor"/>
+                                <variation key="widthClass=regular">
+                                    <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="100"/>
+                                </variation>
                             </label>
                         </subviews>
                         <color key="backgroundColor" red="0.79311770199999998" green="0.32904887199999999" blue="0.3725371361" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="ndv-po-NAk" secondAttribute="bottom" id="0Bj-F6-jMp"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ndv-po-NAk" secondAttribute="trailing" constant="8" id="D9t-xM-4vE"/>
-                            <constraint firstItem="ndv-po-NAk" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="hV1-tX-TEz"/>
+                            <constraint firstItem="CLM-bE-wX4" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="EKL-in-yzk"/>
+                            <constraint firstItem="Pyy-NY-9Jo" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="73" id="GeK-iT-UZ0"/>
+                            <constraint firstItem="Pyy-NY-9Jo" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="Nga-Ez-ENz"/>
+                            <constraint firstItem="CLM-bE-wX4" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="QbS-2D-SwV"/>
+                            <constraint firstItem="CLM-bE-wX4" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="XNg-ho-LAW"/>
+                            <constraint firstItem="CLM-bE-wX4" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="n4W-wA-F86"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -40,4 +46,7 @@
             <point key="canvasLocation" x="52" y="374.6305418719212"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="bg" width="728" height="1295"/>
+    </resources>
 </document>

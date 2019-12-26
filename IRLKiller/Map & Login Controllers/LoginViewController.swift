@@ -26,7 +26,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         textField.layer.borderWidth = 2
         textField.layer.borderColor = UIColor.white.cgColor
         textField.layer.cornerRadius = 8
-        textField.backgroundColor  = #colorLiteral(red: 0.8656491637, green: 0.2913296521, blue: 0.3646270633, alpha: 1)
+        textField.backgroundColor  = #colorLiteral(red: 0.8673296571, green: 0.2857989967, blue: 0.3648305535, alpha: 1)
         textField.autocorrectionType = .no
         textField.adjustsFontSizeToFitWidth = true
         textField.maxLength = 14
