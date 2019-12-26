@@ -154,10 +154,10 @@
             </objects>
             <point key="canvasLocation" x="2009" y="749"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Tab Bar View Controller-->
         <scene sceneID="YBM-Hm-eG3">
             <objects>
-                <tabBarController id="RIQ-4v-6rk" sceneMemberID="viewController">
+                <tabBarController id="RIQ-4v-6rk" customClass="TabBarViewController" customModule="IRLKiller" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="8jA-GG-OH6">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
