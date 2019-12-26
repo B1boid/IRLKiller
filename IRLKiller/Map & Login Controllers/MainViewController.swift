@@ -538,6 +538,12 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                             self.myRating = changes.killerRating
                             DataBaseManager.shared.updateUserValues(for: self.userUID, with: [.rating : self.myRating])
                         }
+                    } else {
+                        let afterShotView = self.createAfterShotView(damage: defaultWeapon.damage)
+                        self.view.addSubview(afterShotView)
+                        Timer.scheduledTimer(withTimeInterval: 3,
+                                             repeats: false,
+                                             block: { _ in afterShotView.removeFromSuperview() })
                     }
                     
                     DispatchQueue.global(qos: .utility).async {
@@ -550,9 +556,6 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                 }
             })
             defaults.set(TimeConverter.convertToUTC(in: .second), forKey: lastShotTimeKey)
-            let afterShotView = self.createAfterShotView(damage: defaultWeapon.damage)
-            self.view.addSubview(afterShotView)
-            Timer.scheduledTimer(withTimeInterval: 3, repeats: false, block: { _ in afterShotView.removeFromSuperview() })
         }
     }
 }
