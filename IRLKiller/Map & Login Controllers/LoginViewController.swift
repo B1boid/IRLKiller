@@ -155,8 +155,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         guard checkLoginValidity(login: login) else { return }
         
         //Подключаемся к БД и ищем занят ли логин
-        guard let refToUser = DataBaseManager.shared.refToUser else { print("Unable to get ref to user"); return }
-//        let refToUser = DataBaseManager.Refs.databaseUserNames.child("/\(login.lowercased())")
+        //guard let refToUser = DataBaseManager.shared.refToUser else { print("Unable to get ref to user"); return }
+        let refToUser = DataBaseManager.Refs.databaseUserNames.child("/\(login.lowercased())")
         
         refToUser.observeSingleEvent(of: .value, with: { snapshot in
             guard !snapshot.exists() else {
