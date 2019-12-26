@@ -1,9 +1,9 @@
 struct Weapon {
     let name      : String
-    let cost      : Int
-    let distance  : Int
-    let capacity  : Int
-    let reloadTime: Int
+    let cost      : UInt
+    let distance  : UInt
+    let capacity  : UInt
+    let reloadTime: UInt
     let damage    : Int
     
     static let defaultWeaponKey: String = "CurrentWeapon"

@@ -14,6 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 let loginVC = storyboard.instantiateViewController(withIdentifier: "login")
                 loginVC.modalPresentationStyle = .fullScreen
+                loginVC.modalTransitionStyle = .crossDissolve
                 self.window?.rootViewController?.present(loginVC, animated: true, completion: nil)
             }
             
@@ -23,8 +24,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         if UserDefaults.standard.value(forKey: Weapon.defaultWeaponKey) == nil {
-            UserDefaults.standard.saveWeapon(for: IndexPath(row: 0, section: 0))
+            UserDefaults.standard.saveWeaponSection(for: IndexPath(row: 0, section: 0))
         }
+        WeaponModel.defaultWeapon = UserDefaults.standard.getDefaultWeapon()
         return true
     }
 

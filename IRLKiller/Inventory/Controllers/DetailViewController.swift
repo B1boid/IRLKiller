@@ -31,6 +31,12 @@ class DetailViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Set this weapon by default", for: .normal)
         button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.numberOfLines = 2
+        button.layer.borderColor = UIColor.white.cgColor
+        button.layer.borderWidth = 4
+        button.titleEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 40)
+        button.titleLabel?.textAlignment = .center
         button.backgroundColor = #colorLiteral(red: 0.4193970859, green: 0.6569570899, blue: 0.6623717546, alpha: 1)
         button.addTarget(self, action: #selector(chooseWeapon), for: .touchUpInside)
         return button
@@ -174,6 +180,8 @@ class DetailViewController: UIViewController {
         chooseButton.topAnchor.constraint(equalTo: detailCollectionView.bottomAnchor, constant: 10).isActive      = true
         chooseButton.widthAnchor.constraint(equalTo: mainView.widthAnchor, multiplier: 2 / 5).isActive            = true
         chooseButton.centerXAnchor.constraint(equalTo: mainView.centerXAnchor).isActive                           = true
+        
+        chooseButton.titleLabel?.adjustsFontSizeToFitWidth = true
     }
     
     
@@ -205,7 +213,8 @@ class DetailViewController: UIViewController {
         weaponModel.items[weaponKey]?.swapAt(0, weaponIndex)
         
         let indexPath = IndexPath(row: 0, section: weaponSection)
-        UserDefaults.standard.saveWeapon(for: indexPath)
+        UserDefaults.standard.saveWeaponSection(for: indexPath)
+        WeaponModel.defaultWeapon = UserDefaults.standard.getDefaultWeapon()
         
         // Call this method because we want collectiovView for special row to update
         delegate?.reloadDataInCollectionView(for: indexPath)

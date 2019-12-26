@@ -13,6 +13,8 @@ class WeaponModel {
         return values[index]
     }
     
+    static var defaultWeapon: Weapon!
+    
     var items: [String: [Weapon]] = [
         
         WeaponTypes.gun.rawValue: [

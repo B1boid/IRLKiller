@@ -88,19 +88,11 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: InventoryCollectionViewCell.reuseId,
                                                       for: indexPath) as! InventoryCollectionViewCell
         
-        switch indexPath.row {
-        case 0:
-            cell.layer.borderColor = InventoryCollectionViewCell.chooseBorderColor.cgColor
-        default:
-            cell.layer.borderColor = InventoryCollectionViewCell.standartBorderColor.cgColor
-        }
-        
-        cell.backgroundColor = InventoryViewController.weaponCellColor
-        
         let weaponType = WeaponTypes.allCases[collectionView.tag].rawValue
-        guard let data = weaponData.getWeapon(for: weaponType, index: indexPath.row) else { return cell }
-        cell.weaponName = data.name
+        guard let weapon = weaponData.getWeapon(for: weaponType, index: indexPath.row) else { return cell }
+        cell.weaponName = weapon.name
         cell.descriptionText = "Nice gun"
+    
         return cell
     }
     

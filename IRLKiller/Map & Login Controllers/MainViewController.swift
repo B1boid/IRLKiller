@@ -8,53 +8,53 @@ import CoreLocation
 
 class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManagerDelegate {
 
-    // Map settings
+    // Map standart attributes
     var basicLocation = CLLocationCoordinate2D (latitude: 48.8582573, longitude: 2.2945111)
-    //(latitude: 40.74699, longitude: -73.98742)
     let altitude: CLLocationDistance = 500
     let pitch: CGFloat = 30
     let heading: CLLocationDirection = 180
 
-    var userUID: String?
-    var userLocation: CLLocationCoordinate2D {
-        get { return mapView.userLocation?.coordinate ?? basicLocation }
-    }
-    var screenIsAlredyShown = false
+    // Managers
+    let locationManager = CLLocationManager()
+    let TC = TimeConverter()
+    let defaults = UserDefaults.standard
 
+    // Class
     class MyCustomPointAnnotation: MGLPointAnnotation {
         var typeOfImage: String = "online"
     }
 
-
+    // Arrays
     var players = [String : Player]()
-
     var annotationsPlayers = [String : MGLAnnotation]()
 
-    let locationManager = CLLocationManager()
-
+    // Player attributes
     var myLogin = ""
     var myRating = 0
     var myHealth = 100
-    var myKD: UInt = 10
     var timeOfDeath = ""
     var isAlive = true
+    var userUID: String?
+    var userLocation: CLLocationCoordinate2D {
+        get { return mapView.userLocation?.coordinate ?? basicLocation }
+    }
 
-    let TC = TimeConverter()
-
-    let defaults = UserDefaults.standard
+    // Keys and flags
+    let lastShotTimeKey = "TimeOfLastShot"
     var hasConnection = true
+    var screenIsAlredyShown = false
 
     // View and buttons
     @IBOutlet weak var loginText: UILabel!
     @IBOutlet weak var mapView: MGLMapView!
-    private var pulsatingView: PulsatingView!
+    private var loadingAnimationController: LoadingAnimationViewController!
 
     // Functions which connected to actions
     @IBAction func clickMyLocation(_ sender: Any) {
         showMyLocation()
     }
 
-    // Чисто для теста,в игре нельзя разлогиниться
+    // For testing!
     @IBAction func logoutPressed(_ sender: Any) {
         try! Auth.auth().signOut()
     }
@@ -97,16 +97,13 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         }
     }
 
-    private func setupDownloadView() {
-        pulsatingView = PulsatingView(frame: view.bounds,
-                                      radius: view.bounds.midX / 2,
-                                      circleCenter: CGPoint(x: view.bounds.midX, y: view.bounds.midY),
-                                      strokeColor:  UIColor.outlineStrokeColor.cgColor,
-                                      pulseColor: UIColor.pulsatingFillColor.cgColor)
-
-        pulsatingView.backgroundColor = UIColor.downloadViewBackgroundColor
-        view.insertSubview(pulsatingView, at: Int.max)
-        pulsatingView.startPulseAnimation(onePulseDuration: 1)
+    private func setupLoadingAnimationController() {
+        if (loadingAnimationController == nil) {
+            loadingAnimationController = LoadingAnimationViewController()
+            self.addChild(loadingAnimationController)
+        }
+        self.view.addSubview(loadingAnimationController.view)
+        loadingAnimationController.modalPresentationStyle = .overFullScreen
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -132,7 +129,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             return
         }
 
-        //setupDownloadView()
+       // setupLoadingAnimationController()
 
         screenIsAlredyShown = true
         userUID = user.uid
@@ -162,13 +159,8 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                     altitude: self.altitude, pitch: self.pitch, heading: self.heading
                 )
                 self.mapView.setCamera(camera, animated: false)
-//                UIView.animate(withDuration: 0.4, delay: 2.0, options: .beginFromCurrentState,
-//                               animations: { self.pulsatingView.transform = CGAffineTransform(scaleX: 0.01, y: 0.01) },
-//                               completion: { (succes) in self.pulsatingView.removeFromSuperview() })
-            }}){ (error) in
-                print(error.localizedDescription)
-                self.checkInternetConnection()
-            }
+               // self.loadingAnimationController.dismiss(animated: true, completion: nil)
+            }})
 
         setupMapView()
         setupDataBaseTranslation()
@@ -195,7 +187,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     }
 
     func readNewData(snapshot: DataSnapshot, isAdding: Bool) {
-      //  print(snapshot.value as! [String: Any])
+        //  print(snapshot.value as! [String: Any])
         guard let timeOnline = snapshot.childSnapshot(forPath: "time_online").value as? String else { return }
         guard let timeDeath = snapshot.childSnapshot(forPath: "time_death").value as? String   else { return }
         guard let curLogin = snapshot.childSnapshot(forPath: "login").value as? String         else { return }
@@ -206,7 +198,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         guard let curHealth = snapshot.childSnapshot(forPath: "health").value as? Int          else { return }
         guard let curRating = snapshot.childSnapshot(forPath: "rating").value as? Int          else { return }
 
-        let isOnline = !TimeConverter.isMoreThanDiff(oldDate: timeOnline, diff: 1, in: .minute)
+        let isOnline = !TimeConverter.isMoreThanInterval(oldDate: timeOnline, interval: 1, in: .minute)
 
         let curPlayer = Player(
             login: curLogin,
@@ -218,39 +210,35 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
 
         self.players[curLogin] = curPlayer
 
-        //        print("show: \(curLogin)")
-        //        print("x: \(posx), y: \(posy)")
-
-        // тут отрисовываем чела на карте
-        if curLogin != myLogin {
-            let curPoint: MyCustomPointAnnotation = {
-                let annotation = MyCustomPointAnnotation()
-                annotation.coordinate = CLLocationCoordinate2D(latitude: posx, longitude: posy)
-                annotation.title = curLogin
-                annotation.subtitle = "AK-47  \(curHealth)HP"
-                annotation.typeOfImage = isOnline ? "online" : "offline"
-                return annotation
-            }()
-
-            guard curHealth > 0 else { return }
-            if !isAdding {
-                if let currentPoint = self.annotationsPlayers[curLogin] {
-                    self.mapView.removeAnnotation(currentPoint)
-                }
-            }
-            self.mapView.addAnnotation(curPoint)
-            self.annotationsPlayers[curLogin] = curPoint
-
-        } else {
+        // Drawing player on the map
+        guard curLogin != myLogin else {
             let lstHealth = myHealth
             myHealth = curHealth
 
-            //убили меня
+            // Now i am killed
             if (lstHealth > 0 && curHealth == 0) {
                 timeOfDeath = timeDeath
                 checkRebirth()
             }
+            return
         }
+        let curPoint: MyCustomPointAnnotation = {
+            let annotation = MyCustomPointAnnotation()
+            annotation.coordinate = CLLocationCoordinate2D(latitude: posx, longitude: posy)
+            annotation.title = curLogin
+            annotation.subtitle = "AK-47  \(curHealth)HP"
+            annotation.typeOfImage = isOnline ? "online" : "offline"
+            return annotation
+        }()
+
+        guard curHealth > 0 else { return }
+        if !isAdding {
+            if let currentPoint = self.annotationsPlayers[curLogin] {
+                self.mapView.removeAnnotation(currentPoint)
+            }
+        }
+        self.mapView.addAnnotation(curPoint)
+        self.annotationsPlayers[curLogin] = curPoint
     }
 
     // MARK: -checkInternetConnection
@@ -311,17 +299,17 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
 
     }
 
-    @objc func checkRebirth(){
+    @objc func checkRebirth() {
         if (myHealth == 0) {
             isAlive = false
-            if (TimeConverter.isMoreThanDiff(oldDate: timeOfDeath, diff: 5, in: .minute)) {
+            if (TimeConverter.isMoreThanInterval(oldDate: timeOfDeath, interval: 5, in: .minute)) {
                 guard let ref = DataBaseManager.shared.refToUser else { return }
                 ref.updateChildValues([ "health" : 100 ])
                 mapView.showsUserLocation = true
                 isAlive = true
             } else {
                 mapView.showsUserLocation = false
-                let timeLeft = TimeConverter.showDiff(oldDate: timeOfDeath, in: .minute)
+                let timeLeft = TimeConverter.showInterval(oldDate: timeOfDeath, in: .minute)
                 print("left until rebirth ~\(5 - timeLeft) min")
                 let _ = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(checkRebirth), userInfo: nil, repeats: false)
             }
@@ -383,44 +371,63 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     }
 
 
+    // MARK:- leftCalloutAccessoryViewFo
     func mapView(_ mapView: MGLMapView, leftCalloutAccessoryViewFor annotation: MGLAnnotation) -> UIView? {
-        if (annotation.title! != "You Are Here") {
-            // Callout height is fixed; width expands to fit its content.
-            let label = UILabel(frame: CGRect(x: 0, y: 0, width: 42, height: 20))
-            if let curPlayer = players[annotation.title!!]{
-                let curRating = curPlayer.rating
-                label.textColor = UIColor.getRatingColor(for: curRating)
-                label.text = String(curPlayer.rating)
-                return label
-            }
+        guard let title = annotation.title, let login = title else {
+            return nil
         }
-        return nil
+        return createLeftCalloutView(login: login)
     }
 
+    private func createLeftCalloutView(login: String) -> UIView? {
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 42, height: 20))
+        guard let player = players[login] else { return nil }
+        label.textColor = UIColor.getRatingColor(for: player.rating)
+        label.text = String(player.rating)
+        return label
+    }
 
+    // MARK:- rightCalloutAccessoryViewFor
     func mapView(_ mapView: MGLMapView, rightCalloutAccessoryViewFor annotation: MGLAnnotation) -> UIView? {
-        if (annotation.title! != "You Are Here") {
-            let button = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 20))
-            button.backgroundColor = .black
-            button.setTitle("Shoot", for: .normal)
-            return button
+        guard annotation.title != "You Are Here" else {
+            return nil
         }
-
-        return nil
+        return createRightCalloutView()
     }
+
+    private func createRightCalloutView() -> UIView {
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 20))
+        button.backgroundColor = .black
+        button.setTitle("Shoot", for: .normal)
+        return button
+    }
+
+
+    private func createCoolDownView(timeLeft: UInt) -> CoolDownNotificationView {
+        let w = view.bounds.width
+        let h = view.bounds.height - (self.tabBarController?.tabBar.frame.height ?? 0)
+        let xOffset: CGFloat = 10
+        let actualHeight = h / 3
+        let view = CoolDownNotificationView(frame: CGRect(origin: CGPoint(x: xOffset, y: h - actualHeight - 10),
+                                                          size: CGSize(width: w - 2 * xOffset, height: actualHeight)),
+                                            timeLeft: timeLeft)
+        return view
+    }
+
 
     //Нажатие на Shoot в аннотации
-
     func mapView(_ mapView: MGLMapView, annotation: MGLAnnotation, calloutAccessoryControlTapped control: UIControl) {
-        // Hide the callout view.
-
-        //если живой то можешь стрелять
         guard isAlive else { return }
 
-        if let oldDate = defaults.string(forKey: "TimeOfLastShot") {
-            guard TimeConverter.isMoreThanDiff(oldDate: oldDate, diff: myKD, in: .second) else {
-                let delta = TimeConverter.showDiff(oldDate: oldDate, in: .second)
-                print("Kd remaining : sec  \(self.myKD - delta)")
+        if let oldDate = defaults.string(forKey: lastShotTimeKey) {
+            let difference = TimeConverter.showInterval(oldDate: oldDate, in: .second)
+            let reloadTime = WeaponModel.defaultWeapon.reloadTime
+            guard difference >= reloadTime else {
+                let timeLeft = reloadTime - difference
+                let coolDownView = createCoolDownView(timeLeft: timeLeft)
+                view.addSubview(coolDownView)
+                let interval = TimeInterval(min(2, timeLeft))
+                Timer.scheduledTimer(withTimeInterval: interval, repeats: false, block: { _ in coolDownView.removeFromSuperview() })
                 return
             }
         }
@@ -428,14 +435,18 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         if let victim = players[annotation.title!!]{
             // если хватает дистанции оружия
             let distance = userLocation.distance(to: victim.position)
-            guard distance < 0.0005 else {
+            let defaultWeapon: Weapon! = WeaponModel.defaultWeapon
+
+            guard distance < CLLocationDistance(defaultWeapon.distance) else {
+                print("NOT ENOUGH DISTANCE")
                 return
             }
 
-            let currentWeaponDamage = UserDefaults.standard.getDefaultWeapon().damage
-
             mapView.deselectAnnotation(annotation, animated: false)
-            let alert = UIAlertController(title: "Nice shot", message: "\(-currentWeaponDamage) HP", preferredStyle: .alert)
+
+            let alert = UIAlertController(title: "Nice shot",
+                                          message: "\(-defaultWeapon.damage) HP",
+                preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
 
             let refToVictimUser = DataBaseManager.Refs.databaseUserNames.child("/\(victim.login.lowercased())")
@@ -446,13 +457,13 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                     let changes = WeaponCalculator.getRatingAndHealthAfterShoot(killerRating: self.myRating,
                                                                                 victimRating: victim.rating,
                                                                                 victimHealth: victim.health,
-                                                                                weaponDamage: currentWeaponDamage)
+                                                                                weaponDamage: defaultWeapon.damage)
                     if (changes.victimHealth == 0) {
                         if let anotation = self.annotationsPlayers[victim.login] {
                             self.mapView.removeAnnotation(anotation)
                         }
-                        self.myRating = changes.killerRating
                         DispatchQueue.global(qos: .utility).async {
+                            self.myRating = changes.killerRating
                             DataBaseManager.shared.updateUserValues(for: self.userUID, with: [.rating : self.myRating])
                         }
                     }
@@ -466,7 +477,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                     }
                 }
             })
-            defaults.set(TimeConverter.convertToUTC(in: .second), forKey: "TimeOfLastShot")
+            defaults.set(TimeConverter.convertToUTC(in: .second), forKey: lastShotTimeKey)
             //можно не алерт будет сделать а всплывающее окно свое
             self.present(alert, animated: true, completion: nil)
         }
