@@ -31,7 +31,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     // Player attributes
     var myLogin = ""
     var myRating = 0 {
-        didSet{
+        didSet {
              DataBaseManager.myRating = myRating
         }
     }
@@ -39,9 +39,9 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
         didSet {
             if myHealth > 0 {
                 healthProgress.isHidden = false
-                healthProgress.progress = Float(myHealth)/100.0
-                healthText.text = String(myHealth)+" HP"}
-            else{
+                healthProgress.progress = Float(myHealth) / 100.0
+                healthText.text = String(myHealth) + " HP"}
+            else {
                 healthProgress.isHidden = true
                 healthText.text = ""
             }
@@ -264,7 +264,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
     }
 
     // MARK: -checkInternetConnection
-    func checkInternetConnection(){
+    func checkInternetConnection() {
         if !Reachability.isConnectedToNetwork() && hasConnection {
             showInternetAlert()
             print("Internet Connection not Available!")
@@ -494,17 +494,18 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                        completion: nil)
     }
 
-    private func createAfterShotView(damage: Int) -> AfterShotView {
+    private func createAlertView(message: String) -> ShotAlertView {
         let w = view.bounds.width
         let h = view.bounds.height - (self.tabBarController?.tabBar.frame.height ?? 0)
         let actualHeight = h / 5
         let xOffset: CGFloat = 10
         let yOffset: CGFloat = 10
-        let afterShotView = AfterShotView(frame: CGRect(x: xOffset,
+        let afterShotView = ShotAlertView(frame: CGRect(x: xOffset,
                                                         y: h - actualHeight - 2 * yOffset,
                                                         width: w - 2 * xOffset,
-                                                        height: actualHeight),
-                                          damage: damage)
+                                                        height: actualHeight))
+        
+        afterShotView.alertLabel.text = message
         return afterShotView
     }
 
@@ -532,7 +533,9 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
             let defaultWeapon: Weapon! = WeaponModel.defaultWeapon
 
             guard distance < CLLocationDistance(defaultWeapon.distance) else {
-                print("NOT ENOUGH DISTANCE")
+                let alertView = self.createAlertView(message: "Not enough distance!")
+                self.view.addSubview(alertView)
+                Timer.scheduledTimer(withTimeInterval: 2, repeats: false, block: { _ in alertView.removeFromSuperview() } )
                 return
             }
 
@@ -565,7 +568,7 @@ class MainViewController: UIViewController, MGLMapViewDelegate, CLLocationManage
                             DataBaseManager.shared.updateUserValues(for: self.userUID, with: [.rating : self.myRating])
                         }
                     } else {
-                        let afterShotView = self.createAfterShotView(damage: defaultWeapon.damage)
+                        let afterShotView = self.createAlertView(message: "Nice shot!" + "\n" + "\(-defaultWeapon.damage) hp")
                         self.view.addSubview(afterShotView)
                         Timer.scheduledTimer(withTimeInterval: 3,
                                              repeats: false,

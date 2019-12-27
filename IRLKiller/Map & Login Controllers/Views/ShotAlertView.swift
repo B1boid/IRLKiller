@@ -8,9 +8,9 @@
 
 import UIKit
 
-class AfterShotView: UIView {
+class ShotAlertView: UIView {
     
-    private let labelWithDamage: UILabel = {
+    let alertLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.textColor = .black
@@ -20,18 +20,17 @@ class AfterShotView: UIView {
         return label
     }()
     
-    init(frame: CGRect, damage: Int) {
+    override init(frame: CGRect) {
         super.init(frame: frame)
         setupMainView()
-        self.addSubview(labelWithDamage)
-        labelWithDamage.text = "Nice shot!" + "\n" + "\(-damage) hp"
+        self.addSubview(alertLabel)
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         let xOffset: CGFloat = 10
         let yOffset: CGFloat = 10
-        labelWithDamage.frame = CGRect(x: xOffset,
+        alertLabel.frame = CGRect(x: xOffset,
                                        y: yOffset,
                                        width: self.bounds.width - 2 * xOffset,
                                        height: self.bounds.height - 2 * yOffset)

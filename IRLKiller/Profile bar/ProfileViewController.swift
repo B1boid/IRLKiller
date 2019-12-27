@@ -32,11 +32,11 @@ class ProfileViewController: UIViewController {
             top[placeInTop].textColor = UIColor.getRatingColor(for: player.value.rating)
             top[placeInTop].text! = String(player.value.rating) + "   " + player.key
             print(player.value.rating,player.key)
-            placeInTop+=1
+            placeInTop += 1
         }
     }
     
-    func setupViews(curView:UIView){
+    func setupViews(curView:UIView) {
         curView.layer.cornerRadius = 10
         curView.layer.borderWidth = 3
         curView.layer.borderColor = UIColor.black.cgColor

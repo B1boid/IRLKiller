@@ -4,10 +4,9 @@ class InventoryTableViewCell: UITableViewCell {
     
     static let reuseId = "InventoryTableViewCell"
     
-    var collectionView: UICollectionView!
+    let collectionView: UICollectionView!
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         let layout: UICollectionViewFlowLayout = {
             let layout = UICollectionViewFlowLayout()
@@ -21,8 +20,9 @@ class InventoryTableViewCell: UITableViewCell {
                                                right: InventoryConstants.right)
             return layout
         }()
-
+        
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         collectionView.register(InventoryCollectionViewCell.self,
                                 forCellWithReuseIdentifier: InventoryCollectionViewCell.reuseId)
         

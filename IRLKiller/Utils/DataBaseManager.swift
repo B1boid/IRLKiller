@@ -35,8 +35,8 @@ class DataBaseManager {
         }
     }
     
-    static var myLogin:String?
-    static var myRating:Int?
+    static var myLogin: String?
+    static var myRating: Int?
     static var players = [String : Player]()
     
     
@@ -64,14 +64,6 @@ class DataBaseManager {
             
             completion()
         }
-    }
-    
-    func readDataFromDataBase(comletion: () -> Void) {
-    
-    }
-    
-    func startTranslation() {
-        
     }
     
     // MARK:- Update value (attributes for users)

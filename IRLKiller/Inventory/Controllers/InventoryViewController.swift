@@ -91,8 +91,6 @@ extension InventoryViewController: UICollectionViewDelegate, UICollectionViewDat
         let weaponType = WeaponTypes.allCases[collectionView.tag].rawValue
         guard let weapon = weaponData.getWeapon(for: weaponType, index: indexPath.row) else { return cell }
         cell.weaponName = weapon.name
-//        cell.descriptionText = "Nice gun"
-    
         return cell
     }
     
