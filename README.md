@@ -1,8 +1,11 @@
 # IRL Killer
 
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=YZDEiRTK-sw" target="_blank"><img src="http://img.youtube.com/vi/YZDEiRTK-sw/0.jpg" 
+alt="IRLKiller Gameplay Video" width="240" height="180" border="10" /></a>
+
 ## Предпосылки
 
-Многим хотелось бы совместить онлайн игру с реальной жизнью, поэтому IRLKiller это отличный способ провести время играя не лёжа на диване, а активно двигаясь и перемащаясь по своему городу.
+Многим хотелось бы совместить онлайн игру с реальной жизнью, поэтому IRLKiller это отличный способ провести время играя не лёжа на диване, а активно двигаясь и перемещаясь по своему городу.
 
 ## Идея
 
